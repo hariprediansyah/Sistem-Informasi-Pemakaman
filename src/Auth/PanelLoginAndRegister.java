@@ -5,7 +5,7 @@
  */
 package Auth;
 
-import appcode.CustomTextField;
+import appcode.form.CustomTextField;
 import javax.swing.GroupLayout;
 
 /**

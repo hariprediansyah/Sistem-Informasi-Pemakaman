@@ -1,10 +1,10 @@
-package appcode;
+package appcode.form;
 
 import java.awt.*;
 import javax.swing.*;
 import java.awt.geom.RoundRectangle2D;
 
-public class CustomPasswordField extends JPasswordField {
+public class CustomTextField extends JTextField {
 
     private Icon prefixIcon;
     private Icon suffixIcon;
@@ -12,7 +12,7 @@ public class CustomPasswordField extends JPasswordField {
     private String placeholder = "";
     private Color placeholderColor = new Color(204, 204, 204);
 
-    public CustomPasswordField() {
+    public CustomTextField() {
         setOpaque(false);
         initBorder();
         setCaretColor(Color.WHITE);
@@ -56,7 +56,7 @@ public class CustomPasswordField extends JPasswordField {
         repaint();
     }
 
-    public Color getPlaceholderColor() {
+     public Color getPlaceholderColor() {
         return placeholderColor;
     }
 
@@ -88,20 +88,23 @@ public class CustomPasswordField extends JPasswordField {
         g2.setColor(getBackground());
         g2.fillRoundRect(0, 0, getWidth(), getHeight(), borderRadius, borderRadius);
 
-        // Text & caret
+        // Panggil paintComponent dari parent untuk text dan caret
         super.paintComponent(g2);
 
         // Placeholder
-        if (getPassword().length == 0 && !placeholder.isEmpty()) {
+        if (getText().isEmpty() && !placeholder.isEmpty()) {
             g2.setColor(placeholderColor);
             FontMetrics fm = g2.getFontMetrics();
             int y = (getHeight() - fm.getHeight()) / 2 + fm.getAscent();
 
             int x = getInsets().left;
+            
+            // Pastikan placeholder tidak overlap dengan icon
             if (prefixIcon != null) {
                 x = prefixIcon.getIconWidth() + 15;
             }
 
+            // Set font yang sama dengan text field
             g2.setFont(getFont());
             g2.drawString(placeholder, x, y);
         }
@@ -140,4 +143,5 @@ public class CustomPasswordField extends JPasswordField {
             g2.drawImage(suffix, x, y, this);
         }
     }
+    
 }

@@ -1,41 +1,27 @@
-package appcode;
+package appcode.form;
 
 import java.awt.*;
 import javax.swing.*;
 import java.awt.geom.RoundRectangle2D;
 
-public class CustomTextField extends JTextField {
+public class CustomTextArea extends JTextArea {
 
-    private Icon prefixIcon;
-    private Icon suffixIcon;
     private int borderRadius = 15;
     private String placeholder = "";
     private Color placeholderColor = new Color(204, 204, 204);
 
-    public CustomTextField() {
+    public CustomTextArea() {
         setOpaque(false);
-        initBorder();
+        setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         setCaretColor(Color.WHITE);
-    }
-
-    public Icon getPrefixIcon() {
-        return prefixIcon;
-    }
-
-    public void setPrefixIcon(Icon prefixIcon) {
-        this.prefixIcon = prefixIcon;
-        initBorder();
-        repaint();
-    }
-
-    public Icon getSuffixIcon() {
-        return suffixIcon;
-    }
-
-    public void setSuffixIcon(Icon suffixIcon) {
-        this.suffixIcon = suffixIcon;
-        initBorder();
-        repaint();
+        setLineWrap(true);
+        setWrapStyleWord(true);
+        
+        // Important to prevent white edges
+        setBackground(new Color(255, 255, 255));
+        
+        // Set viewport to non-opaque for JScrollPane
+        setUI(new javax.swing.plaf.basic.BasicTextAreaUI());
     }
 
     public int getBorderRadius() {
@@ -56,7 +42,7 @@ public class CustomTextField extends JTextField {
         repaint();
     }
 
-     public Color getPlaceholderColor() {
+    public Color getPlaceholderColor() {
         return placeholderColor;
     }
 
@@ -64,52 +50,48 @@ public class CustomTextField extends JTextField {
         this.placeholderColor = placeholderColor;
         repaint();
     }
-
-    private void initBorder() {
-        int left = 10;
-        int right = 10;
-
-        if (prefixIcon != null) {
-            left = prefixIcon.getIconWidth() + 10;
-        }
-        if (suffixIcon != null) {
-            right = suffixIcon.getIconWidth() + 10;
-        }
-
-        setBorder(BorderFactory.createEmptyBorder(8, left, 8, right));
+    
+    /**
+     * Override to ensure proper behavior when this component is used
+     * within a JScrollPane.
+     */
+    @Override
+    public boolean contains(int x, int y) {
+        Shape shape = new RoundRectangle2D.Double(0, 0, getWidth(), getHeight(), borderRadius, borderRadius);
+        return shape.contains(x, y);
     }
 
     @Override
     protected void paintComponent(Graphics g) {
+        // Create a shape object that represents the rounded rectangle
+        Shape roundedRect = new RoundRectangle2D.Double(0, 0, getWidth(), getHeight(), borderRadius, borderRadius);
+        
+        // Create a copy of the graphics context
         Graphics2D g2 = (Graphics2D) g.create();
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-
-        // Background
+        
+        // Set clip to rounded rectangle to prevent painting outside
+        g2.setClip(roundedRect);
+        
+        // Paint background
         g2.setColor(getBackground());
         g2.fillRoundRect(0, 0, getWidth(), getHeight(), borderRadius, borderRadius);
-
-        // Panggil paintComponent dari parent untuk text dan caret
+        
+        // We use this approach to ensure text is properly rendered within the rounded rectangle
         super.paintComponent(g2);
-
+        
         // Placeholder
         if (getText().isEmpty() && !placeholder.isEmpty()) {
             g2.setColor(placeholderColor);
             FontMetrics fm = g2.getFontMetrics();
-            int y = (getHeight() - fm.getHeight()) / 2 + fm.getAscent();
-
+            int y = getInsets().top + fm.getAscent();
             int x = getInsets().left;
-            
-            // Pastikan placeholder tidak overlap dengan icon
-            if (prefixIcon != null) {
-                x = prefixIcon.getIconWidth() + 15;
-            }
 
-            // Set font yang sama dengan text field
+            // Set font same as text area
             g2.setFont(getFont());
             g2.drawString(placeholder, x, y);
         }
-
-        paintIcon(g2);
+        
         g2.dispose();
     }
 
@@ -128,20 +110,4 @@ public class CustomTextField extends JTextField {
         g2.drawRoundRect(0, 0, getWidth() - 1, getHeight() - 1, borderRadius, borderRadius);
         g2.dispose();
     }
-
-    private void paintIcon(Graphics g) {
-        Graphics2D g2 = (Graphics2D) g;
-        if (prefixIcon != null) {
-            Image prefix = ((ImageIcon) prefixIcon).getImage();
-            int y = (getHeight() - prefixIcon.getIconHeight()) / 2;
-            g2.drawImage(prefix, 5, y, this);
-        }
-        if (suffixIcon != null) {
-            Image suffix = ((ImageIcon) suffixIcon).getImage();
-            int x = getWidth() - suffixIcon.getIconWidth() - 5;
-            int y = (getHeight() - suffixIcon.getIconHeight()) / 2;
-            g2.drawImage(suffix, x, y, this);
-        }
-    }
-    
 }

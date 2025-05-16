@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package appcode;
+package appcode.form;
 
 import java.awt.*;
 import javax.swing.*;

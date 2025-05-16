@@ -5,6 +5,9 @@
  */
 package Auth;
 
+import appcode.form.RoundedGradientButton;
+import Menu.MenuHome;
+import Main.MainPage;
 import appcode.*;
 import java.awt.Color;
 import java.awt.Font;
@@ -32,7 +35,7 @@ public class Login extends javax.swing.JFrame {
     
     public Login() {
         initComponents();
-        setExtendedState(JFrame.MAXIMIZED_BOTH);
+//        setExtendedState(JFrame.MAXIMIZED_BOTH);
         
         
         
@@ -55,13 +58,10 @@ public class Login extends javax.swing.JFrame {
         jpanelContent = new javax.swing.JPanel();
         lblJudul2 = new javax.swing.JLabel();
         lblJudul = new javax.swing.JLabel();
-        txtUsername = new appcode.CustomTextField();
+        txtUsername = new appcode.form.CustomTextField();
         btnSignIn = new RoundedGradientButton("LOG IN");
         jSeparator1 = new javax.swing.JSeparator();
-        jPanel2 = new javax.swing.JPanel();
-        lblNotHave = new javax.swing.JLabel();
-        lblRegister = new javax.swing.JLabel();
-        txtPassword = new appcode.CustomPasswordField();
+        txtPassword = new appcode.form.CustomPasswordField();
         filler2 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(32767, 0));
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -108,20 +108,6 @@ public class Login extends javax.swing.JFrame {
             }
         });
 
-        jPanel2.setBackground(null);
-        jPanel2.setLayout(new javax.swing.BoxLayout(jPanel2, javax.swing.BoxLayout.LINE_AXIS));
-
-        lblNotHave.setForeground(new java.awt.Color(255, 255, 255));
-        lblNotHave.setText("Don't have account?");
-        lblNotHave.setFont(Util.getFont(Util.FontStyle.NORMAL, 18f));
-        jPanel2.add(lblNotHave);
-
-        lblRegister.setForeground(new java.awt.Color(202, 177, 131));
-        lblRegister.setText(" Sign Up");
-        lblRegister.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        lblRegister.setFont(Util.getFont(Util.FontStyle.NORMAL, 18f));
-        jPanel2.add(lblRegister);
-
         txtPassword.setBackground(new java.awt.Color(138, 138, 138));
         txtPassword.setForeground(new java.awt.Color(255, 255, 255));
         txtPassword.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -149,15 +135,11 @@ public class Login extends javax.swing.JFrame {
                             .addComponent(btnSignIn, javax.swing.GroupLayout.DEFAULT_SIZE, 254, Short.MAX_VALUE))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jpanelContentLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jpanelContentLayout.setVerticalGroup(
             jpanelContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jpanelContentLayout.createSequentialGroup()
-                .addContainerGap(89, Short.MAX_VALUE)
+                .addContainerGap(93, Short.MAX_VALUE)
                 .addComponent(lblJudul)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lblJudul2, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -167,11 +149,9 @@ public class Login extends javax.swing.JFrame {
                 .addComponent(txtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(27, 27, 27)
                 .addComponent(btnSignIn, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 159, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 163, Short.MAX_VALUE)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(86, Short.MAX_VALUE))
+                .addContainerGap(103, Short.MAX_VALUE))
         );
 
         jpanelCenter.add(jpanelContent);
@@ -191,6 +171,7 @@ public class Login extends javax.swing.JFrame {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void txtUsernameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtUsernameActionPerformed
@@ -201,14 +182,18 @@ public class Login extends javax.swing.JFrame {
         // TODO add your handling code here:
         try{
             String query = "SELECT * FROM users where username = '" + txtUsername.getText() + "' and password = '" + String.valueOf(txtPassword.getPassword()) + "'";
-        System.out.println(query);
-        Statement stmt = conn.createStatement();
-        ResultSet rs = stmt.executeQuery(query);
-        if (rs.next()){
-            JOptionPane.showMessageDialog(null, "Login Berhasil, selamat datang " + rs.getString("name"));
-        }else{
-            JOptionPane.showMessageDialog(null, "Username atau password salah!");
-        }
+            System.out.println(query);
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(query);
+            if (rs.next()){
+                JOptionPane.showMessageDialog(null, "Login Berhasil, selamat datang " + rs.getString("nama_lengkap"));
+                Session.setNama(rs.getString("nama_lengkap"));
+                Session.setRole(rs.getString("role"));
+                new MainPage().show();
+                dispose();
+            }else{
+                JOptionPane.showMessageDialog(null, "Username atau password salah!");
+            }
         }catch(Exception ex){
             ex.printStackTrace();
         }
@@ -254,15 +239,12 @@ public class Login extends javax.swing.JFrame {
     private javax.swing.Box.Filler filler2;
     private javax.swing.Box.Filler filler5;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JPanel jpanelCenter;
     private javax.swing.JPanel jpanelContent;
     private javax.swing.JLabel lblJudul;
     private javax.swing.JLabel lblJudul2;
-    private javax.swing.JLabel lblNotHave;
-    private javax.swing.JLabel lblRegister;
-    private appcode.CustomPasswordField txtPassword;
-    private appcode.CustomTextField txtUsername;
+    private appcode.form.CustomPasswordField txtPassword;
+    private appcode.form.CustomTextField txtUsername;
     // End of variables declaration//GEN-END:variables
 }
