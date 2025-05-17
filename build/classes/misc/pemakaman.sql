@@ -34,7 +34,7 @@ CREATE TABLE `ambulan` (
   `kapasitas` int NOT NULL,
   `status` varchar(100) NOT NULL,
   `keterangan` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ;
 
 -- --------------------------------------------------------
 
@@ -48,7 +48,7 @@ CREATE TABLE `blok_makam` (
   `kode_blok` varchar(100) NOT NULL,
   `harga` bigint NOT NULL,
   `keterangan` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ;
 
 -- --------------------------------------------------------
 
@@ -64,7 +64,7 @@ CREATE TABLE `jenazah` (
   `tempat_wafat` varchar(100) NOT NULL,
   `jenis_kelamin` varchar(100) NOT NULL,
   `umur` int NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ;
 
 -- --------------------------------------------------------
 
@@ -77,7 +77,7 @@ CREATE TABLE `lokasi_makam` (
   `nama_lokasi` varchar(100) NOT NULL,
   `alamat` varchar(255) NOT NULL,
   `kota` varchar(100) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ;
 
 -- --------------------------------------------------------
 
@@ -93,7 +93,7 @@ CREATE TABLE `penyewaan_ambulan` (
   `waktu_jemput` datetime NOT NULL,
   `status` varchar(100) NOT NULL,
   `deskripsi` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ;
 
 -- --------------------------------------------------------
 
@@ -107,7 +107,7 @@ CREATE TABLE `petak_makam` (
   `nomor_petak` varchar(100) NOT NULL,
   `status` varchar(100) NOT NULL,
   `deskripsi` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ;
 
 -- --------------------------------------------------------
 
@@ -121,7 +121,7 @@ CREATE TABLE `reservasi` (
   `tanggal_reservasi` date NOT NULL,
   `petak_id` int NOT NULL,
   `catatan` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ;
 
 -- --------------------------------------------------------
 
@@ -140,7 +140,7 @@ CREATE TABLE `transaksi` (
   `nama_kartu` varchar(100) NOT NULL,
   `catatan` varchar(255) NOT NULL,
   `user_input` int NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ;
 
 -- --------------------------------------------------------
 
@@ -157,7 +157,7 @@ CREATE TABLE `users` (
   `alamat` varchar(255) NOT NULL,
   `role` varchar(100) NOT NULL,
   `password` varchar(100) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ;
 
 --
 -- Dumping data for table `users`

@@ -19,7 +19,7 @@ import appcode.form.RoundedGradientButton;
  *
  * @author coyha
  */
-public class DialogUserAddEdit extends javax.swing.JDialog {
+public class DialogAmbulanAddEdit extends javax.swing.JDialog {
     private Connection conn = new Koneksi().connect();
     /**
      * Creates new form DialogAddEdit
@@ -27,7 +27,7 @@ public class DialogUserAddEdit extends javax.swing.JDialog {
     
     int id = 0;
     
-    public DialogUserAddEdit(java.awt.Frame parent, boolean modal) {
+    public DialogAmbulanAddEdit(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
         txtJudul.setText("Tambah User");
@@ -41,7 +41,7 @@ public class DialogUserAddEdit extends javax.swing.JDialog {
             Statement st = conn.createStatement();
             ResultSet rs = st.executeQuery(q);
             if (rs.next()){
-                txtNama.setText(rs.getString("nama_lengkap"));
+                txtNoPolisi.setText(rs.getString("nama_lengkap"));
                 txtUsername.setText(rs.getString("username"));
                 txtEmail.setText(rs.getString("email"));
                 txtNoHP.setText(rs.getString("no_hp"));
@@ -51,7 +51,7 @@ public class DialogUserAddEdit extends javax.swing.JDialog {
                 txtJudul.setText("Edit Produk");
             }
         } catch (SQLException ex) {
-            Logger.getLogger(DialogUserAddEdit.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(DialogAmbulanAddEdit.class.getName()).log(Level.SEVERE, null, ex);
         }
    }
 
@@ -74,7 +74,7 @@ public class DialogUserAddEdit extends javax.swing.JDialog {
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
-        txtNama = new appcode.form.CustomTextField();
+        txtNoPolisi = new appcode.form.CustomTextField();
         txtEmail = new appcode.form.CustomTextField();
         txtUsername = new appcode.form.CustomTextField();
         txtNoHP = new appcode.form.CustomTextField();
@@ -89,11 +89,11 @@ public class DialogUserAddEdit extends javax.swing.JDialog {
 
         txtJudul.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         txtJudul.setForeground(new java.awt.Color(255, 255, 255));
-        txtJudul.setText("Tambah User");
+        txtJudul.setText("Tambah Ambulan");
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel2.setText("Nama");
+        jLabel2.setText("Nomor Polisi");
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
@@ -128,10 +128,10 @@ public class DialogUserAddEdit extends javax.swing.JDialog {
         jLabel8.setForeground(new java.awt.Color(255, 255, 255));
         jLabel8.setText("Role");
 
-        txtNama.setBackground(new java.awt.Color(138, 138, 138));
-        txtNama.setForeground(new java.awt.Color(255, 255, 255));
-        txtNama.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        txtNama.setPlaceholder("Nama Lengkap");
+        txtNoPolisi.setBackground(new java.awt.Color(138, 138, 138));
+        txtNoPolisi.setForeground(new java.awt.Color(255, 255, 255));
+        txtNoPolisi.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        txtNoPolisi.setPlaceholder("Nama Lengkap");
 
         txtEmail.setBackground(new java.awt.Color(138, 138, 138));
         txtEmail.setForeground(new java.awt.Color(255, 255, 255));
@@ -185,7 +185,7 @@ public class DialogUserAddEdit extends javax.swing.JDialog {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 224, Short.MAX_VALUE)
-                            .addComponent(txtNama, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(txtNoPolisi, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -213,7 +213,7 @@ public class DialogUserAddEdit extends javax.swing.JDialog {
                 .addGap(74, 74, 74)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtNama, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtNoPolisi, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
@@ -272,7 +272,7 @@ public class DialogUserAddEdit extends javax.swing.JDialog {
         }
             try{
                 PreparedStatement stat = conn.prepareStatement(sql);
-                stat.setString(1, txtNama.getText());
+                stat.setString(1, txtNoPolisi.getText());
                 stat.setString(2, txtUsername.getText());
                 stat.setString(3, txtEmail.getText());
                 stat.setString(4, txtNoHP.getText());
@@ -311,14 +311,78 @@ public class DialogUserAddEdit extends javax.swing.JDialog {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(DialogUserAddEdit.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DialogAmbulanAddEdit.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(DialogUserAddEdit.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DialogAmbulanAddEdit.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(DialogUserAddEdit.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DialogAmbulanAddEdit.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(DialogUserAddEdit.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DialogAmbulanAddEdit.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>
@@ -387,7 +451,7 @@ public class DialogUserAddEdit extends javax.swing.JDialog {
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                DialogUserAddEdit dialog = new DialogUserAddEdit(new javax.swing.JFrame(), true);
+                DialogAmbulanAddEdit dialog = new DialogAmbulanAddEdit(new javax.swing.JFrame(), true);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {
@@ -414,8 +478,8 @@ public class DialogUserAddEdit extends javax.swing.JDialog {
     private appcode.form.CustomTextArea txtAlamat;
     private appcode.form.CustomTextField txtEmail;
     private javax.swing.JLabel txtJudul;
-    private appcode.form.CustomTextField txtNama;
     private appcode.form.CustomTextField txtNoHP;
+    private appcode.form.CustomTextField txtNoPolisi;
     private appcode.form.CustomTextField txtPassword;
     private appcode.form.CustomTextField txtUsername;
     // End of variables declaration//GEN-END:variables

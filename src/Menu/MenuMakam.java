@@ -25,14 +25,14 @@ import koneksi.Koneksi;
  *
  * @author coyha
  */
-public class MenuUser extends javax.swing.JPanel {
+public class MenuMakam extends javax.swing.JPanel {
 
     /**
      * Creates new form MenuHome
      */
     DefaultTableModel model;
     Connection conn = new Koneksi().connect();
-    public MenuUser() {
+    public MenuMakam() {
         initComponents();
         loadData();
         tblData.fixTable(jScrollPane1);
@@ -113,7 +113,7 @@ public class MenuUser extends javax.swing.JPanel {
         jLabel2.setBackground(new java.awt.Color(255, 255, 255));
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel2.setText("User");
+        jLabel2.setText("Pemakaman");
 
         btnReport.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         btnReport.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -173,16 +173,13 @@ public class MenuUser extends javax.swing.JPanel {
     }//GEN-LAST:event_btnReportActionPerformed
 
     private void loadData(){
-        String sql = "SELECT * FROM users ORDER BY nama_lengkap";
+        String sql = "SELECT * FROM lokasi_makam ORDER BY nama_lokasi";
         Object[] Baris = {
             "No",
             "Action",
-            "Nama Lengkap",
-            "Username",
-            "Role",
-            "Email",
-            "No HP",
-            "Alamat"
+            "Nama Lokasi",
+            "Alamat",
+            "Kota"
         };
         
         model = new DefaultTableModel(null, Baris);
@@ -196,12 +193,9 @@ public class MenuUser extends javax.swing.JPanel {
                 String[] data={
                     Integer.toString(num), 
                     hasil.getString("id"), 
-                    hasil.getString("nama_lengkap"), 
-                    hasil.getString("username"), 
-                    hasil.getString("role"), 
-                    hasil.getString("email"),
-                    hasil.getString("no_hp"),
-                    hasil.getString("alamat")
+                    hasil.getString("nama_lokasi"), 
+                    hasil.getString("alamat"), 
+                    hasil.getString("kota")
                 };
                 model.addRow(data);
                 num++;
@@ -218,19 +212,19 @@ public class MenuUser extends javax.swing.JPanel {
                 @Override
                 public void onDelete(int row) {
                     int dialogButton = JOptionPane.YES_NO_OPTION;
-                    int dialogResult = JOptionPane.showConfirmDialog (null, "Konfirmasi hapus user?","Warning",dialogButton);
+                    int dialogResult = JOptionPane.showConfirmDialog (null, "Konfirmasi hapus lokasi makam?","Warning",dialogButton);
                     if(dialogResult == JOptionPane.YES_OPTION){
                         String kode = model.getValueAt(row, 1).toString();
-                        String sql = "DELETE FROM users WHERE id = ?";
+                        String sql = "DELETE FROM lokasi_makam WHERE id = ?";
                         try{
                             PreparedStatement stat = conn.prepareStatement(sql);
                             stat.setString(1, kode);
                             stat.executeUpdate();
                             
-                            JOptionPane.showMessageDialog(null, "User Berhasil Dihapus");
+                            JOptionPane.showMessageDialog(null, "Lokasi Makam Berhasil Dihapus");
                             loadData();
                         }catch (SQLException e){
-                            JOptionPane.showMessageDialog(null, "User Gagal Dihapus "+e);
+                            JOptionPane.showMessageDialog(null, "Lokasi Makam Gagal Dihapus "+e);
                         }
                     }
                 }

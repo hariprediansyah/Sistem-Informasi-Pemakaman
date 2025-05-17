@@ -25,14 +25,14 @@ import koneksi.Koneksi;
  *
  * @author coyha
  */
-public class MenuUser extends javax.swing.JPanel {
+public class MenuJenazah extends javax.swing.JPanel {
 
     /**
      * Creates new form MenuHome
      */
     DefaultTableModel model;
     Connection conn = new Koneksi().connect();
-    public MenuUser() {
+    public MenuJenazah() {
         initComponents();
         loadData();
         tblData.fixTable(jScrollPane1);
@@ -113,7 +113,7 @@ public class MenuUser extends javax.swing.JPanel {
         jLabel2.setBackground(new java.awt.Color(255, 255, 255));
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel2.setText("User");
+        jLabel2.setText("Jenazah");
 
         btnReport.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         btnReport.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -173,16 +173,15 @@ public class MenuUser extends javax.swing.JPanel {
     }//GEN-LAST:event_btnReportActionPerformed
 
     private void loadData(){
-        String sql = "SELECT * FROM users ORDER BY nama_lengkap";
+        String sql = "SELECT * FROM jenazah ORDER BY nama_jenazah";
         Object[] Baris = {
             "No",
             "Action",
-            "Nama Lengkap",
-            "Username",
-            "Role",
-            "Email",
-            "No HP",
-            "Alamat"
+            "Nama Jenazah",
+            "Tanggal Wafat",
+            "Tempat Wafat",
+            "Jenis Kelamin",
+            "Umur"
         };
         
         model = new DefaultTableModel(null, Baris);
@@ -196,12 +195,11 @@ public class MenuUser extends javax.swing.JPanel {
                 String[] data={
                     Integer.toString(num), 
                     hasil.getString("id"), 
-                    hasil.getString("nama_lengkap"), 
-                    hasil.getString("username"), 
-                    hasil.getString("role"), 
-                    hasil.getString("email"),
-                    hasil.getString("no_hp"),
-                    hasil.getString("alamat")
+                    hasil.getString("nama_jenazah"), 
+                    hasil.getString("tanggal_wafat"), 
+                    hasil.getString("tempat_wafat"), 
+                    hasil.getString("jenis_kelamin"),
+                    hasil.getString("umur")
                 };
                 model.addRow(data);
                 num++;
@@ -209,7 +207,7 @@ public class MenuUser extends javax.swing.JPanel {
             TableActionEvent actionEvent = new TableActionEvent() {
                 @Override
                 public void onEdit(int row) {
-                    DialogUserAddEdit dialog = setupDialog();
+                    DialogJenazahAddEdit dialog = setupDialog();
                     System.out.print(model.getValueAt(row, 1).toString());
                     dialog.setData(Integer.parseInt(model.getValueAt(row, 1).toString()));
                     dialog.setVisible(true);
@@ -218,19 +216,19 @@ public class MenuUser extends javax.swing.JPanel {
                 @Override
                 public void onDelete(int row) {
                     int dialogButton = JOptionPane.YES_NO_OPTION;
-                    int dialogResult = JOptionPane.showConfirmDialog (null, "Konfirmasi hapus user?","Warning",dialogButton);
+                    int dialogResult = JOptionPane.showConfirmDialog (null, "Konfirmasi hapus jenazah?","Warning",dialogButton);
                     if(dialogResult == JOptionPane.YES_OPTION){
                         String kode = model.getValueAt(row, 1).toString();
-                        String sql = "DELETE FROM users WHERE id = ?";
+                        String sql = "DELETE FROM jenazah WHERE id = ?";
                         try{
                             PreparedStatement stat = conn.prepareStatement(sql);
                             stat.setString(1, kode);
                             stat.executeUpdate();
                             
-                            JOptionPane.showMessageDialog(null, "User Berhasil Dihapus");
+                            JOptionPane.showMessageDialog(null, "Jenazah Berhasil Dihapus");
                             loadData();
                         }catch (SQLException e){
-                            JOptionPane.showMessageDialog(null, "User Gagal Dihapus "+e);
+                            JOptionPane.showMessageDialog(null, "Jenazah Gagal Dihapus "+e);
                         }
                     }
                 }
@@ -242,8 +240,8 @@ public class MenuUser extends javax.swing.JPanel {
         }
     }
     
-    private DialogUserAddEdit setupDialog() {
-        DialogUserAddEdit dialog = new DialogUserAddEdit(null, true);
+    private DialogJenazahAddEdit setupDialog() {
+        DialogJenazahAddEdit dialog = new DialogJenazahAddEdit(null, true);
         dialog.addWindowListener(new WindowListener() {
             @Override
             public void windowOpened(WindowEvent e) {

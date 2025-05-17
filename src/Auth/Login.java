@@ -182,13 +182,14 @@ public class Login extends javax.swing.JFrame {
         // TODO add your handling code here:
         try{
             String query = "SELECT * FROM users where username = '" + txtUsername.getText() + "' and password = '" + String.valueOf(txtPassword.getPassword()) + "'";
-            System.out.println(query);
+            //System.out.println(query);
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(query);
             if (rs.next()){
                 JOptionPane.showMessageDialog(null, "Login Berhasil, selamat datang " + rs.getString("nama_lengkap"));
                 Session.setNama(rs.getString("nama_lengkap"));
                 Session.setRole(rs.getString("role"));
+                Session.setUser_id(rs.getInt("id"));
                 new MainPage().show();
                 dispose();
             }else{

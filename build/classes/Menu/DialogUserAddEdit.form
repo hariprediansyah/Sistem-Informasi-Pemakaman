@@ -57,14 +57,14 @@
                           <Group type="103" groupAlignment="1" max="-2" attributes="0">
                               <Component id="jScrollPane1" alignment="0" pref="224" max="32767" attributes="0"/>
                               <Component id="txtNama" alignment="0" max="32767" attributes="0"/>
-                              <Component id="btnSave" alignment="0" min="-2" pref="95" max="-2" attributes="0"/>
                               <Component id="jLabel5" alignment="0" min="-2" pref="117" max="-2" attributes="0"/>
                               <Component id="jLabel4" alignment="0" min="-2" pref="117" max="-2" attributes="0"/>
                               <Component id="jLabel3" alignment="0" min="-2" pref="116" max="-2" attributes="0"/>
                               <Component id="txtEmail" max="32767" attributes="0"/>
                               <Component id="txtNoHP" max="32767" attributes="0"/>
+                              <Component id="btnSave" alignment="0" min="-2" pref="119" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace pref="29" max="32767" attributes="0"/>
+                          <EmptySpace pref="40" max="32767" attributes="0"/>
                           <Group type="103" groupAlignment="0" max="-2" attributes="0">
                               <Component id="jLabel8" min="-2" pref="117" max="-2" attributes="0"/>
                               <Component id="jLabel6" min="-2" pref="116" max="-2" attributes="0"/>
@@ -123,7 +123,7 @@
                       <Component id="jScrollPane1" min="-2" max="-2" attributes="0"/>
                       <Component id="cmbRole" min="-2" pref="40" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace pref="46" max="32767" attributes="0"/>
+                  <EmptySpace pref="67" max="32767" attributes="0"/>
                   <Component id="btnSave" min="-2" pref="37" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="25" max="-2" attributes="0"/>
               </Group>
@@ -359,6 +359,9 @@
               <Font name="Tahoma" size="14" style="0"/>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cmbRoleActionPerformed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>

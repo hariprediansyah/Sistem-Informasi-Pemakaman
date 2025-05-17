@@ -68,11 +68,14 @@
         <Component class="appcode.table.TableDark" name="tblData">
           <Properties>
             <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-              <Table columnCount="4" rowCount="46">
-                <Column editable="true" title="Title 1" type="java.lang.Object"/>
-                <Column editable="true" title="Title 2" type="java.lang.Object"/>
-                <Column editable="true" title="Title 3" type="java.lang.Object"/>
-                <Column editable="true" title="Title 4" type="java.lang.Object"/>
+              <Table columnCount="7" rowCount="46">
+                <Column editable="true" title="No" type="java.lang.Object"/>
+                <Column editable="true" title="Action" type="java.lang.Object"/>
+                <Column editable="true" title="Tanggal Reservasi" type="java.lang.Object"/>
+                <Column editable="true" title="Lokasi Makam" type="java.lang.Object"/>
+                <Column editable="true" title="Blok" type="java.lang.Object"/>
+                <Column editable="true" title="Petak" type="java.lang.Object"/>
+                <Column editable="true" title="User Input" type="java.lang.Object"/>
               </Table>
             </Property>
             <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
@@ -117,7 +120,7 @@
         <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
           <Color blue="ff" green="ff" red="ff" type="rgb"/>
         </Property>
-        <Property name="text" type="java.lang.String" value="User"/>
+        <Property name="text" type="java.lang.String" value="Reservasi"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JButton" name="btnReport">

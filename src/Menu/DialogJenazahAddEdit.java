@@ -3,6 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JDialog.java to edit this template
  */
 package Menu;
+import appcode.Session;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -14,12 +15,16 @@ import javax.swing.JOptionPane;
 import java.awt.event.KeyEvent;
 import koneksi.Koneksi;
 import appcode.form.RoundedGradientButton;
+import java.sql.Date;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 
 /**
  *
  * @author coyha
  */
-public class DialogUserAddEdit extends javax.swing.JDialog {
+public class DialogJenazahAddEdit extends javax.swing.JDialog {
     private Connection conn = new Koneksi().connect();
     /**
      * Creates new form DialogAddEdit
@@ -27,31 +32,30 @@ public class DialogUserAddEdit extends javax.swing.JDialog {
     
     int id = 0;
     
-    public DialogUserAddEdit(java.awt.Frame parent, boolean modal) {
+    public DialogJenazahAddEdit(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        txtJudul.setText("Tambah User");
+        txtJudul.setText("Tambah Jenazah");
     }
     
     public void setData(int id){
         try {
             this.id = id;
             
-            String q = "SELECT * FROM users WHERE id = " + id;
+            String q = "SELECT * FROM Jenazah WHERE id = " + id;
             Statement st = conn.createStatement();
             ResultSet rs = st.executeQuery(q);
             if (rs.next()){
-                txtNama.setText(rs.getString("nama_lengkap"));
-                txtUsername.setText(rs.getString("username"));
-                txtEmail.setText(rs.getString("email"));
-                txtNoHP.setText(rs.getString("no_hp"));
-                txtAlamat.setText(rs.getString("alamat"));
-                cmbRole.setSelectedItem(rs.getString("role"));
-                txtPassword.setText(rs.getString("password"));
-                txtJudul.setText("Edit Produk");
+                Date tanggalWafat = Date.valueOf(rs.getString("tanggal_wafat"));
+                txtNama.setText(rs.getString("nama_jenazah"));
+                txtTempatWafat.setText(rs.getString("tempat_wafat"));
+                txtTanggalWafat.setDate(tanggalWafat);
+                txtUmur.setText(rs.getString("umur"));
+                cmbJenisKelamin.setSelectedItem(rs.getString("jenis_kelamin"));
+                txtJudul.setText("Edit Jenazah");
             }
         } catch (SQLException ex) {
-            Logger.getLogger(DialogUserAddEdit.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(DialogJenazahAddEdit.class.getName()).log(Level.SEVERE, null, ex);
         }
    }
 
@@ -70,18 +74,13 @@ public class DialogUserAddEdit extends javax.swing.JDialog {
         jLabel3 = new javax.swing.JLabel();
         btnSave = new RoundedGradientButton("Simpan");
         jLabel4 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
-        jLabel8 = new javax.swing.JLabel();
         txtNama = new appcode.form.CustomTextField();
-        txtEmail = new appcode.form.CustomTextField();
-        txtUsername = new appcode.form.CustomTextField();
-        txtNoHP = new appcode.form.CustomTextField();
-        txtPassword = new appcode.form.CustomTextField();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        txtAlamat = new appcode.form.CustomTextArea();
-        cmbRole = new appcode.form.CustomComboBox();
+        txtTempatWafat = new appcode.form.CustomTextField();
+        cmbJenisKelamin = new appcode.form.CustomComboBox();
+        txtTanggalWafat = new com.toedter.calendar.JDateChooser();
+        txtUmur = new appcode.form.CustomTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -89,15 +88,15 @@ public class DialogUserAddEdit extends javax.swing.JDialog {
 
         txtJudul.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         txtJudul.setForeground(new java.awt.Color(255, 255, 255));
-        txtJudul.setText("Tambah User");
+        txtJudul.setText("Tambah Jenazah");
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel2.setText("Nama");
+        jLabel2.setText("Nama Jenazah");
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel3.setText("Email");
+        jLabel3.setText("Tanggal Wafat");
 
         btnSave.setBackground(new java.awt.Color(0, 91, 99));
         btnSave.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -110,67 +109,43 @@ public class DialogUserAddEdit extends javax.swing.JDialog {
 
         jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel4.setText("No Hp");
-
-        jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jLabel5.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel5.setText("Alamat");
+        jLabel4.setText("Jenis Kelamin");
 
         jLabel6.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel6.setText("Username");
+        jLabel6.setText("Tempat Wafat");
 
         jLabel7.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel7.setText("Password");
-
-        jLabel8.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jLabel8.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel8.setText("Role");
+        jLabel7.setText("Umur");
 
         txtNama.setBackground(new java.awt.Color(138, 138, 138));
         txtNama.setForeground(new java.awt.Color(255, 255, 255));
         txtNama.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        txtNama.setPlaceholder("Nama Lengkap");
+        txtNama.setPlaceholder("Nama Jenazah");
 
-        txtEmail.setBackground(new java.awt.Color(138, 138, 138));
-        txtEmail.setForeground(new java.awt.Color(255, 255, 255));
-        txtEmail.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        txtEmail.setPlaceholder("Email");
+        txtTempatWafat.setBackground(new java.awt.Color(138, 138, 138));
+        txtTempatWafat.setForeground(new java.awt.Color(255, 255, 255));
+        txtTempatWafat.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        txtTempatWafat.setPlaceholder("Tempat Wafat");
 
-        txtUsername.setBackground(new java.awt.Color(138, 138, 138));
-        txtUsername.setForeground(new java.awt.Color(255, 255, 255));
-        txtUsername.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        txtUsername.setPlaceholder("Username");
-
-        txtNoHP.setBackground(new java.awt.Color(138, 138, 138));
-        txtNoHP.setForeground(new java.awt.Color(255, 255, 255));
-        txtNoHP.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        txtNoHP.setPlaceholder("No HP");
-
-        txtPassword.setBackground(new java.awt.Color(138, 138, 138));
-        txtPassword.setForeground(new java.awt.Color(255, 255, 255));
-        txtPassword.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        txtPassword.setPlaceholder("Password");
-
-        txtAlamat.setBackground(new java.awt.Color(138, 138, 138));
-        txtAlamat.setColumns(20);
-        txtAlamat.setForeground(new java.awt.Color(255, 255, 255));
-        txtAlamat.setRows(5);
-        txtAlamat.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        txtAlamat.setPlaceholder("Masukan alamat");
-        jScrollPane1.setViewportView(txtAlamat);
-
-        cmbRole.setBackground(new java.awt.Color(138, 138, 138));
-        cmbRole.setForeground(new java.awt.Color(255, 255, 255));
-        cmbRole.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Guest", "Admin" }));
-        cmbRole.setArrowColor(new java.awt.Color(204, 213, 209));
-        cmbRole.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        cmbRole.addActionListener(new java.awt.event.ActionListener() {
+        cmbJenisKelamin.setBackground(new java.awt.Color(138, 138, 138));
+        cmbJenisKelamin.setForeground(new java.awt.Color(255, 255, 255));
+        cmbJenisKelamin.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Laki-Laki", "Perempuan" }));
+        cmbJenisKelamin.setArrowColor(new java.awt.Color(204, 213, 209));
+        cmbJenisKelamin.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        cmbJenisKelamin.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cmbRoleActionPerformed(evt);
+                cmbJenisKelaminActionPerformed(evt);
             }
         });
+
+        txtTanggalWafat.setBackground(new java.awt.Color(138, 138, 138));
+
+        txtUmur.setBackground(new java.awt.Color(138, 138, 138));
+        txtUmur.setForeground(new java.awt.Color(255, 255, 255));
+        txtUmur.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        txtUmur.setPlaceholder("Umur");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -180,27 +155,24 @@ public class DialogUserAddEdit extends javax.swing.JDialog {
                 .addGap(24, 24, 24)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 224, Short.MAX_VALUE)
-                            .addComponent(txtNama, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtEmail, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(txtNoHP, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btnSave, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 40, Short.MAX_VALUE)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addComponent(txtNama, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(txtTanggalWafat, javax.swing.GroupLayout.DEFAULT_SIZE, 224, Short.MAX_VALUE)
+                                .addComponent(btnSave, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(cmbJenisKelamin, javax.swing.GroupLayout.PREFERRED_SIZE, 224, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 74, Short.MAX_VALUE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtUsername, javax.swing.GroupLayout.DEFAULT_SIZE, 224, Short.MAX_VALUE)
-                            .addComponent(txtPassword, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(cmbRole, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(23, 23, 23))))
+                            .addComponent(txtTempatWafat, javax.swing.GroupLayout.PREFERRED_SIZE, 224, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtUmur, javax.swing.GroupLayout.PREFERRED_SIZE, 224, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(23, 23, 23))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel1Layout.createSequentialGroup()
                     .addGap(23, 23, 23)
@@ -219,33 +191,25 @@ public class DialogUserAddEdit extends javax.swing.JDialog {
                     .addComponent(jLabel6)
                     .addComponent(jLabel3))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtUsername, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(txtTempatWafat, javax.swing.GroupLayout.DEFAULT_SIZE, 35, Short.MAX_VALUE)
+                    .addComponent(txtTanggalWafat, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
                     .addComponent(jLabel4))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtNoHP, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel8)
-                    .addComponent(jLabel5))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cmbRole, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 67, Short.MAX_VALUE)
+                    .addComponent(cmbJenisKelamin, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtUmur, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 44, Short.MAX_VALUE)
                 .addComponent(btnSave, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(25, 25, 25))
             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel1Layout.createSequentialGroup()
                     .addGap(24, 24, 24)
                     .addComponent(txtJudul)
-                    .addContainerGap(511, Short.MAX_VALUE)))
+                    .addContainerGap(343, Short.MAX_VALUE)))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -256,9 +220,7 @@ public class DialogUserAddEdit extends javax.swing.JDialog {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
@@ -266,21 +228,24 @@ public class DialogUserAddEdit extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
-        String sql = "INSERT INTO users(nama_lengkap, username, email, no_hp, alamat, role, password) VALUES (?,?,?,?,?,?,?)";
+        String sql = "INSERT INTO jenazah(nama_jenazah, tanggal_wafat, tempat_wafat, jenis_kelamin, umur, user_id) VALUES (?,?,?,?,?,?)";
         if (id > 0){
-            sql = "UPDATE users SET nama_lengkap = ?, username = ?, email = ?, no_hp = ?, alamat = ?, role = ?, password = ? WHERE id = ?";
+            sql = "UPDATE jenazah SET nama_jenazah = ?, tanggal_wafat = ?, tempat_wafat = ?, jenis_kelamin = ?, umur = ? WHERE id = ?";
         }
             try{
+                java.util.Date selectedDate = txtTanggalWafat.getDate();
+                LocalDate localDate = selectedDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+                String formatted = localDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
                 PreparedStatement stat = conn.prepareStatement(sql);
                 stat.setString(1, txtNama.getText());
-                stat.setString(2, txtUsername.getText());
-                stat.setString(3, txtEmail.getText());
-                stat.setString(4, txtNoHP.getText());
-                stat.setString(5, txtAlamat.getText());
-                stat.setString(6, cmbRole.getSelectedItem().toString());
-                stat.setString(7, txtPassword.getText());
+                stat.setString(2, formatted);
+                stat.setString(3, txtTempatWafat.getText());
+                stat.setString(4, cmbJenisKelamin.getSelectedItem().toString());
+                stat.setString(5, txtUmur.getText());
                 if (id > 0){
-                    stat.setLong(8, id);    
+                    stat.setLong(6, id);    
+                }else{
+                    stat.setInt(6, Session.getUser_id());
                 }
                 stat.executeUpdate();
                 JOptionPane.showMessageDialog(null, "Data Berhasil Disimpan");
@@ -290,9 +255,9 @@ public class DialogUserAddEdit extends javax.swing.JDialog {
             }
     }//GEN-LAST:event_btnSaveActionPerformed
 
-    private void cmbRoleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbRoleActionPerformed
+    private void cmbJenisKelaminActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbJenisKelaminActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_cmbRoleActionPerformed
+    }//GEN-LAST:event_cmbJenisKelaminActionPerformed
 
     /**
      * @param args the command line arguments
@@ -311,14 +276,78 @@ public class DialogUserAddEdit extends javax.swing.JDialog {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(DialogUserAddEdit.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DialogJenazahAddEdit.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(DialogUserAddEdit.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DialogJenazahAddEdit.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(DialogUserAddEdit.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DialogJenazahAddEdit.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(DialogUserAddEdit.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DialogJenazahAddEdit.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>
@@ -387,7 +416,7 @@ public class DialogUserAddEdit extends javax.swing.JDialog {
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                DialogUserAddEdit dialog = new DialogUserAddEdit(new javax.swing.JFrame(), true);
+                DialogJenazahAddEdit dialog = new DialogJenazahAddEdit(new javax.swing.JFrame(), true);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {
@@ -401,22 +430,17 @@ public class DialogUserAddEdit extends javax.swing.JDialog {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnSave;
-    private appcode.form.CustomComboBox cmbRole;
+    private appcode.form.CustomComboBox cmbJenisKelamin;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JScrollPane jScrollPane1;
-    private appcode.form.CustomTextArea txtAlamat;
-    private appcode.form.CustomTextField txtEmail;
     private javax.swing.JLabel txtJudul;
     private appcode.form.CustomTextField txtNama;
-    private appcode.form.CustomTextField txtNoHP;
-    private appcode.form.CustomTextField txtPassword;
-    private appcode.form.CustomTextField txtUsername;
+    private com.toedter.calendar.JDateChooser txtTanggalWafat;
+    private appcode.form.CustomTextField txtTempatWafat;
+    private appcode.form.CustomTextField txtUmur;
     // End of variables declaration//GEN-END:variables
 }

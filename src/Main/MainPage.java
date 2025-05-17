@@ -8,6 +8,11 @@ package Main;
 import Auth.Login;
 import koneksi.Koneksi;
 import Menu.MenuHome;
+import Menu.MenuJenazah;
+import Menu.MenuMakam;
+import Menu.MenuPenyewaan;
+import Menu.MenuReservasi;
+import Menu.MenuTransaksi;
 import Menu.MenuUser;
 import appcode.Session;
 import javax.swing.JFrame;
@@ -153,7 +158,7 @@ public class MainPage extends javax.swing.JFrame {
                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(10, Short.MAX_VALUE))
         );
         menuHomeLayout.setVerticalGroup(
             menuHomeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -167,11 +172,11 @@ public class MainPage extends javax.swing.JFrame {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 menuMakamMouseClicked(evt);
             }
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                menuMakamMouseEntered(evt);
-            }
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 menuMakamMouseExited(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                menuMakamMouseEntered(evt);
             }
         });
 
@@ -413,7 +418,7 @@ public class MainPage extends javax.swing.JFrame {
         jLabel22.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel22.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/ic_ambulance.png"))); // NOI18N
 
-        labelPenyewaanAmbulan.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
+        labelPenyewaanAmbulan.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         labelPenyewaanAmbulan.setForeground(new java.awt.Color(255, 255, 255));
         labelPenyewaanAmbulan.setText("Penyewaan Ambulan");
 
@@ -425,7 +430,7 @@ public class MainPage extends javax.swing.JFrame {
                 .addComponent(jLabel22, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(labelPenyewaanAmbulan, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(10, Short.MAX_VALUE))
         );
         menuPenyewaanAmbulanLayout.setVerticalGroup(
             menuPenyewaanAmbulanLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -484,7 +489,7 @@ public class MainPage extends javax.swing.JFrame {
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 979, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 990, Short.MAX_VALUE)
         );
 
         panelMain.add(jPanel2, java.awt.BorderLayout.LINE_START);
@@ -585,6 +590,7 @@ public class MainPage extends javax.swing.JFrame {
         // TODO add your handling code here:
         panelContent.removeAll();
         setActiveMenu(ListMenu.DATA_MAKAM);
+        panelContent.add(new MenuMakam());
         panelContent.repaint();
         panelContent.revalidate();
     }//GEN-LAST:event_menuMakamMouseClicked
@@ -637,6 +643,10 @@ public class MainPage extends javax.swing.JFrame {
     private void menuJenazahMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuJenazahMouseClicked
         // TODO add your handling code here:
         setActiveMenu(ListMenu.DATA_JENAZAH);
+        panelContent.removeAll();
+        panelContent.add(new MenuJenazah());
+        panelContent.repaint();
+        panelContent.revalidate();
     }//GEN-LAST:event_menuJenazahMouseClicked
 
     private void menuJenazahMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuJenazahMouseEntered
@@ -654,6 +664,10 @@ public class MainPage extends javax.swing.JFrame {
     private void menuReservasiMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuReservasiMouseClicked
         // TODO add your handling code here:
         setActiveMenu(ListMenu.RESERVASI);
+        panelContent.removeAll();
+        panelContent.add(new MenuReservasi());
+        panelContent.repaint();
+        panelContent.revalidate();
     }//GEN-LAST:event_menuReservasiMouseClicked
 
     private void menuReservasiMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuReservasiMouseEntered
@@ -671,6 +685,10 @@ public class MainPage extends javax.swing.JFrame {
     private void menuTransaksiMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuTransaksiMouseClicked
         // TODO add your handling code here:
         setActiveMenu(ListMenu.TRANSAKSI);
+        panelContent.removeAll();
+        panelContent.add(new MenuTransaksi());
+        panelContent.repaint();
+        panelContent.revalidate();
     }//GEN-LAST:event_menuTransaksiMouseClicked
 
     private void menuTransaksiMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuTransaksiMouseEntered
@@ -688,6 +706,10 @@ public class MainPage extends javax.swing.JFrame {
     private void menuPenyewaanAmbulanMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuPenyewaanAmbulanMouseClicked
         // TODO add your handling code here:
         setActiveMenu(ListMenu.PENYEWAAN);
+        panelContent.removeAll();
+        panelContent.add(new MenuPenyewaan());
+        panelContent.repaint();
+        panelContent.revalidate();
     }//GEN-LAST:event_menuPenyewaanAmbulanMouseClicked
 
     private void menuPenyewaanAmbulanMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuPenyewaanAmbulanMouseEntered
