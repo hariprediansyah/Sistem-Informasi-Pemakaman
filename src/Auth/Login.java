@@ -11,6 +11,8 @@ import Main.MainPage;
 import appcode.*;
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -35,12 +37,18 @@ public class Login extends javax.swing.JFrame {
     
     public Login() {
         initComponents();
-//        setExtendedState(JFrame.MAXIMIZED_BOTH);
-        
-        
+//        setExtendedState(JFrame.MAXIMIZED_BOTH);     
         
         txtUsername.setPlaceholder("Username");
         txtPassword.setPlaceholder("Password");
+
+        txtUsername.addActionListener((ActionEvent evt) -> {
+            btnSignIn.doClick();
+        });
+        
+        txtPassword.addActionListener((ActionEvent evt) -> {
+            btnSignIn.doClick(); // Menjalankan aksi tombol log in
+        });
     }
 
     /**
@@ -179,7 +187,16 @@ public class Login extends javax.swing.JFrame {
     }//GEN-LAST:event_txtUsernameActionPerformed
 
     private void btnSignInActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSignInActionPerformed
-        // TODO add your handling code here:
+        // TODO add your handling code here:                                   
+        // Validasi input kosong
+        String username = txtUsername.getText().trim();
+        String password = String.valueOf(txtPassword.getPassword()).trim();
+
+        if (username.isEmpty() || password.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Username dan Password tidak boleh kosong!", "Warning", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
         try{
             String query = "SELECT * FROM users where username = '" + txtUsername.getText() + "' and password = '" + String.valueOf(txtPassword.getPassword()) + "'";
             //System.out.println(query);
