@@ -34,7 +34,7 @@ public class MenuReservasi extends javax.swing.JPanel {
     Connection conn = new Koneksi().connect();
     public MenuReservasi() {
         initComponents();
-//        loadData();
+        loadData();
         tblData.fixTable(jScrollPane1);
     }
 
@@ -171,79 +171,92 @@ public class MenuReservasi extends javax.swing.JPanel {
     private void btnReportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReportActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnReportActionPerformed
+    
+    private void loadData() {
+    String sql = "SELECT " +
+                    "r.id AS reservasi_id, " +
+                    "r.tanggal_reservasi, " +
+                    "u.nama_lengkap, " +
+                    "l.nama_lokasi, " +
+                    "b.kode_blok, " +
+                    "p.nomor_petak " +
+                    "FROM reservasi r " +
+                       "INNER JOIN users u ON r.user_id = u.id " +
+                       "INNER JOIN petak_makam p ON r.petak_id = p.id " +
+                       "LEFT JOIN blok_makam b ON p.blok_id = b.id " +
+                       "LEFT JOIN lokasi_makam l ON b.lokasi_id = l.id " +
+                    "ORDER BY r.tanggal_reservasi DESC";
 
-    private void loadData(){
-        String sql = "SELECT * FROM reservasi ORDER BY tanggal_reservasi desc";
-        Object[] Baris = {
-            "No",
-            "Action",
-            "Tanggal Reservasi",
-            "Petak",
-            "Role",
-            "Email",
-            "No HP",
-            "Alamat"
-        };
-        
-        model = new DefaultTableModel(null, Baris);
-        tblData.setModel(model);
-        
-        try{
-            Statement stat = conn.createStatement();
-            ResultSet hasil = stat.executeQuery(sql);
-            int num = 1;
-            while(hasil.next()){
-                String[] data={
-                    Integer.toString(num), 
-                    hasil.getString("id"), 
-                    hasil.getString("nama_lengkap"), 
-                    hasil.getString("username"), 
-                    hasil.getString("role"), 
-                    hasil.getString("email"),
-                    hasil.getString("no_hp"),
-                    hasil.getString("alamat")
-                };
-                model.addRow(data);
-                num++;
+    Object[] Baris = {
+        "No",
+        "Action",
+        "Tanggal Reservasi",
+        "Lokasi Makam",
+        "Blok",
+        "Petak",
+        "Nama",
+    };
+
+    model = new DefaultTableModel(null, Baris);
+    tblData.setModel(model);
+
+    try {
+        Statement stat = conn.createStatement();
+        ResultSet hasil = stat.executeQuery(sql);
+        int num = 1;
+        while (hasil.next()) {
+            String[] data = {
+                Integer.toString(num),
+                hasil.getString("reservasi_id"),
+                hasil.getString("tanggal_reservasi"),
+                hasil.getString("nama_lokasi"),
+                hasil.getString("kode_blok"),
+                hasil.getString("nomor_petak"),
+                hasil.getString("nama_lengkap")
+            };
+            model.addRow(data);
+            num++;
+        }
+
+        TableActionEvent actionEvent = new TableActionEvent() {
+            @Override
+            public void onEdit(int row) {
+                DialogReservasiAddEdit dialog = setupDialog();
+                dialog.setData(Integer.parseInt(model.getValueAt(row, 1).toString()));
+                dialog.setVisible(true);
             }
-            TableActionEvent actionEvent = new TableActionEvent() {
-                @Override
-                public void onEdit(int row) {
-                    DialogUserAddEdit dialog = setupDialog();
-                    System.out.print(model.getValueAt(row, 1).toString());
-                    dialog.setData(Integer.parseInt(model.getValueAt(row, 1).toString()));
-                    dialog.setVisible(true);
-                }
 
-                @Override
-                public void onDelete(int row) {
-                    int dialogButton = JOptionPane.YES_NO_OPTION;
-                    int dialogResult = JOptionPane.showConfirmDialog (null, "Konfirmasi hapus user?","Warning",dialogButton);
-                    if(dialogResult == JOptionPane.YES_OPTION){
-                        String kode = model.getValueAt(row, 1).toString();
-                        String sql = "DELETE FROM users WHERE id = ?";
-                        try{
-                            PreparedStatement stat = conn.prepareStatement(sql);
-                            stat.setString(1, kode);
-                            stat.executeUpdate();
-                            
-                            JOptionPane.showMessageDialog(null, "User Berhasil Dihapus");
-                            loadData();
-                        }catch (SQLException e){
-                            JOptionPane.showMessageDialog(null, "User Gagal Dihapus "+e);
-                        }
+            @Override
+            public void onDelete(int row) {
+                int dialogButton = JOptionPane.YES_NO_OPTION;
+                int dialogResult = JOptionPane.showConfirmDialog(null, "Konfirmasi hapus reservasi?", "Warning", dialogButton);
+                if (dialogResult == JOptionPane.YES_OPTION) {
+                    String kode = model.getValueAt(row, 1).toString();
+                    String deleteSql = "DELETE FROM reservasi WHERE id = ?";
+                    try {
+                        PreparedStatement stat = conn.prepareStatement(deleteSql);
+                        stat.setString(1, kode);
+                        stat.executeUpdate();
+                        JOptionPane.showMessageDialog(null, "Reservasi Berhasil Dihapus");
+                        loadData();
+                    } catch (SQLException e) {
+                        JOptionPane.showMessageDialog(null, "Reservasi Gagal Dihapus: " + e.getMessage());
                     }
                 }
-            };
-            tblData.getColumnModel().getColumn(1).setCellRenderer(new TableActionCellRender());
-            tblData.getColumnModel().getColumn(1).setCellEditor(new TableActionCellEditor(actionEvent));
-        }catch(SQLException e){
-            JOptionPane.showMessageDialog(null,e);
-        }
+            }
+        };
+
+        tblData.getColumnModel().getColumn(1).setCellRenderer(new TableActionCellRender());
+        tblData.getColumnModel().getColumn(1).setCellEditor(new TableActionCellEditor(actionEvent));
+
+    } catch (SQLException e) {
+        JOptionPane.showMessageDialog(null, "Gagal memuat data: " + e.getMessage());
     }
+}
+
     
-    private DialogUserAddEdit setupDialog() {
-        DialogUserAddEdit dialog = new DialogUserAddEdit(null, true);
+    private DialogReservasiAddEdit setupDialog() {
+        DialogReservasiAddEdit dialog = new DialogReservasiAddEdit(null, true);
         dialog.addWindowListener(new WindowListener() {
             @Override
             public void windowOpened(WindowEvent e) {
