@@ -185,7 +185,7 @@ public class MenuReservasi extends javax.swing.JPanel {
                        "INNER JOIN petak_makam p ON r.petak_id = p.id " +
                        "LEFT JOIN blok_makam b ON p.blok_id = b.id " +
                        "LEFT JOIN lokasi_makam l ON b.lokasi_id = l.id " +
-                    "ORDER BY r.tanggal_reservasi DESC";
+                    "ORDER BY r.id DESC";
 
     Object[] Baris = {
         "No",

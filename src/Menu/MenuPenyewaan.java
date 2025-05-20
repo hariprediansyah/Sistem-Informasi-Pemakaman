@@ -5,6 +5,7 @@
  */
 package Menu;
 
+import appcode.Session;
 import appcode.form.RoundedGradientButton;
 import appcode.table.TableActionCellEditor;
 import appcode.table.TableActionCellRender;
@@ -17,6 +18,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import javax.swing.JOptionPane;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import koneksi.Koneksi;
@@ -34,8 +37,27 @@ public class MenuPenyewaan extends javax.swing.JPanel {
     Connection conn = new Koneksi().connect();
     public MenuPenyewaan() {
         initComponents();
-        loadData();
-        tblData.fixTable(jScrollPane1);
+
+        String roleNya = Session.getRole();
+        if (roleNya.equalsIgnoreCase("guest")) {
+            jTabbedPane1.remove(0);
+            loadDataPenyewaan();
+            tblDataPenyewaan.fixTable(jScrollPane1);
+        } else if (roleNya.equalsIgnoreCase("admin")) {
+            loadDataAmbulan();
+            tblDataAmbulan.fixTable(jScrollPane2);
+        }
+        
+        jTabbedPane1.addChangeListener((ChangeEvent e) -> {
+            int selectedIndex = jTabbedPane1.getSelectedIndex();
+            if (selectedIndex == 0) {
+                loadDataAmbulan();
+                tblDataAmbulan.fixTable(jScrollPane2);
+            } else if (selectedIndex == 1) {
+                loadDataPenyewaan();
+                tblDataPenyewaan.fixTable(jScrollPane1);     
+            }
+        });
     }
 
     /**
@@ -51,14 +73,14 @@ public class MenuPenyewaan extends javax.swing.JPanel {
         jPanel2 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        tblData1 = new appcode.table.TableDark();
-        btnAdd1 = new RoundedGradientButton("Tambah");
+        tblDataAmbulan = new appcode.table.TableDark();
+        btnAddAmbulan = new RoundedGradientButton("Tambah");
         btnReport1 = new RoundedGradientButton("Report");
         jPanel1 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        tblData = new appcode.table.TableDark();
-        btnAdd = new RoundedGradientButton("Tambah");
+        tblDataPenyewaan = new appcode.table.TableDark();
+        btnAddPenyewaan = new RoundedGradientButton("Tambah");
         btnReport = new RoundedGradientButton("Report");
 
         setBackground(new java.awt.Color(45, 48, 51));
@@ -72,7 +94,7 @@ public class MenuPenyewaan extends javax.swing.JPanel {
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setText("Ambulan");
 
-        tblData1.setModel(new javax.swing.table.DefaultTableModel(
+        tblDataAmbulan.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -125,13 +147,13 @@ public class MenuPenyewaan extends javax.swing.JPanel {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane2.setViewportView(tblData1);
+        jScrollPane2.setViewportView(tblDataAmbulan);
 
-        btnAdd1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        btnAdd1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btnAdd1.addActionListener(new java.awt.event.ActionListener() {
+        btnAddAmbulan.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        btnAddAmbulan.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnAddAmbulan.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAdd1ActionPerformed(evt);
+                btnAddAmbulanActionPerformed(evt);
             }
         });
 
@@ -155,7 +177,7 @@ public class MenuPenyewaan extends javax.swing.JPanel {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(btnAdd1, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnAddAmbulan, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(btnReport1, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 878, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -172,7 +194,7 @@ public class MenuPenyewaan extends javax.swing.JPanel {
                         .addComponent(btnReport1, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 485, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(btnAdd1, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnAddAmbulan, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -185,7 +207,7 @@ public class MenuPenyewaan extends javax.swing.JPanel {
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("Penyewaan");
 
-        tblData.setModel(new javax.swing.table.DefaultTableModel(
+        tblDataPenyewaan.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -238,13 +260,13 @@ public class MenuPenyewaan extends javax.swing.JPanel {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane1.setViewportView(tblData);
+        jScrollPane1.setViewportView(tblDataPenyewaan);
 
-        btnAdd.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        btnAdd.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btnAdd.addActionListener(new java.awt.event.ActionListener() {
+        btnAddPenyewaan.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        btnAddPenyewaan.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnAddPenyewaan.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAddActionPerformed(evt);
+                btnAddPenyewaanActionPerformed(evt);
             }
         });
 
@@ -268,7 +290,7 @@ public class MenuPenyewaan extends javax.swing.JPanel {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnAddPenyewaan, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(btnReport, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 878, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -285,7 +307,7 @@ public class MenuPenyewaan extends javax.swing.JPanel {
                         .addComponent(btnReport, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 485, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnAddPenyewaan, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -309,25 +331,26 @@ public class MenuPenyewaan extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
+    private void btnAddPenyewaanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddPenyewaanActionPerformed
         // TODO add your handling code here:
-        setupDialog().setVisible(true);
-    }//GEN-LAST:event_btnAddActionPerformed
+        setupDialogPenyewaan().setVisible(true);
+    }//GEN-LAST:event_btnAddPenyewaanActionPerformed
 
     private void btnReportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReportActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnReportActionPerformed
 
-    private void btnAdd1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdd1ActionPerformed
+    private void btnAddAmbulanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddAmbulanActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_btnAdd1ActionPerformed
+        setupDialogAmbulan().setVisible(true);
+    }//GEN-LAST:event_btnAddAmbulanActionPerformed
 
     private void btnReport1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReport1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnReport1ActionPerformed
 
-    private void loadData(){
-        String sql = "SELECT * FROM ambulan ORDER BY nomor_polisi";
+    private void loadDataAmbulan(){
+        String sql = "SELECT * FROM ambulan ORDER BY id DESC";
         Object[] Baris = {
             "No",
             "Action",
@@ -339,7 +362,7 @@ public class MenuPenyewaan extends javax.swing.JPanel {
         };
         
         model = new DefaultTableModel(null, Baris);
-        tblData.setModel(model);
+        tblDataAmbulan.setModel(model);
         
         try{
             Statement stat = conn.createStatement();
@@ -361,7 +384,7 @@ public class MenuPenyewaan extends javax.swing.JPanel {
             TableActionEvent actionEvent = new TableActionEvent() {
                 @Override
                 public void onEdit(int row) {
-                    DialogUserAddEdit dialog = setupDialog();
+                    DialogAmbulanAddEdit dialog = setupDialogAmbulan();
                     System.out.print(model.getValueAt(row, 1).toString());
                     dialog.setData(Integer.parseInt(model.getValueAt(row, 1).toString()));
                     dialog.setVisible(true);
@@ -373,29 +396,34 @@ public class MenuPenyewaan extends javax.swing.JPanel {
                     int dialogResult = JOptionPane.showConfirmDialog (null, "Konfirmasi hapus ambulan?","Warning",dialogButton);
                     if(dialogResult == JOptionPane.YES_OPTION){
                         String kode = model.getValueAt(row, 1).toString();
-                        String sql = "DELETE FROM ambulan WHERE id = ?";
                         try{
-                            PreparedStatement stat = conn.prepareStatement(sql);
-                            stat.setString(1, kode);
-                            stat.executeUpdate();
+                            String sqlDeletePenyewaan = "DELETE FROM penyewaan_ambulan WHERE ambulan_id = ?";
+                            PreparedStatement statPenyewaan = conn.prepareStatement(sqlDeletePenyewaan);
+                            statPenyewaan.setString(1, kode);
+                            statPenyewaan.executeUpdate();
+
+                            String sqlDeleteAmbulan = "DELETE FROM ambulan WHERE id = ?";
+                            PreparedStatement statAmbulan = conn.prepareStatement(sqlDeleteAmbulan);
+                            statAmbulan.setString(1, kode);
+                            statAmbulan.executeUpdate();
                             
                             JOptionPane.showMessageDialog(null, "Ambulan Berhasil Dihapus");
-                            loadData();
+                            loadDataAmbulan();
                         }catch (SQLException e){
                             JOptionPane.showMessageDialog(null, "Ambulan Gagal Dihapus "+e);
                         }
                     }
                 }
             };
-            tblData.getColumnModel().getColumn(1).setCellRenderer(new TableActionCellRender());
-            tblData.getColumnModel().getColumn(1).setCellEditor(new TableActionCellEditor(actionEvent));
+            tblDataAmbulan.getColumnModel().getColumn(1).setCellRenderer(new TableActionCellRender());
+            tblDataAmbulan.getColumnModel().getColumn(1).setCellEditor(new TableActionCellEditor(actionEvent));
         }catch(SQLException e){
             JOptionPane.showMessageDialog(null,e);
         }
     }
     
-    private DialogUserAddEdit setupDialog() {
-        DialogUserAddEdit dialog = new DialogUserAddEdit(null, true);
+    private DialogAmbulanAddEdit setupDialogAmbulan() {
+        DialogAmbulanAddEdit dialog = new DialogAmbulanAddEdit(null, true);
         dialog.addWindowListener(new WindowListener() {
             @Override
             public void windowOpened(WindowEvent e) {
@@ -409,7 +437,125 @@ public class MenuPenyewaan extends javax.swing.JPanel {
 
             @Override
             public void windowClosed(WindowEvent e) {
-                loadData();
+                loadDataAmbulan();
+            }
+
+            @Override
+            public void windowIconified(WindowEvent e) {
+                
+            }
+
+            @Override
+            public void windowDeiconified(WindowEvent e) {
+                
+            }
+
+            @Override
+            public void windowActivated(WindowEvent e) {
+                
+            }
+
+            @Override
+            public void windowDeactivated(WindowEvent e) {
+                
+            }
+        });
+        return dialog;
+    }
+    
+    private void loadDataPenyewaan(){
+        String sql = "SELECT p.*,"
+                    + "a.nomor_polisi,"
+                    + "a.sopir "
+                    + "FROM penyewaan_ambulan p "
+                        + "INNER JOIN ambulan a ON p.ambulan_id = a.id "
+                    + "ORDER BY id DESC";
+        Object[] Baris = {
+            "No",
+            "Action",
+            "Plat No",
+            "Sopir",
+            "Lokasi Jemput",
+            "Lokasi Tujuan",
+            "Waktu Jemput",
+            "Status",
+            "Keterangan"
+        };
+        
+        model = new DefaultTableModel(null, Baris);
+        tblDataPenyewaan.setModel(model);
+        
+        try{
+            Statement stat = conn.createStatement();
+            ResultSet hasil = stat.executeQuery(sql);
+            int num = 1;
+            while(hasil.next()){
+                String[] data={
+                    Integer.toString(num), 
+                    hasil.getString("id"), 
+                    hasil.getString("nomor_polisi"), 
+                    hasil.getString("sopir"), 
+                    hasil.getString("lokasi_jemput"), 
+                    hasil.getString("lokasi_tujuan"), 
+                    hasil.getString("waktu_jemput"), 
+                    hasil.getString("status"),
+                    hasil.getString("deskripsi")
+                };
+                model.addRow(data);
+                num++;
+            }
+            TableActionEvent actionEvent = new TableActionEvent() {
+                @Override
+                public void onEdit(int row) {
+                    DialogPenyewaanAddEdit dialog = setupDialogPenyewaan();
+                    System.out.print(model.getValueAt(row, 1).toString());
+                    dialog.setData(Integer.parseInt(model.getValueAt(row, 1).toString()));
+                    dialog.setVisible(true);
+                }
+
+                @Override
+                public void onDelete(int row) {
+                    int dialogButton = JOptionPane.YES_NO_OPTION;
+                    int dialogResult = JOptionPane.showConfirmDialog (null, "Konfirmasi hapus penyewaan?","Warning",dialogButton);
+                    if(dialogResult == JOptionPane.YES_OPTION){
+                        String kode = model.getValueAt(row, 1).toString();
+                        String sql = "DELETE FROM penyewaan_ambulan WHERE id = ?";
+                        try{
+                            PreparedStatement stat = conn.prepareStatement(sql);
+                            stat.setString(1, kode);
+                            stat.executeUpdate();
+                            
+                            JOptionPane.showMessageDialog(null, "Penyewaan Berhasil Dihapus");
+                            loadDataPenyewaan();
+                        }catch (SQLException e){
+                            JOptionPane.showMessageDialog(null, "Penyewaan Gagal Dihapus "+e);
+                        }
+                    }
+                }
+            };
+            tblDataPenyewaan.getColumnModel().getColumn(1).setCellRenderer(new TableActionCellRender());
+            tblDataPenyewaan.getColumnModel().getColumn(1).setCellEditor(new TableActionCellEditor(actionEvent));
+        }catch(SQLException e){
+            JOptionPane.showMessageDialog(null,e);
+        }
+    }
+    
+    private DialogPenyewaanAddEdit setupDialogPenyewaan() {
+        DialogPenyewaanAddEdit dialog = new DialogPenyewaanAddEdit(null, true);
+        dialog.addWindowListener(new WindowListener() {
+            @Override
+            public void windowOpened(WindowEvent e) {
+                
+            }
+
+            @Override
+            public void windowClosing(WindowEvent e) {
+                
+            }
+
+            @Override
+            public void windowClosed(WindowEvent e) {
+                loadDataPenyewaan();
             }
 
             @Override
@@ -436,8 +582,8 @@ public class MenuPenyewaan extends javax.swing.JPanel {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnAdd;
-    private javax.swing.JButton btnAdd1;
+    private javax.swing.JButton btnAddAmbulan;
+    private javax.swing.JButton btnAddPenyewaan;
     private javax.swing.JButton btnReport;
     private javax.swing.JButton btnReport1;
     private javax.swing.JLabel jLabel2;
@@ -447,7 +593,7 @@ public class MenuPenyewaan extends javax.swing.JPanel {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private appcode.table.TableDark tblData;
-    private appcode.table.TableDark tblData1;
+    private appcode.table.TableDark tblDataAmbulan;
+    private appcode.table.TableDark tblDataPenyewaan;
     // End of variables declaration//GEN-END:variables
 }
