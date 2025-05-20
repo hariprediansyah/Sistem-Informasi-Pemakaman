@@ -47,7 +47,7 @@ public class Login extends javax.swing.JFrame {
         });
         
         txtPassword.addActionListener((ActionEvent evt) -> {
-            btnSignIn.doClick(); // Menjalankan aksi tombol log in
+            btnSignIn.doClick();
         });
     }
 

@@ -14,6 +14,7 @@ import javax.swing.JOptionPane;
 import java.awt.event.KeyEvent;
 import koneksi.Koneksi;
 import appcode.form.RoundedGradientButton;
+import javax.swing.SwingUtilities;
 
 /**
  *
@@ -30,25 +31,28 @@ public class DialogAmbulanAddEdit extends javax.swing.JDialog {
     public DialogAmbulanAddEdit(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        txtJudul.setText("Tambah User");
+    
+        if (id == 0) {
+            cmbStatus.setSelectedItem("Tersedia");
+//            cmbStatus.setEnabled(false);
+        }
+        txtJudul.setText("Tambah Ambulan");
     }
     
     public void setData(int id){
         try {
             this.id = id;
             
-            String q = "SELECT * FROM users WHERE id = " + id;
+            String sql = "SELECT * FROM ambulan WHERE id = " + id;
             Statement st = conn.createStatement();
-            ResultSet rs = st.executeQuery(q);
+            ResultSet rs = st.executeQuery(sql);
             if (rs.next()){
-                txtNoPolisi.setText(rs.getString("nama_lengkap"));
-                txtUsername.setText(rs.getString("username"));
-                txtEmail.setText(rs.getString("email"));
-                txtNoHP.setText(rs.getString("no_hp"));
-                txtAlamat.setText(rs.getString("alamat"));
-                cmbRole.setSelectedItem(rs.getString("role"));
-                txtPassword.setText(rs.getString("password"));
-                txtJudul.setText("Edit Produk");
+                txtNoPolisi.setText(rs.getString("nomor_polisi"));
+                txtSopir.setText(rs.getString("sopir"));
+                txtKapasitas.setText(String.valueOf(rs.getInt("kapasitas")));
+                txtKeterangan.setText(rs.getString("keterangan"));
+                cmbStatus.setSelectedItem(rs.getString("status"));
+                txtJudul.setText("Ubah Ambulan");
             }
         } catch (SQLException ex) {
             Logger.getLogger(DialogAmbulanAddEdit.class.getName()).log(Level.SEVERE, null, ex);
@@ -71,17 +75,13 @@ public class DialogAmbulanAddEdit extends javax.swing.JDialog {
         btnSave = new RoundedGradientButton("Simpan");
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        jLabel6 = new javax.swing.JLabel();
-        jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         txtNoPolisi = new appcode.form.CustomTextField();
-        txtEmail = new appcode.form.CustomTextField();
-        txtUsername = new appcode.form.CustomTextField();
-        txtNoHP = new appcode.form.CustomTextField();
-        txtPassword = new appcode.form.CustomTextField();
+        txtSopir = new appcode.form.CustomTextField();
+        txtKapasitas = new appcode.form.CustomTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
-        txtAlamat = new appcode.form.CustomTextArea();
-        cmbRole = new appcode.form.CustomComboBox();
+        txtKeterangan = new appcode.form.CustomTextArea();
+        cmbStatus = new appcode.form.CustomComboBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -97,7 +97,7 @@ public class DialogAmbulanAddEdit extends javax.swing.JDialog {
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel3.setText("Email");
+        jLabel3.setText("Sopir");
 
         btnSave.setBackground(new java.awt.Color(0, 91, 99));
         btnSave.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -110,65 +110,68 @@ public class DialogAmbulanAddEdit extends javax.swing.JDialog {
 
         jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel4.setText("No Hp");
+        jLabel4.setText("Kapasitas");
 
         jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel5.setText("Alamat");
-
-        jLabel6.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jLabel6.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel6.setText("Username");
-
-        jLabel7.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jLabel7.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel7.setText("Password");
+        jLabel5.setText("Keterangan");
 
         jLabel8.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel8.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel8.setText("Role");
+        jLabel8.setText("Status");
 
         txtNoPolisi.setBackground(new java.awt.Color(138, 138, 138));
         txtNoPolisi.setForeground(new java.awt.Color(255, 255, 255));
         txtNoPolisi.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        txtNoPolisi.setPlaceholder("Nama Lengkap");
-
-        txtEmail.setBackground(new java.awt.Color(138, 138, 138));
-        txtEmail.setForeground(new java.awt.Color(255, 255, 255));
-        txtEmail.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        txtEmail.setPlaceholder("Email");
-
-        txtUsername.setBackground(new java.awt.Color(138, 138, 138));
-        txtUsername.setForeground(new java.awt.Color(255, 255, 255));
-        txtUsername.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        txtUsername.setPlaceholder("Username");
-
-        txtNoHP.setBackground(new java.awt.Color(138, 138, 138));
-        txtNoHP.setForeground(new java.awt.Color(255, 255, 255));
-        txtNoHP.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        txtNoHP.setPlaceholder("No HP");
-
-        txtPassword.setBackground(new java.awt.Color(138, 138, 138));
-        txtPassword.setForeground(new java.awt.Color(255, 255, 255));
-        txtPassword.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        txtPassword.setPlaceholder("Password");
-
-        txtAlamat.setBackground(new java.awt.Color(138, 138, 138));
-        txtAlamat.setColumns(20);
-        txtAlamat.setForeground(new java.awt.Color(255, 255, 255));
-        txtAlamat.setRows(5);
-        txtAlamat.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        txtAlamat.setPlaceholder("Masukan alamat");
-        jScrollPane1.setViewportView(txtAlamat);
-
-        cmbRole.setBackground(new java.awt.Color(138, 138, 138));
-        cmbRole.setForeground(new java.awt.Color(255, 255, 255));
-        cmbRole.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Guest", "Admin" }));
-        cmbRole.setArrowColor(new java.awt.Color(204, 213, 209));
-        cmbRole.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        cmbRole.addActionListener(new java.awt.event.ActionListener() {
+        txtNoPolisi.setPlaceholder("Nomor Polisi");
+        txtNoPolisi.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cmbRoleActionPerformed(evt);
+                txtNoPolisiActionPerformed(evt);
+            }
+        });
+        txtNoPolisi.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtNoPolisiKeyTyped(evt);
+            }
+        });
+
+        txtSopir.setBackground(new java.awt.Color(138, 138, 138));
+        txtSopir.setForeground(new java.awt.Color(255, 255, 255));
+        txtSopir.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        txtSopir.setPlaceholder("Nama Sopir");
+
+        txtKapasitas.setBackground(new java.awt.Color(138, 138, 138));
+        txtKapasitas.setForeground(new java.awt.Color(255, 255, 255));
+        txtKapasitas.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        txtKapasitas.setPlaceholder("Kapasitas");
+        txtKapasitas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtKapasitasActionPerformed(evt);
+            }
+        });
+        txtKapasitas.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtKapasitasKeyTyped(evt);
+            }
+        });
+
+        txtKeterangan.setBackground(new java.awt.Color(138, 138, 138));
+        txtKeterangan.setColumns(20);
+        txtKeterangan.setForeground(new java.awt.Color(255, 255, 255));
+        txtKeterangan.setRows(5);
+        txtKeterangan.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        txtKeterangan.setPlaceholder("Keterangan");
+        jScrollPane1.setViewportView(txtKeterangan);
+
+        cmbStatus.setBackground(new java.awt.Color(138, 138, 138));
+        cmbStatus.setForeground(new java.awt.Color(255, 255, 255));
+        cmbStatus.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Tersedia", "Terpakai" }));
+        cmbStatus.setArrowColor(new java.awt.Color(204, 213, 209));
+        cmbStatus.setEnabled(false);
+        cmbStatus.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        cmbStatus.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmbStatusActionPerformed(evt);
             }
         });
 
@@ -189,17 +192,13 @@ public class DialogAmbulanAddEdit extends javax.swing.JDialog {
                             .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtEmail, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(txtNoHP, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btnSave, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 40, Short.MAX_VALUE)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(txtSopir, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnSave, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtKapasitas, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 68, Short.MAX_VALUE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtUsername, javax.swing.GroupLayout.DEFAULT_SIZE, 224, Short.MAX_VALUE)
-                            .addComponent(txtPassword, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(cmbRole, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(cmbStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 224, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(23, 23, 23))))
             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel1Layout.createSequentialGroup()
@@ -215,21 +214,13 @@ public class DialogAmbulanAddEdit extends javax.swing.JDialog {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txtNoPolisi, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel6)
-                    .addComponent(jLabel3))
+                .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtUsername, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(txtSopir, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel7)
-                    .addComponent(jLabel4))
+                .addComponent(jLabel4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtNoHP, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(txtKapasitas, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel8)
@@ -237,7 +228,7 @@ public class DialogAmbulanAddEdit extends javax.swing.JDialog {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cmbRole, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cmbStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 67, Short.MAX_VALUE)
                 .addComponent(btnSave, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(25, 25, 25))
@@ -266,33 +257,91 @@ public class DialogAmbulanAddEdit extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
-        String sql = "INSERT INTO users(nama_lengkap, username, email, no_hp, alamat, role, password) VALUES (?,?,?,?,?,?,?)";
+        String sql = "INSERT INTO ambulan(nomor_polisi, sopir, kapasitas, keterangan, status) VALUES (?,?,?,?,?)";
         if (id > 0){
-            sql = "UPDATE users SET nama_lengkap = ?, username = ?, email = ?, no_hp = ?, alamat = ?, role = ?, password = ? WHERE id = ?";
+            sql = "UPDATE ambulan "
+                    + "SET "
+                        + "nomor_polisi = ?, "
+                        + "sopir = ?, "
+                        + "kapasitas = ?, "
+                        + "keterangan = ?, "
+                        + "status = ? "
+                    + "WHERE id = ?";
         }
             try{
                 PreparedStatement stat = conn.prepareStatement(sql);
                 stat.setString(1, txtNoPolisi.getText());
-                stat.setString(2, txtUsername.getText());
-                stat.setString(3, txtEmail.getText());
-                stat.setString(4, txtNoHP.getText());
-                stat.setString(5, txtAlamat.getText());
-                stat.setString(6, cmbRole.getSelectedItem().toString());
-                stat.setString(7, txtPassword.getText());
+                stat.setString(2, txtSopir.getText());
+                int kapasitasNya = Integer.parseInt(txtKapasitas.getText());
+                stat.setInt(3, kapasitasNya);  
+                stat.setString(4, txtKeterangan.getText());
+                stat.setString(5, cmbStatus.getSelectedItem().toString());
                 if (id > 0){
-                    stat.setLong(8, id);    
+                    stat.setLong(6, id);    
                 }
                 stat.executeUpdate();
-                JOptionPane.showMessageDialog(null, "Data Berhasil Disimpan");
+                
+                if (id > 0) {
+                    JOptionPane.showMessageDialog(null, "Data Berhasil Diubah");
+                } else {
+                    JOptionPane.showMessageDialog(null, "Data Berhasil Disimpan");
+                }
+                
                 dispose();
             }catch (SQLException e){
-                JOptionPane.showMessageDialog(null, "Data Gagal Disimpan "+e);
+                JOptionPane.showMessageDialog(null, "Data Gagal Disimpan " + e);
             }
     }//GEN-LAST:event_btnSaveActionPerformed
 
-    private void cmbRoleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbRoleActionPerformed
+    private void cmbStatusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbStatusActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_cmbRoleActionPerformed
+    }//GEN-LAST:event_cmbStatusActionPerformed
+
+    private void txtKapasitasKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtKapasitasKeyTyped
+        // TODO add your handling code here:        
+        char c = evt.getKeyChar();
+
+        if (!Character.isDigit(c)) {
+            evt.consume();
+            JOptionPane.showMessageDialog(null, "Input harus berupa angka!", "Peringatan", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        // Jalankan pengecekan setelah karakter masuk ke text field
+        SwingUtilities.invokeLater(() -> {
+            String text = txtKapasitas.getText();
+
+            // Cek jika tidak kosong dan angka
+            if (!text.isEmpty()) {
+                try {
+                    int kapasitas = Integer.parseInt(text);
+                    if (kapasitas > 5) {
+                        JOptionPane.showMessageDialog(null, "Kapasitas maksimal hanya 5 orang.", "Peringatan", JOptionPane.WARNING_MESSAGE);
+                        txtKapasitas.setText("5");
+                    }
+                } catch (NumberFormatException e) {
+                    JOptionPane.showMessageDialog(null, "Input tidak valid!", "Error", JOptionPane.ERROR_MESSAGE);
+                    txtKapasitas.setText("");
+                }
+            }
+        });
+    }//GEN-LAST:event_txtKapasitasKeyTyped
+
+    private void txtKapasitasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtKapasitasActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtKapasitasActionPerformed
+
+    private void txtNoPolisiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNoPolisiActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtNoPolisiActionPerformed
+
+    private void txtNoPolisiKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNoPolisiKeyTyped
+        // TODO add your handling code here:                                   
+        char c = evt.getKeyChar();
+        if (Character.isLowerCase(c)) {
+            evt.setKeyChar(Character.toUpperCase(c));
+        }
+    }//GEN-LAST:event_txtNoPolisiKeyTyped
 
     /**
      * @param args the command line arguments
@@ -465,22 +514,18 @@ public class DialogAmbulanAddEdit extends javax.swing.JDialog {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnSave;
-    private appcode.form.CustomComboBox cmbRole;
+    private appcode.form.CustomComboBox cmbStatus;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private appcode.form.CustomTextArea txtAlamat;
-    private appcode.form.CustomTextField txtEmail;
     private javax.swing.JLabel txtJudul;
-    private appcode.form.CustomTextField txtNoHP;
+    private appcode.form.CustomTextField txtKapasitas;
+    private appcode.form.CustomTextArea txtKeterangan;
     private appcode.form.CustomTextField txtNoPolisi;
-    private appcode.form.CustomTextField txtPassword;
-    private appcode.form.CustomTextField txtUsername;
+    private appcode.form.CustomTextField txtSopir;
     // End of variables declaration//GEN-END:variables
 }
