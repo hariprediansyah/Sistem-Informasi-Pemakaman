@@ -165,6 +165,11 @@ public class DialogPenyewaanAddEdit extends javax.swing.JDialog {
         cmbStatus.setArrowColor(new java.awt.Color(204, 213, 209));
         cmbStatus.setEnabled(false);
         cmbStatus.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        cmbStatus.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                cmbStatusMouseClicked(evt);
+            }
+        });
         cmbStatus.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cmbStatusActionPerformed(evt);
@@ -239,9 +244,9 @@ public class DialogPenyewaanAddEdit extends javax.swing.JDialog {
                     .addComponent(cmbNomorAmbulan, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(txtSopir, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(jLabel6))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel6)
+                    .addComponent(jLabel3))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtLokasiJemput, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -417,6 +422,27 @@ public class DialogPenyewaanAddEdit extends javax.swing.JDialog {
             JOptionPane.showMessageDialog(null, "Gagal ambil data petak: " + e.getMessage());
         }
     }//GEN-LAST:event_cmbNomorAmbulanActionPerformed
+
+    private void cmbStatusMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cmbStatusMouseClicked
+        // TODO add your handling code here:
+        if (id > 0) {
+            try {
+                PreparedStatement checkStmt = conn.prepareStatement("SELECT status FROM penyewaan_ambulan WHERE id = ?");
+                checkStmt.setInt(1, id);
+                ResultSet rs = checkStmt.executeQuery();
+
+                if (rs.next()) {
+                    String currentStatus = rs.getString("status");
+
+                    if (!currentStatus.equalsIgnoreCase("berlangsung")) {
+                        JOptionPane.showMessageDialog(null, "Hanya penyewaan dengan status 'Berlangsung' yang bisa diedit.");
+                    }
+                }
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(null, "Terjadi kesalahan saat mengambil status: " + e.getMessage());
+            }
+        }
+    }//GEN-LAST:event_cmbStatusMouseClicked
 
     /**
      * @param args the command line arguments
