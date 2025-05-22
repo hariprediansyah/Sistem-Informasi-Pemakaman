@@ -76,16 +76,20 @@ public class MenuPenyewaan extends javax.swing.JPanel {
         tblDataAmbulan = new appcode.table.TableDark();
         btnAddAmbulan = new RoundedGradientButton("Tambah");
         btnReport1 = new RoundedGradientButton("Report");
+        txtSearch = new appcode.form.CustomTextField();
         jPanel1 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblDataPenyewaan = new appcode.table.TableDark();
         btnAddPenyewaan = new RoundedGradientButton("Tambah");
         btnReport = new RoundedGradientButton("Report");
+        txtSearchPenyewaan = new appcode.form.CustomTextField();
 
         setBackground(new java.awt.Color(45, 48, 51));
+        setPreferredSize(new java.awt.Dimension(1105, 793));
 
         jTabbedPane1.setForeground(new java.awt.Color(204, 102, 0));
+        jTabbedPane1.setPreferredSize(new java.awt.Dimension(932, 745));
 
         jPanel2.setBackground(new java.awt.Color(45, 48, 51));
 
@@ -165,6 +169,16 @@ public class MenuPenyewaan extends javax.swing.JPanel {
             }
         });
 
+        txtSearch.setBackground(new java.awt.Color(138, 138, 138));
+        txtSearch.setForeground(new java.awt.Color(255, 255, 255));
+        txtSearch.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        txtSearch.setPlaceholder("Cari");
+        txtSearch.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtSearchKeyReleased(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -172,15 +186,18 @@ public class MenuPenyewaan extends javax.swing.JPanel {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(16, 16, 16)
                 .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(671, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jScrollPane2)
                     .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
                         .addComponent(btnAddAmbulan, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(btnReport1, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 878, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(btnReport1, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -191,11 +208,13 @@ public class MenuPenyewaan extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(btnReport1, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnReport1, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnAddAmbulan, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 485, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(btnAddAmbulan, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(108, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Data Ambulan", jPanel2);
@@ -278,6 +297,16 @@ public class MenuPenyewaan extends javax.swing.JPanel {
             }
         });
 
+        txtSearchPenyewaan.setBackground(new java.awt.Color(138, 138, 138));
+        txtSearchPenyewaan.setForeground(new java.awt.Color(255, 255, 255));
+        txtSearchPenyewaan.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        txtSearchPenyewaan.setPlaceholder("Cari");
+        txtSearchPenyewaan.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtSearchPenyewaanKeyReleased(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -287,13 +316,16 @@ public class MenuPenyewaan extends javax.swing.JPanel {
                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jScrollPane1)
                     .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(0, 437, Short.MAX_VALUE)
+                        .addComponent(txtSearchPenyewaan, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
                         .addComponent(btnAddPenyewaan, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(btnReport, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 878, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(btnReport, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -304,11 +336,13 @@ public class MenuPenyewaan extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(btnReport, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnReport, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnAddPenyewaan, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 485, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(btnAddPenyewaan, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(txtSearchPenyewaan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(108, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Penyewaan Ambulan", jPanel1);
@@ -319,8 +353,8 @@ public class MenuPenyewaan extends javax.swing.JPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(110, 110, 110)
-                .addComponent(jTabbedPane1)
-                .addContainerGap())
+                .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(63, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -349,8 +383,31 @@ public class MenuPenyewaan extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_btnReport1ActionPerformed
 
+    private void txtSearchKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtSearchKeyReleased
+        // TODO add your handling code here:
+        loadDataAmbulan();
+    }//GEN-LAST:event_txtSearchKeyReleased
+
+    private void txtSearchPenyewaanKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtSearchPenyewaanKeyReleased
+        // TODO add your handling code here:
+        loadDataPenyewaan();
+    }//GEN-LAST:event_txtSearchPenyewaanKeyReleased
+
     private void loadDataAmbulan(){
-        String sql = "SELECT * FROM ambulan ORDER BY id DESC";
+        String sql = "SELECT id, nomor_polisi, sopir, kapasitas, status, keterangan FROM ambulan WHERE 1 = 1";
+
+        String search = txtSearch.getText();
+        if (!search.isEmpty()) {
+            sql += " AND ( " +
+                   "nomor_polisi LIKE '%" + search + "%' OR " +
+                   "sopir LIKE '%" + search + "%' OR " +
+                   "status LIKE '%" + search + "%' OR " +
+                   "keterangan LIKE '%" + search + "%' " +
+                   ")";
+        }
+
+        sql += " ORDER BY id DESC";
+
         Object[] Baris = {
             "No",
             "Action",
@@ -360,6 +417,7 @@ public class MenuPenyewaan extends javax.swing.JPanel {
             "Status",
             "Keterangan"
         };
+
         
         model = new DefaultTableModel(null, Baris);
         tblDataAmbulan.setModel(model);
@@ -464,23 +522,40 @@ public class MenuPenyewaan extends javax.swing.JPanel {
     }
     
     private void loadDataPenyewaan(){
-        String sql = "SELECT p.*, "
-                    + "a.nomor_polisi, "
-                    + "a.sopir "
-                    + "FROM penyewaan_ambulan p "
-                        + "INNER JOIN ambulan a ON p.ambulan_id = a.id "
-                    + "ORDER BY p.id DESC";
-        Object[] Baris = {
-            "No",
-            "Action",
-            "Plat No",
-            "Sopir",
-            "Lokasi Jemput",
-            "Lokasi Tujuan",
-            "Waktu Jemput",
-            "Status",
-            "Keterangan"
-        };
+        String sql = "SELECT p.*, " +
+                    "a.nomor_polisi, " +
+                    "a.sopir " +
+                    "FROM penyewaan_ambulan p " +
+                    "INNER JOIN ambulan a ON p.ambulan_id = a.id " +
+                    "WHERE 1 = 1";
+
+       String search = txtSearch.getText();
+       if (!search.isEmpty()) {
+           sql += " AND (" +
+                  "a.nomor_polisi LIKE '%" + search + "%' OR " +
+                  "a.sopir LIKE '%" + search + "%' OR " +
+                  "p.lokasi_jemput LIKE '%" + search + "%' OR " +
+                  "p.lokasi_tujuan LIKE '%" + search + "%' OR " +
+                  "p.waktu_jemput LIKE '%" + search + "%' OR " +
+                  "p.status LIKE '%" + search + "%' OR " +
+                  "p.keterangan LIKE '%" + search + "%'" +
+                  ")";
+       }
+
+       sql += " ORDER BY p.id DESC";
+
+       Object[] Baris = {
+           "No",
+           "Action",
+           "Plat No",
+           "Sopir",
+           "Lokasi Jemput",
+           "Lokasi Tujuan",
+           "Waktu Jemput",
+           "Status",
+           "Keterangan"
+       };
+
         
         model = new DefaultTableModel(null, Baris);
         tblDataPenyewaan.setModel(model);
@@ -595,5 +670,7 @@ public class MenuPenyewaan extends javax.swing.JPanel {
     private javax.swing.JTabbedPane jTabbedPane1;
     private appcode.table.TableDark tblDataAmbulan;
     private appcode.table.TableDark tblDataPenyewaan;
+    private appcode.form.CustomTextField txtSearch;
+    private appcode.form.CustomTextField txtSearchPenyewaan;
     // End of variables declaration//GEN-END:variables
 }

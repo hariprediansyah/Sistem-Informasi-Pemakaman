@@ -77,18 +77,21 @@ public class MenuMakam extends javax.swing.JPanel {
         tblDataLokasi = new appcode.table.TableDark();
         btnAddLokasi = new RoundedGradientButton("Tambah");
         btnReport1 = new RoundedGradientButton("Report");
+        txtSearchLokasi = new appcode.form.CustomTextField();
         panelBlok = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblDataBlok = new appcode.table.TableDark();
         btnAddBlok = new RoundedGradientButton("Tambah");
         btnReport = new RoundedGradientButton("Report");
+        txtSearchBlok = new appcode.form.CustomTextField();
         panelPetak = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
         jScrollPane3 = new javax.swing.JScrollPane();
         tblDataPetak = new appcode.table.TableDark();
         btnAddPetak = new RoundedGradientButton("Tambah");
         btnReport2 = new RoundedGradientButton("Report");
+        txtSearchPetak = new appcode.form.CustomTextField();
 
         setBackground(new java.awt.Color(45, 48, 51));
 
@@ -172,6 +175,16 @@ public class MenuMakam extends javax.swing.JPanel {
             }
         });
 
+        txtSearchLokasi.setBackground(new java.awt.Color(138, 138, 138));
+        txtSearchLokasi.setForeground(new java.awt.Color(255, 255, 255));
+        txtSearchLokasi.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        txtSearchLokasi.setPlaceholder("Cari");
+        txtSearchLokasi.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtSearchLokasiKeyReleased(evt);
+            }
+        });
+
         javax.swing.GroupLayout panelLokasiLayout = new javax.swing.GroupLayout(panelLokasi);
         panelLokasi.setLayout(panelLokasiLayout);
         panelLokasiLayout.setHorizontalGroup(
@@ -179,15 +192,18 @@ public class MenuMakam extends javax.swing.JPanel {
             .addGroup(panelLokasiLayout.createSequentialGroup()
                 .addGap(16, 16, 16)
                 .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(671, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelLokasiLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap()
                 .addGroup(panelLokasiLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jScrollPane2)
                     .addGroup(panelLokasiLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(txtSearchLokasi, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
                         .addComponent(btnAddLokasi, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(btnReport1, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 878, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(btnReport1, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         panelLokasiLayout.setVerticalGroup(
@@ -196,13 +212,13 @@ public class MenuMakam extends javax.swing.JPanel {
                 .addGap(16, 16, 16)
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(panelLokasiLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(panelLokasiLayout.createSequentialGroup()
-                        .addComponent(btnReport1, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 485, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(btnAddLokasi, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(panelLokasiLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(txtSearchLokasi, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnReport1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnAddLokasi, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 485, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(108, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Lokasi", panelLokasi);
@@ -285,6 +301,16 @@ public class MenuMakam extends javax.swing.JPanel {
             }
         });
 
+        txtSearchBlok.setBackground(new java.awt.Color(138, 138, 138));
+        txtSearchBlok.setForeground(new java.awt.Color(255, 255, 255));
+        txtSearchBlok.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        txtSearchBlok.setPlaceholder("Cari");
+        txtSearchBlok.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtSearchBlokKeyReleased(evt);
+            }
+        });
+
         javax.swing.GroupLayout panelBlokLayout = new javax.swing.GroupLayout(panelBlok);
         panelBlok.setLayout(panelBlokLayout);
         panelBlokLayout.setHorizontalGroup(
@@ -294,13 +320,16 @@ public class MenuMakam extends javax.swing.JPanel {
                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelBlokLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap()
                 .addGroup(panelBlokLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jScrollPane1)
                     .addGroup(panelBlokLayout.createSequentialGroup()
+                        .addGap(0, 437, Short.MAX_VALUE)
+                        .addComponent(txtSearchBlok, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
                         .addComponent(btnAddBlok, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(btnReport, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 878, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(btnReport, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         panelBlokLayout.setVerticalGroup(
@@ -311,11 +340,13 @@ public class MenuMakam extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(panelBlokLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panelBlokLayout.createSequentialGroup()
-                        .addComponent(btnReport, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(panelBlokLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnReport, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnAddBlok, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 485, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(btnAddBlok, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(txtSearchBlok, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(108, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Blok", panelBlok);
@@ -398,6 +429,16 @@ public class MenuMakam extends javax.swing.JPanel {
             }
         });
 
+        txtSearchPetak.setBackground(new java.awt.Color(138, 138, 138));
+        txtSearchPetak.setForeground(new java.awt.Color(255, 255, 255));
+        txtSearchPetak.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        txtSearchPetak.setPlaceholder("Cari");
+        txtSearchPetak.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtSearchPetakKeyReleased(evt);
+            }
+        });
+
         javax.swing.GroupLayout panelPetakLayout = new javax.swing.GroupLayout(panelPetak);
         panelPetak.setLayout(panelPetakLayout);
         panelPetakLayout.setHorizontalGroup(
@@ -407,13 +448,16 @@ public class MenuMakam extends javax.swing.JPanel {
                 .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelPetakLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap()
                 .addGroup(panelPetakLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jScrollPane3)
                     .addGroup(panelPetakLayout.createSequentialGroup()
+                        .addGap(0, 437, Short.MAX_VALUE)
+                        .addComponent(txtSearchPetak, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
                         .addComponent(btnAddPetak, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(btnReport2, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 878, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(btnReport2, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         panelPetakLayout.setVerticalGroup(
@@ -424,11 +468,13 @@ public class MenuMakam extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(panelPetakLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panelPetakLayout.createSequentialGroup()
-                        .addComponent(btnReport2, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(panelPetakLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnReport2, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnAddPetak, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
                         .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 485, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(btnAddPetak, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(txtSearchPetak, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(108, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Petak", panelPetak);
@@ -439,8 +485,8 @@ public class MenuMakam extends javax.swing.JPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(110, 110, 110)
-                .addComponent(jTabbedPane1)
-                .addContainerGap())
+                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 932, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(63, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -480,8 +526,34 @@ public class MenuMakam extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_btnReport2ActionPerformed
 
+    private void txtSearchLokasiKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtSearchLokasiKeyReleased
+        // TODO add your handling code here:
+        loadDataLokasi();
+    }//GEN-LAST:event_txtSearchLokasiKeyReleased
+
+    private void txtSearchBlokKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtSearchBlokKeyReleased
+        // TODO add your handling code here:
+        loadDataBlok();
+    }//GEN-LAST:event_txtSearchBlokKeyReleased
+
+    private void txtSearchPetakKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtSearchPetakKeyReleased
+        // TODO add your handling code here:
+        loadDataPetak();
+    }//GEN-LAST:event_txtSearchPetakKeyReleased
+
     private void loadDataLokasi(){
-        String sql = "SELECT * FROM lokasi_makam ORDER BY id DESC";
+        String sql = "SELECT * FROM lokasi_makam ";
+        String search = txtSearchLokasi.getText();
+
+        if (!search.isEmpty()) {
+            sql += "WHERE " +
+                   "nama_lokasi LIKE '%" + search + "%' OR " +
+                   "alamat LIKE '%" + search + "%' OR " +
+                   "kota LIKE '%" + search + "%' ";
+        }
+
+        sql += "ORDER BY id DESC";
+
         Object[] Baris = {
             "No",
             "Action",
@@ -489,6 +561,7 @@ public class MenuMakam extends javax.swing.JPanel {
             "Alamat",
             "Kota"
         };
+
         
         model = new DefaultTableModel(null, Baris);
         tblDataLokasi.setModel(model);
@@ -610,19 +683,30 @@ public class MenuMakam extends javax.swing.JPanel {
     }
     
     private void loadDataBlok(){
-        String sql = "SELECT b.*, "
-                    + "l.nama_lokasi "
-                    + "FROM blok_makam b "
-                        + "INNER JOIN lokasi_makam l ON b.lokasi_id = l.id "
-                    + "ORDER BY b.id DESC";
-        Object[] Baris = {
-            "No",
-            "Action",
-            "Lokasi",
-            "Kode Blok",
-            "Harga",
-            "Keterangan"
-        };
+        String sql = "SELECT b.*, l.nama_lokasi " +
+                    "FROM blok_makam b " +
+                    "INNER JOIN lokasi_makam l ON b.lokasi_id = l.id ";
+       String search = txtSearchBlok.getText();
+
+       if (!search.isEmpty()) {
+           sql += "WHERE " +
+                  "l.nama_lokasi LIKE '%" + search + "%' OR " +
+                  "b.kode_blok LIKE '%" + search + "%' OR " +
+                  "CAST(b.harga AS CHAR) LIKE '%" + search + "%' OR " +
+                  "b.keterangan LIKE '%" + search + "%' ";
+       }
+
+       sql += "ORDER BY b.id DESC";
+
+       Object[] Baris = {
+           "No",
+           "Action",
+           "Lokasi",
+           "Kode Blok",
+           "Harga",
+           "Keterangan"
+       };
+
         
         model = new DefaultTableModel(null, Baris);
         tblDataBlok.setModel(model);
@@ -729,22 +813,36 @@ public class MenuMakam extends javax.swing.JPanel {
     }
     
     private void loadDataPetak(){
-        String sql = "SELECT p.*, "
-                    + "b.kode_blok, "
-                    + "l.nama_lokasi "
-                    + "FROM petak_makam p "
-                        + "INNER JOIN blok_makam b ON p.blok_id = b.id "
-                        + "INNER JOIN lokasi_makam l ON b.lokasi_id = l.id "
-                    + "ORDER BY p.id DESC";
-        Object[] Baris = {
-            "No",
-            "Action",
-            "Lokasi",
-            "Kode Blok",
-            "Nomor Petak",
-            "Status",
-            "Keterangan"
-        };
+        String sql = "SELECT p.*, " +
+                    "b.kode_blok, " +
+                    "l.nama_lokasi " +
+                    "FROM petak_makam p " +
+                    "INNER JOIN blok_makam b ON p.blok_id = b.id " +
+                    "INNER JOIN lokasi_makam l ON b.lokasi_id = l.id ";
+
+       String search = txtSearchPetak.getText();
+
+       if (!search.isEmpty()) {
+           sql += "WHERE " +
+                  "l.nama_lokasi LIKE '%" + search + "%' OR " +
+                  "b.kode_blok LIKE '%" + search + "%' OR " +
+                  "p.nomor_petak LIKE '%" + search + "%' OR " +
+                  "p.status LIKE '%" + search + "%' OR " +
+                  "p.deskripsi LIKE '%" + search + "%' ";
+       }
+
+       sql += "ORDER BY p.id DESC";
+
+       Object[] Baris = {
+           "No",
+           "Action",
+           "Lokasi",
+           "Kode Blok",
+           "Nomor Petak",
+           "Status",
+           "Keterangan"
+       };
+
         
         model = new DefaultTableModel(null, Baris);
         tblDataPetak.setModel(model);
@@ -865,5 +963,8 @@ public class MenuMakam extends javax.swing.JPanel {
     private appcode.table.TableDark tblDataBlok;
     private appcode.table.TableDark tblDataLokasi;
     private appcode.table.TableDark tblDataPetak;
+    private appcode.form.CustomTextField txtSearchBlok;
+    private appcode.form.CustomTextField txtSearchLokasi;
+    private appcode.form.CustomTextField txtSearchPetak;
     // End of variables declaration//GEN-END:variables
 }

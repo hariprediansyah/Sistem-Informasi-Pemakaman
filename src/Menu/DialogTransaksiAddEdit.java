@@ -15,8 +15,6 @@ import javax.swing.JOptionPane;
 import java.awt.event.KeyEvent;
 import koneksi.Koneksi;
 import appcode.form.RoundedGradientButton;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
 import java.util.List;
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -28,7 +26,7 @@ import java.util.Date;
  *
  * @author coyha
  */
-public class DialogReservasiAddEdit extends javax.swing.JDialog {
+public class DialogTransaksiAddEdit extends javax.swing.JDialog {
     private Connection conn = new Koneksi().connect();
     /**
      * Creates new form DialogAddEdit
@@ -36,25 +34,51 @@ public class DialogReservasiAddEdit extends javax.swing.JDialog {
     
     int id = 0;
     String idPetakLama = "0";
-    String userId = "";
+    String idJenazahLama = "0";
+    List<String> listJenazah = new ArrayList<>();
     List<String> listMakam = new ArrayList<>();
     List<String> listBlok = new ArrayList<>();
     List<String> listHarga = new ArrayList<>();
     List<String> listPetak = new ArrayList<>();
     
-    public DialogReservasiAddEdit(java.awt.Frame parent, boolean modal) {
+    public DialogTransaksiAddEdit(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
         txtJudul.setText("Tambah Reservasi");
-        txtTanggalReservasi.setDate(new Date());
+        txtTanggalTransaksi.setDate(new Date());
         isiCombo();
-        btnTempatiMakam.setVisible(false);
     }
     
     public void isiCombo(){
+        isiComboJenazah();
         isiComboMakam();
         isiComboBlok();
         isiComboPetak();
+    }
+    
+    public void isiComboJenazah(){
+        try {
+            String sql = "SELECT id, nama_jenazah FROM jenazah WHERE 1 = 1 ";
+            if (Session.getRole().equalsIgnoreCase("guest")){
+                sql += " AND user_id = " + String.valueOf(Session.getUser_id());
+            }
+            sql += " AND (status_pemakaman = 0 OR id = " + idJenazahLama + ") order by nama_jenazah asc";
+            Statement st = conn.createStatement();
+            ResultSet rs = st.executeQuery(sql);
+
+            cmbJenazah.removeAllItems();
+            cmbJenazah.addItem("-- Pilih Jenazah --");
+
+            while (rs.next()) {
+                listJenazah.add(rs.getString("id"));
+                cmbJenazah.addItem(rs.getString("nama_jenazah"));
+            }
+
+            rs.close();
+            st.close();
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Gagal isi jenazah: " + e.getMessage());
+        }
     }
     
     public void isiComboMakam(){
@@ -131,46 +155,50 @@ public class DialogReservasiAddEdit extends javax.swing.JDialog {
             rs.close();
             st.close();
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Gagal isi makam: " + e.getMessage());
+            JOptionPane.showMessageDialog(null, "Gagal isi petak: " + e.getMessage());
         }
     }
     
     public void setData(int id){
         try {
             this.id = id;
-            if (Session.getRole().equalsIgnoreCase("admin")){
-                btnTempatiMakam.setVisible(true);
-            }
+
             String sql = "SELECT r.*, "
                         + "p.id AS idPetak, "
                         + "p.nomor_petak, "
                         + "b.id AS idBlok, "
                         + "b.kode_blok, "
                         + "l.id AS idLokasi, "
-                        + "l.nama_lokasi "
-                        + "FROM reservasi r "
+                        + "l.nama_lokasi, "
+                        + "j.nama_jenazah "
+                        + "FROM transaksi r "
                             + "INNER JOIN petak_makam p ON r.petak_id = p.id "
                             + "INNER JOIN blok_makam b ON p.blok_id = b.id "
                             + "INNER JOIN lokasi_makam l ON b.lokasi_id = l.id "
+                            + "INNER JOIN jenazah j ON r.jenazah_id = j.id "
                         + "WHERE r.id = " + id;
             Statement st = conn.createStatement();
             ResultSet rs = st.executeQuery(sql);
 
             if (rs.next()){
                 idPetakLama = rs.getString("idPetak");
+                idJenazahLama = rs.getString("jenazah_id");
+                isiComboJenazah();
                 
-                userId = rs.getString("user_id");
-                java.sql.Date tanggalReservasi = java.sql.Date.valueOf(rs.getString("tanggal_reservasi"));
-                txtTanggalReservasi.setDate(tanggalReservasi);
+                java.sql.Date tanggalTransaksi = java.sql.Date.valueOf(rs.getString("tanggal_pemesanan"));
+                txtTanggalTransaksi.setDate(tanggalTransaksi);
                 cmbLokasiMakam.setSelectedItem(rs.getString("nama_lokasi"));
                 cmbBlok.setSelectedItem(rs.getString("kode_blok"));
                 cmbPetak.setSelectedItem(rs.getString("nomor_petak"));
+                cmbJenazah.setSelectedItem(rs.getString("nama_jenazah"));
                 txtCatatan.setText(rs.getString("catatan"));
+                txtPemilikKartu.setText(rs.getString("nama_kartu"));
+                txtVCC.setText(rs.getString("vcc_kartu"));
+                txtNomorKartu.setText(rs.getString("no_kartu"));
                 txtJudul.setText("Ubah Reservasi");
-                idPetakLama = rs.getString("idPetak");
             }
         } catch (SQLException ex) {
-            Logger.getLogger(DialogReservasiAddEdit.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(DialogTransaksiAddEdit.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -196,10 +224,17 @@ public class DialogReservasiAddEdit extends javax.swing.JDialog {
         jLabel5 = new javax.swing.JLabel();
         cmbPetak = new appcode.form.CustomComboBox();
         jLabel6 = new javax.swing.JLabel();
-        txtTanggalReservasi = new appcode.form.CustomDateChooser();
-        btnTempatiMakam = new RoundedGradientButton("Simpan");
-        txtJumlahBayar = new appcode.form.CustomTextField();
+        txtTanggalTransaksi = new appcode.form.CustomDateChooser();
         jLabel7 = new javax.swing.JLabel();
+        txtJumlahBayar = new appcode.form.CustomTextField();
+        cmbJenazah = new appcode.form.CustomComboBox();
+        jLabel8 = new javax.swing.JLabel();
+        txtPemilikKartu = new appcode.form.CustomTextField();
+        jLabel9 = new javax.swing.JLabel();
+        jLabel10 = new javax.swing.JLabel();
+        txtVCC = new appcode.form.CustomTextField();
+        txtNomorKartu = new appcode.form.CustomTextField();
+        jLabel11 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -207,11 +242,11 @@ public class DialogReservasiAddEdit extends javax.swing.JDialog {
 
         txtJudul.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         txtJudul.setForeground(new java.awt.Color(255, 255, 255));
-        txtJudul.setText("Tambah Reservasi");
+        txtJudul.setText("Tambah Transaksi");
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel2.setText("Tanggal Reservasi");
+        jLabel2.setText("Tanggal Transaksi");
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
@@ -271,21 +306,16 @@ public class DialogReservasiAddEdit extends javax.swing.JDialog {
         jLabel6.setForeground(new java.awt.Color(255, 255, 255));
         jLabel6.setText("Petak");
 
-        txtTanggalReservasi.setBackground(new java.awt.Color(138, 138, 138));
-        txtTanggalReservasi.setForeground(new java.awt.Color(255, 255, 255));
-        txtTanggalReservasi.setDateFormatString("d MMMM yyyy");
-        txtTanggalReservasi.setEnabled(false);
-        txtTanggalReservasi.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        txtTanggalReservasi.setPreferredSize(new java.awt.Dimension(45, 35));
+        txtTanggalTransaksi.setBackground(new java.awt.Color(138, 138, 138));
+        txtTanggalTransaksi.setForeground(new java.awt.Color(255, 255, 255));
+        txtTanggalTransaksi.setDateFormatString("d MMMM yyyy");
+        txtTanggalTransaksi.setEnabled(false);
+        txtTanggalTransaksi.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        txtTanggalTransaksi.setPreferredSize(new java.awt.Dimension(45, 35));
 
-        btnTempatiMakam.setBackground(new java.awt.Color(0, 91, 99));
-        btnTempatiMakam.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        btnTempatiMakam.setText("Tempati Makam");
-        btnTempatiMakam.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnTempatiMakamActionPerformed(evt);
-            }
-        });
+        jLabel7.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel7.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel7.setText("Jumlah Bayar");
 
         txtJumlahBayar.setBackground(new java.awt.Color(138, 138, 138));
         txtJumlahBayar.setForeground(new java.awt.Color(255, 255, 255));
@@ -294,9 +324,46 @@ public class DialogReservasiAddEdit extends javax.swing.JDialog {
         txtJumlahBayar.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         txtJumlahBayar.setPlaceholder("Terisi otomatis");
 
-        jLabel7.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jLabel7.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel7.setText("Jumlah Bayar");
+        cmbJenazah.setBackground(new java.awt.Color(138, 138, 138));
+        cmbJenazah.setForeground(new java.awt.Color(255, 255, 255));
+        cmbJenazah.setArrowColor(new java.awt.Color(204, 213, 209));
+        cmbJenazah.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        cmbJenazah.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmbJenazahActionPerformed(evt);
+            }
+        });
+
+        jLabel8.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel8.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel8.setText("Jenazah");
+
+        txtPemilikKartu.setBackground(new java.awt.Color(138, 138, 138));
+        txtPemilikKartu.setForeground(new java.awt.Color(255, 255, 255));
+        txtPemilikKartu.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        txtPemilikKartu.setPlaceholder("Pemilik Kartu");
+
+        jLabel9.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel9.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel9.setText("Nama Pemilik Kartu");
+
+        jLabel10.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel10.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel10.setText("VCC");
+
+        txtVCC.setBackground(new java.awt.Color(138, 138, 138));
+        txtVCC.setForeground(new java.awt.Color(255, 255, 255));
+        txtVCC.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        txtVCC.setPlaceholder("VCC");
+
+        txtNomorKartu.setBackground(new java.awt.Color(138, 138, 138));
+        txtNomorKartu.setForeground(new java.awt.Color(255, 255, 255));
+        txtNomorKartu.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        txtNomorKartu.setPlaceholder("Nomor Kartu");
+
+        jLabel11.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel11.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel11.setText("Nomor Kartu");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -307,31 +374,45 @@ public class DialogReservasiAddEdit extends javax.swing.JDialog {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 224, Short.MAX_VALUE)
-                            .addComponent(txtTanggalReservasi, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 49, Short.MAX_VALUE)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addComponent(txtPemilikKartu, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jLabel9, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(txtVCC, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(0, 0, Short.MAX_VALUE))))
+                            .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtNomorKartu, javax.swing.GroupLayout.PREFERRED_SIZE, 224, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(btnSave, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                                .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 224, Short.MAX_VALUE)
+                                .addComponent(txtTanggalTransaksi, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(cmbJenazah, javax.swing.GroupLayout.PREFERRED_SIZE, 224, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 33, Short.MAX_VALUE)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(cmbLokasiMakam, javax.swing.GroupLayout.DEFAULT_SIZE, 224, Short.MAX_VALUE)
                             .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(cmbBlok, javax.swing.GroupLayout.DEFAULT_SIZE, 224, Short.MAX_VALUE)
+                            .addComponent(cmbBlok, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(cmbPetak, javax.swing.GroupLayout.DEFAULT_SIZE, 224, Short.MAX_VALUE)
+                            .addComponent(cmbPetak, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(txtJumlahBayar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(82, 82, 82))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(btnSave, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnTempatiMakam)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addGap(36, 36, 36))))
             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel1Layout.createSequentialGroup()
                     .addGap(23, 23, 23)
-                    .addComponent(txtJudul)
-                    .addContainerGap(389, Short.MAX_VALUE)))
+                    .addComponent(txtJudul, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(355, Short.MAX_VALUE)))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -341,46 +422,64 @@ public class DialogReservasiAddEdit extends javax.swing.JDialog {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtTanggalReservasi, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(txtTanggalTransaksi, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(cmbLokasiMakam, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel5)
                         .addGap(7, 7, 7)
-                        .addComponent(cmbBlok, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
+                        .addComponent(cmbBlok, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel8)
+                        .addGap(7, 7, 7)
+                        .addComponent(cmbJenazah, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel6)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(cmbPetak, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(13, 13, 13)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jLabel7)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(txtJumlahBayar, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel4)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnSave, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnTempatiMakam, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(27, 27, 27))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel10)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtVCC, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel9)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtPemilikKartu, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel11)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtNomorKartu, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 23, Short.MAX_VALUE)
+                .addComponent(btnSave, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel1Layout.createSequentialGroup()
                     .addGap(24, 24, 24)
                     .addComponent(txtJudul)
-                    .addContainerGap(413, Short.MAX_VALUE)))
+                    .addContainerGap(547, Short.MAX_VALUE)))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -394,18 +493,34 @@ public class DialogReservasiAddEdit extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
-        if (cmbLokasiMakam.getSelectedIndex() < 1) {
-            JOptionPane.showMessageDialog(null, "Silakan pilih lokasi makam terlebih dahulu.");
-            return;
-        }
-        
-        if (cmbBlok.getSelectedIndex() < 1) {
-            JOptionPane.showMessageDialog(null, "Silakan pilih blok terlebih dahulu.");
-            return;
-        }
-        
-        if (cmbPetak.getSelectedIndex() < 1) {
-            JOptionPane.showMessageDialog(null, "Silakan pilih petak terlebih dahulu.");
+        try{
+            if (cmbJenazah.getSelectedIndex() < 1) {
+                throw new Exception("Silakan pilih jenazah terlebih dahulu.");
+            }
+
+            if (cmbLokasiMakam.getSelectedIndex() < 1) {
+                throw new Exception("Silakan pilih lokasi makam terlebih dahulu.");
+            }
+
+            if (cmbBlok.getSelectedIndex() < 1) {
+                throw new Exception("Silakan pilih blok terlebih dahulu.");
+            }
+
+            if (cmbPetak.getSelectedIndex() < 1) {
+                throw new Exception("Silakan pilih petak terlebih dahulu.");
+            }
+
+            if (txtPemilikKartu.getText().isEmpty()){
+                throw new Exception("Silakan isi pemilik kartu terlebih dahulu.");
+            }
+            if (txtVCC.getText().isEmpty()){
+                throw new Exception("Silakan isi VCC terlebih dahulu.");
+            }
+            if (txtNomorKartu.getText().isEmpty()){
+                throw new Exception("Silakan isi nomor kartu terlebih dahulu.");
+            }
+        }catch (Exception e){
+            JOptionPane.showMessageDialog(null, e.getMessage());
             return;
         }
         
@@ -418,38 +533,59 @@ public class DialogReservasiAddEdit extends javax.swing.JDialog {
             return;
         }
         
-        String sql = "INSERT INTO reservasi(tanggal_reservasi, catatan, petak_id, jumlah_bayar, user_id) VALUES (?,?,?,?,?)";
+        try {
+            String sqlJenazah = "UPDATE jenazah SET status_pemakaman = 0 WHERE id = " + idJenazahLama;
+            PreparedStatement st = conn.prepareStatement(sqlJenazah);
+            st.executeUpdate();
+        }catch (SQLException e){
+            JOptionPane.showMessageDialog(null, "Data Gagal Disimpan "+e);
+            return;
+        }
+        
+        String sql = "INSERT INTO transaksi(jenazah_id, tanggal_pemesanan, petak_id, jumlah_bayar, no_kartu, vcc_kartu, nama_kartu, catatan, user_input) VALUES (?,?,?,?,?,?,?,?,?)";
         String idPetak = listPetak.get(cmbPetak.getSelectedIndex() - 1);
+        String idJenazah = listJenazah.get(cmbJenazah.getSelectedIndex() - 1);
         if (id > 0){
-            sql = "UPDATE reservasi "
+            sql = "UPDATE transaksi "
                 + "SET "
-                    + "tanggal_reservasi = ?, "
-                    + "catatan = ?, "
+                    + "jenazah_id = ?, "
+                    + "tanggal_pemesanan = ?, "
                     + "petak_id = ?, "
-                    + "jumlah_bayar = ? "
+                    + "jumlah_bayar = ?, "
+                    + "no_kartu = ?, "
+                    + "vcc_kartu = ?, "
+                    + "nama_kartu = ?, "
+                    + "catatan = ?"
                 + "WHERE id = ?";
         }
             try{
-                java.util.Date selectedDate = txtTanggalReservasi.getDate();
+                java.util.Date selectedDate = txtTanggalTransaksi.getDate();
                 LocalDate localDate = selectedDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
                 String formatted = localDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
                 
                 PreparedStatement stat = conn.prepareStatement(sql);
-                stat.setString(1, formatted);
-                stat.setString(2, txtCatatan.getText());
+                stat.setString(1, idJenazah);
+                stat.setString(2, formatted);
                 stat.setString(3, idPetak);
                 stat.setString(4, txtJumlahBayar.getText());
-                
+                stat.setString(5, txtNomorKartu.getText());
+                stat.setString(6, txtVCC.getText());
+                stat.setString(7, txtPemilikKartu.getText());
+                stat.setString(8, txtCatatan.getText());
                 if (id > 0){
-                    stat.setLong(5, id);    
+                    stat.setLong(9, id);    
                 } else {
-                    stat.setInt(5, Session.getUser_id());
+                    stat.setInt(9, Session.getUser_id());
                 }
                 stat.executeUpdate();
                 
                 String sqlPetak = "UPDATE petak_makam SET status = 'Terisi' WHERE id = " + idPetak;
-                PreparedStatement stPetk = conn.prepareStatement(sqlPetak);
-                stPetk.executeUpdate();
+                PreparedStatement stPetak = conn.prepareStatement(sqlPetak);
+                stPetak.executeUpdate();
+                
+                String sqlJenazah = "UPDATE jenazah SET status_pemakaman = 1 WHERE id = " + idJenazah;
+                PreparedStatement stJenazah = conn.prepareStatement(sqlJenazah);
+                stJenazah.executeUpdate();
                 
                 if (id > 0) {
                     JOptionPane.showMessageDialog(null, "Data Berhasil Diubah");
@@ -465,6 +601,7 @@ public class DialogReservasiAddEdit extends javax.swing.JDialog {
     
     private void cmbLokasiMakamActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbLokasiMakamActionPerformed
         // TODO add your handling code here:
+        txtJumlahBayar.setText("");
         isiComboBlok();
         isiComboPetak();
     }//GEN-LAST:event_cmbLokasiMakamActionPerformed
@@ -477,53 +614,10 @@ public class DialogReservasiAddEdit extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_cmbBlokActionPerformed
 
-    private void btnTempatiMakamActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTempatiMakamActionPerformed
+    private void cmbJenazahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbJenazahActionPerformed
         // TODO add your handling code here:
-        DialogTempatiMakam dialog = setupDialog();
-        dialog.setData(listPetak.get(cmbPetak.getSelectedIndex() - 1), txtJumlahBayar.getText(), userId, String.valueOf(id));
-        dialog.setVisible(true);
-    }//GEN-LAST:event_btnTempatiMakamActionPerformed
+    }//GEN-LAST:event_cmbJenazahActionPerformed
 
-    private DialogTempatiMakam setupDialog() {
-        DialogTempatiMakam dialog = new DialogTempatiMakam(null, true);
-        dialog.addWindowListener(new WindowListener() {
-            @Override
-            public void windowOpened(WindowEvent e) {
-                
-            }
-
-            @Override
-            public void windowClosing(WindowEvent e) {
-                
-            }
-
-            @Override
-            public void windowClosed(WindowEvent e) {
-                dispose();
-            }
-
-            @Override
-            public void windowIconified(WindowEvent e) {
-                
-            }
-
-            @Override
-            public void windowDeiconified(WindowEvent e) {
-                
-            }
-
-            @Override
-            public void windowActivated(WindowEvent e) {
-                
-            }
-
-            @Override
-            public void windowDeactivated(WindowEvent e) {
-                
-            }
-        });
-        return dialog;
-    }
                                                  
 
     /**
@@ -543,14 +637,270 @@ public class DialogReservasiAddEdit extends javax.swing.JDialog {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(DialogReservasiAddEdit.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DialogTransaksiAddEdit.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(DialogReservasiAddEdit.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DialogTransaksiAddEdit.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(DialogReservasiAddEdit.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DialogTransaksiAddEdit.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(DialogReservasiAddEdit.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DialogTransaksiAddEdit.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>
@@ -811,7 +1161,7 @@ public class DialogReservasiAddEdit extends javax.swing.JDialog {
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                DialogReservasiAddEdit dialog = new DialogReservasiAddEdit(new javax.swing.JFrame(), true);
+                DialogTransaksiAddEdit dialog = new DialogTransaksiAddEdit(new javax.swing.JFrame(), true);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {
@@ -825,21 +1175,28 @@ public class DialogReservasiAddEdit extends javax.swing.JDialog {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnSave;
-    private javax.swing.JButton btnTempatiMakam;
     private appcode.form.CustomComboBox cmbBlok;
+    private appcode.form.CustomComboBox cmbJenazah;
     private appcode.form.CustomComboBox cmbLokasiMakam;
     private appcode.form.CustomComboBox cmbPetak;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private appcode.form.CustomTextArea txtCatatan;
     private javax.swing.JLabel txtJudul;
     private appcode.form.CustomTextField txtJumlahBayar;
-    private appcode.form.CustomDateChooser txtTanggalReservasi;
+    private appcode.form.CustomTextField txtNomorKartu;
+    private appcode.form.CustomTextField txtPemilikKartu;
+    private appcode.form.CustomDateChooser txtTanggalTransaksi;
+    private appcode.form.CustomTextField txtVCC;
     // End of variables declaration//GEN-END:variables
 }

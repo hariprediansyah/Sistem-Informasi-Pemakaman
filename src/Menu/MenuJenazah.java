@@ -5,6 +5,7 @@
  */
 package Menu;
 
+import appcode.Session;
 import appcode.form.RoundedGradientButton;
 import appcode.table.TableActionCellEditor;
 import appcode.table.TableActionCellRender;
@@ -52,6 +53,7 @@ public class MenuJenazah extends javax.swing.JPanel {
         jLabel2 = new javax.swing.JLabel();
         btnReport = new RoundedGradientButton("Report");
         btnAdd = new RoundedGradientButton("Tambah");
+        txtSearch = new appcode.form.CustomTextField();
 
         setBackground(new java.awt.Color(45, 48, 51));
 
@@ -131,20 +133,35 @@ public class MenuJenazah extends javax.swing.JPanel {
             }
         });
 
+        txtSearch.setBackground(new java.awt.Color(138, 138, 138));
+        txtSearch.setForeground(new java.awt.Color(255, 255, 255));
+        txtSearch.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        txtSearch.setPlaceholder("Cari");
+        txtSearch.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtSearchKeyReleased(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(110, 110, 110)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 878, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(426, 426, 426))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)))
                         .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(btnReport, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 878, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(btnReport, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -155,7 +172,9 @@ public class MenuJenazah extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 20, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(btnReport, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnReport, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 485, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -172,8 +191,28 @@ public class MenuJenazah extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_btnReportActionPerformed
 
+    private void txtSearchKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtSearchKeyReleased
+        // TODO add your handling code here:
+        loadData();
+    }//GEN-LAST:event_txtSearchKeyReleased
+
     private void loadData(){
-        String sql = "SELECT * FROM jenazah ORDER BY nama_jenazah";
+        String sql = "SELECT * FROM jenazah WHERE 1 = 1 ";
+        
+        if (Session.getRole().equalsIgnoreCase("guest")){
+            sql += " AND user_id = " + String.valueOf(Session.getUser_id());
+        }
+        
+        String search = txtSearch.getText();
+        if (!search.isEmpty()){
+            sql += "AND (" +
+                    "nama_jenazah LIKE '%" + search + "%' OR " +
+                    "tempat_wafat LIKE '%" + search + "%' OR " +
+                    "jenis_kelamin LIKE '%" + search + "%' OR " +
+                    "CAST(tanggal_wafat AS CHAR) LIKE '%" + search + "%' OR " +
+                    "CAST(umur AS CHAR) LIKE '%" + search + "%') ";
+        }
+        sql += " ORDER BY nama_jenazah";
         Object[] Baris = {
             "No",
             "Action",
@@ -287,5 +326,6 @@ public class MenuJenazah extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
     private appcode.table.TableDark tblData;
+    private appcode.form.CustomTextField txtSearch;
     // End of variables declaration//GEN-END:variables
 }

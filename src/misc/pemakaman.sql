@@ -77,6 +77,7 @@ CREATE TABLE jenazah (
     tempat_wafat VARCHAR(100) NOT NULL,
     jenis_kelamin VARCHAR(100) NOT NULL,
     umur INT NOT NULL,
+    status_pemakaman TINYINT(1) NOT NULL DEFAULT 0,
     FOREIGN KEY (user_id) REFERENCES users(id)
 );
 
@@ -104,6 +105,7 @@ CREATE TABLE reservasi (
     tanggal_reservasi DATE NOT NULL,
     petak_id INT NOT NULL,
     catatan VARCHAR(255),
+    jumlah_bayar INT NOT NULL,
     FOREIGN KEY (user_id) REFERENCES users(id),
     FOREIGN KEY (petak_id) REFERENCES petak_makam(id)
 );

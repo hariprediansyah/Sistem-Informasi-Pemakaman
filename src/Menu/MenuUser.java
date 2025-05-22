@@ -52,6 +52,7 @@ public class MenuUser extends javax.swing.JPanel {
         jLabel2 = new javax.swing.JLabel();
         btnReport = new RoundedGradientButton("Report");
         btnAdd = new RoundedGradientButton("Tambah");
+        txtSearch = new appcode.form.CustomTextField();
 
         setBackground(new java.awt.Color(45, 48, 51));
 
@@ -131,6 +132,16 @@ public class MenuUser extends javax.swing.JPanel {
             }
         });
 
+        txtSearch.setBackground(new java.awt.Color(138, 138, 138));
+        txtSearch.setForeground(new java.awt.Color(255, 255, 255));
+        txtSearch.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        txtSearch.setPlaceholder("Cari");
+        txtSearch.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtSearchKeyReleased(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -139,6 +150,8 @@ public class MenuUser extends javax.swing.JPanel {
                 .addGap(110, 110, 110)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
+                        .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
                         .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(btnReport, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -155,7 +168,9 @@ public class MenuUser extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 20, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(btnReport, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnReport, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 485, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -172,8 +187,27 @@ public class MenuUser extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_btnReportActionPerformed
 
+    private void txtSearchKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtSearchKeyReleased
+        // TODO add your handling code here:
+        loadData();
+    }//GEN-LAST:event_txtSearchKeyReleased
+
     private void loadData(){
-        String sql = "SELECT * FROM users ORDER BY nama_lengkap";
+        String sql = "SELECT * FROM users ";
+        String search = txtSearch.getText();
+
+        if (!search.isEmpty()) {
+            sql += "WHERE " +
+                   "nama_lengkap LIKE '%" + search + "%' OR " +
+                   "username LIKE '%" + search + "%' OR " +
+                   "role LIKE '%" + search + "%' OR " +
+                   "email LIKE '%" + search + "%' OR " +
+                   "no_hp LIKE '%" + search + "%' OR " +
+                   "alamat LIKE '%" + search + "%' ";
+        }
+
+        sql += "ORDER BY nama_lengkap";
+
         Object[] Baris = {
             "No",
             "Action",
@@ -184,6 +218,7 @@ public class MenuUser extends javax.swing.JPanel {
             "No HP",
             "Alamat"
         };
+
         
         model = new DefaultTableModel(null, Baris);
         tblData.setModel(model);
@@ -289,5 +324,6 @@ public class MenuUser extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
     private appcode.table.TableDark tblData;
+    private appcode.form.CustomTextField txtSearch;
     // End of variables declaration//GEN-END:variables
 }

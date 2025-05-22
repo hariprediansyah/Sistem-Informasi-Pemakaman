@@ -21,6 +21,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.SwingUtilities;
 
 /**
@@ -34,13 +36,68 @@ public class DialogPetakMakamAddEdit extends javax.swing.JDialog {
      */
     
     int id = 0;
+    List<String> listMakam = new ArrayList<>();
+    List<String> listBlok = new ArrayList<>();
     
     public DialogPetakMakamAddEdit(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
     
         txtJudul.setText("Tambah Petak");
-        isiBlok();
+        isiCombo();
+    }
+    
+    public void isiCombo(){
+        isiComboMakam();
+        isiComboBlok();
+    }
+    
+    public void isiComboMakam(){
+        try {
+            String sql = "SELECT id, nama_lokasi FROM lokasi_makam order by nama_lokasi asc";
+            Statement st = conn.createStatement();
+            ResultSet rs = st.executeQuery(sql);
+
+            cmbLokasiMakam.removeAllItems();
+            cmbLokasiMakam.addItem("-- Pilih Makam --");
+
+            while (rs.next()) {
+                listMakam.add(rs.getString("id"));
+                cmbLokasiMakam.addItem(rs.getString("nama_lokasi"));
+            }
+
+            rs.close();
+            st.close();
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Gagal isi makam: " + e.getMessage());
+        }
+    }
+    
+    public void isiComboBlok(){
+        try {
+            listBlok = new ArrayList<>();
+            cmbBlok.removeAllItems();
+            cmbBlok.addItem("Makam perlu dipilih");
+            if (cmbLokasiMakam.getSelectedIndex() < 1){
+                return;
+            }
+            cmbBlok.removeAllItems();
+            String sql = "SELECT id, kode_blok FROM blok_makam where lokasi_id = " + listMakam.get(cmbLokasiMakam.getSelectedIndex() - 1) + " order by kode_blok asc";
+            Statement st = conn.createStatement();
+            ResultSet rs = st.executeQuery(sql);
+            
+            cmbBlok.addItem("-- Pilih Blok --");
+
+            while (rs.next()) {
+                listBlok.add(rs.getString("id"));
+                cmbBlok.addItem(rs.getString("kode_blok"));
+            }
+
+            rs.close();
+            st.close();
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Gagal isi makam: " + e.getMessage());
+        }
     }
     
     public void setData(int id){
@@ -48,16 +105,19 @@ public class DialogPetakMakamAddEdit extends javax.swing.JDialog {
             this.id = id;
             
             String sql = "SELECT p.*, "
+                        + "b.id AS idBlok,"
                         + "b.kode_blok, "
-                        + "l.nama_lokasi "
+                        + "l.nama_lokasi, "
+                        + "l.id AS idMakam "
                         + "FROM petak_makam p "
                             + "INNER JOIN blok_makam b ON p.blok_id = b.id "
                             + "INNER JOIN lokasi_makam l ON b.lokasi_id = l.id "
                         + "WHERE p.id = " + id;
+            System.out.println(sql);
             Statement st = conn.createStatement();
             ResultSet rs = st.executeQuery(sql);
             if (rs.next()){
-                txtNamaLokasi.setText(rs.getString("nama_lokasi"));
+                cmbLokasiMakam.setSelectedItem(rs.getString("nama_lokasi"));
                 cmbBlok.setSelectedItem(rs.getString("kode_blok"));
                 txtNomorPetak.setText(rs.getString("nomor_petak"));
                 cmbStatus.setSelectedItem(rs.getString("status"));
@@ -91,7 +151,8 @@ public class DialogPetakMakamAddEdit extends javax.swing.JDialog {
         txtKeterangan = new appcode.form.CustomTextArea();
         cmbBlok = new appcode.form.CustomComboBox();
         cmbStatus = new appcode.form.CustomComboBox();
-        txtNamaLokasi = new appcode.form.CustomTextField();
+        cmbLokasiMakam = new appcode.form.CustomComboBox();
+        jLabel6 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -160,81 +221,95 @@ public class DialogPetakMakamAddEdit extends javax.swing.JDialog {
             }
         });
 
-        txtNamaLokasi.setEditable(false);
-        txtNamaLokasi.setBackground(new java.awt.Color(138, 138, 138));
-        txtNamaLokasi.setForeground(new java.awt.Color(255, 255, 255));
-        txtNamaLokasi.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        txtNamaLokasi.setPlaceholder("Lokasi");
+        cmbLokasiMakam.setBackground(new java.awt.Color(138, 138, 138));
+        cmbLokasiMakam.setForeground(new java.awt.Color(255, 255, 255));
+        cmbLokasiMakam.setArrowColor(new java.awt.Color(204, 213, 209));
+        cmbLokasiMakam.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        cmbLokasiMakam.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmbLokasiMakamActionPerformed(evt);
+            }
+        });
+
+        jLabel6.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel6.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel6.setText("Makam");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(24, 24, 24)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel2)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 224, Short.MAX_VALUE)
-                        .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(txtNomorPetak, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnSave, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(cmbStatus, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(27, 27, 27)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 424, Short.MAX_VALUE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(cmbBlok, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtNamaLokasi, javax.swing.GroupLayout.DEFAULT_SIZE, 224, Short.MAX_VALUE)))
-                .addGap(148, 148, 148))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnSave, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtNomorPetak, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(cmbStatus, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 179, Short.MAX_VALUE))
+                        .addGap(32, 32, 32)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel6)
+                            .addComponent(cmbLokasiMakam, javax.swing.GroupLayout.DEFAULT_SIZE, 213, Short.MAX_VALUE)
+                            .addComponent(cmbBlok, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                .addContainerGap(27, Short.MAX_VALUE))
             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel1Layout.createSequentialGroup()
                     .addGap(23, 23, 23)
                     .addComponent(txtJudul)
-                    .addContainerGap(330, Short.MAX_VALUE)))
+                    .addContainerGap(333, Short.MAX_VALUE)))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(74, 74, 74)
-                .addComponent(jLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(67, 67, 67)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(cmbBlok, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(txtNamaLokasi, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel3)
+                    .addComponent(jLabel3)
+                    .addComponent(jLabel6))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtNomorPetak, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel4)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(cmbLokasiMakam, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(txtNomorPetak, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(cmbStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel4)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(cmbStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(cmbBlok, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel5)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(51, 51, 51)
                 .addComponent(btnSave, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(53, 53, 53))
+                .addContainerGap(45, Short.MAX_VALUE))
             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel1Layout.createSequentialGroup()
                     .addGap(24, 24, 24)
                     .addComponent(txtJudul)
-                    .addContainerGap(511, Short.MAX_VALUE)))
+                    .addContainerGap(438, Short.MAX_VALUE)))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addGap(0, 1, Short.MAX_VALUE))
         );
 
         pack();
@@ -242,7 +317,12 @@ public class DialogPetakMakamAddEdit extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
-        if (blokId == -1) {
+        if (cmbLokasiMakam.getSelectedIndex() < 1) {
+            JOptionPane.showMessageDialog(null, "Silakan pilih lokasi makam terlebih dahulu.");
+            return;
+        }
+        
+        if (cmbBlok.getSelectedIndex() < 1) {
             JOptionPane.showMessageDialog(null, "Silakan pilih blok terlebih dahulu.");
             return;
         }
@@ -259,7 +339,7 @@ public class DialogPetakMakamAddEdit extends javax.swing.JDialog {
         }
             try{                
                 PreparedStatement stat = conn.prepareStatement(sql);
-                stat.setInt(1, blokId);
+                stat.setString(1, listBlok.get(cmbBlok.getSelectedIndex() - 1));
                 stat.setString(2, txtNomorPetak.getText());
                 stat.setString(3, cmbStatus.getSelectedItem().toString());
                 stat.setString(4, txtKeterangan.getText()); 
@@ -280,63 +360,19 @@ public class DialogPetakMakamAddEdit extends javax.swing.JDialog {
                 JOptionPane.showMessageDialog(null, "Data Gagal Disimpan "+e);
             }
     }//GEN-LAST:event_btnSaveActionPerformed
-
-    private void isiBlok() {
-        try {
-            String sql = "SELECT kode_blok FROM blok_makam";
-            Statement st = conn.createStatement();
-            ResultSet rs = st.executeQuery(sql);
-
-            cmbBlok.removeAllItems();
-            cmbBlok.addItem("-- Pilih Blok --");
-
-            while (rs.next()) {
-                cmbBlok.addItem(rs.getString("kode_blok"));
-            }
-
-            rs.close();
-            st.close();
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Gagal isi blok: " + e.getMessage());
-        }
-    }
     
-    private int blokId = -1;
     private void cmbBlokActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbBlokActionPerformed
         // TODO add your handling code here:
-        String kodeBlok = (String) cmbBlok.getSelectedItem();
-        if (kodeBlok == null || kodeBlok.equals("-- Pilih Blok --")) {
-            return;
-        }
-
-        try {
-            String sql = "SELECT b.id, l.nama_lokasi "
-                        + "FROM blok_makam b "
-                            + "INNER JOIN lokasi_makam l ON b.lokasi_id = l.id "
-                        + "WHERE b.kode_blok = ?";
-            PreparedStatement pst = conn.prepareStatement(sql);
-            pst.setString(1, kodeBlok);
-            ResultSet rs = pst.executeQuery();
-
-            if (rs.next()) {
-                int idBlok = rs.getInt("id"); // ID ini bisa disimpan ke variabel global
-                String lokasi = rs.getString("nama_lokasi");
-                txtNamaLokasi.setText(lokasi);
-
-                // Simpan ke variabel global jika diperlukan saat simpan
-                this.blokId = idBlok;
-            }
-
-            rs.close();
-            pst.close();
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Gagal ambil data blok: " + e.getMessage());
-        }
     }//GEN-LAST:event_cmbBlokActionPerformed
 
     private void cmbStatusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbStatusActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_cmbStatusActionPerformed
+
+    private void cmbLokasiMakamActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbLokasiMakamActionPerformed
+        // TODO add your handling code here:
+        isiComboBlok();
+    }//GEN-LAST:event_cmbLokasiMakamActionPerformed
 
     /**
      * @param args the command line arguments
@@ -2430,19 +2466,18 @@ public class DialogPetakMakamAddEdit extends javax.swing.JDialog {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnSave;
     private appcode.form.CustomComboBox cmbBlok;
-    private appcode.form.CustomComboBox cmbRole;
-    private appcode.form.CustomComboBox cmbRole1;
+    private appcode.form.CustomComboBox cmbLokasiMakam;
     private appcode.form.CustomComboBox cmbStatus;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSpinner jSpinner1;
     private javax.swing.JLabel txtJudul;
     private appcode.form.CustomTextArea txtKeterangan;
-    private appcode.form.CustomTextField txtNamaLokasi;
     private appcode.form.CustomTextField txtNomorPetak;
     // End of variables declaration//GEN-END:variables
 }
