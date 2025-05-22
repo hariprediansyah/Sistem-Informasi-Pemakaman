@@ -24,3 +24,8 @@ hs_err_pid*
 replay_pid*
 .idea/
 /dist/
+build/classes/Menu/DialogAmbulanAddEdit.form
+build/classes/Menu/DialogPenyewaanAddEdit.form
+build/classes/Menu/DialogReservasiAddEdit.form
+build/classes/Menu/MenuPenyewaan.form
+build/classes/Menu/MenuReservasi.form
