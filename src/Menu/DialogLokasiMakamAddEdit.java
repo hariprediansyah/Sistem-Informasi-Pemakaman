@@ -3,7 +3,6 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JDialog.java to edit this template
  */
 package Menu;
-import appcode.Session;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -12,19 +11,14 @@ import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
-import java.awt.event.KeyEvent;
 import koneksi.Koneksi;
 import appcode.form.RoundedGradientButton;
-import java.sql.Date;
-import java.time.LocalDate;
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
 
 /**
  *
  * @author coyha
  */
-public class DialogReservasiAddEdit extends javax.swing.JDialog {
+public class DialogLokasiMakamAddEdit extends javax.swing.JDialog {
     private Connection conn = new Koneksi().connect();
     /**
      * Creates new form DialogAddEdit
@@ -32,38 +26,29 @@ public class DialogReservasiAddEdit extends javax.swing.JDialog {
     
     int id = 0;
     
-    public DialogReservasiAddEdit(java.awt.Frame parent, boolean modal) {
+    public DialogLokasiMakamAddEdit(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        txtJudul.setText("Tambah Reservasi");
-        isiComboPetak();
+        txtJudul.setText("Tambah Lokasi");
     }
     
     public void setData(int id){
         try {
             this.id = id;
-
-            String sql = "SELECT r.*, "
-                        + "p.nomor_petak, "
-                        + "p.deskripsi "
-                        + "FROM reservasi r "
-                            + "INNER JOIN petak_makam p ON r.petak_id = p.id "
-                        + "WHERE r.id = " + id;
+            
+            String sql = "SELECT * FROM lokasi_makam WHERE id = " + id;
             Statement st = conn.createStatement();
             ResultSet rs = st.executeQuery(sql);
-
             if (rs.next()){
-                Date tanggalReservasi = Date.valueOf(rs.getString("tanggal_reservasi"));
-                txtTanggalReservasi.setDate(tanggalReservasi);
-                cmbNomorPetak.setSelectedItem(rs.getString("nomor_petak"));
-                txtDeskripsiPetak.setText(rs.getString("deskripsi"));
-                txtCatatan.setText(rs.getString("catatan"));
-                txtJudul.setText("Ubah Reservasi");
+                txtNamaLokasi.setText(rs.getString("nama_lokasi"));
+                txtAlamat.setText(rs.getString("alamat"));
+                txtNamaKota.setText(rs.getString("kota"));
+                txtJudul.setText("Ubah Lokasi");
             }
         } catch (SQLException ex) {
-            Logger.getLogger(DialogReservasiAddEdit.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(DialogLokasiMakamAddEdit.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }
+   }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -79,12 +64,11 @@ public class DialogReservasiAddEdit extends javax.swing.JDialog {
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         btnSave = new RoundedGradientButton("Simpan");
-        jLabel4 = new javax.swing.JLabel();
-        txtTanggalReservasi = new com.toedter.calendar.JDateChooser();
-        txtDeskripsiPetak = new appcode.form.CustomTextField();
+        txtNamaLokasi = new appcode.form.CustomTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
-        txtCatatan = new appcode.form.CustomTextArea();
-        cmbNomorPetak = new appcode.form.CustomComboBox();
+        txtAlamat = new appcode.form.CustomTextArea();
+        jLabel4 = new javax.swing.JLabel();
+        txtNamaKota = new appcode.form.CustomTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -92,15 +76,15 @@ public class DialogReservasiAddEdit extends javax.swing.JDialog {
 
         txtJudul.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         txtJudul.setForeground(new java.awt.Color(255, 255, 255));
-        txtJudul.setText("Tambah Reservasi");
+        txtJudul.setText("Tambah Lokasi");
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel2.setText("Tanggal Reservasi");
+        jLabel2.setText("Nama Lokasi");
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel3.setText("Pilih Petak");
+        jLabel3.setText("Alamat");
 
         btnSave.setBackground(new java.awt.Color(0, 91, 99));
         btnSave.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -111,41 +95,27 @@ public class DialogReservasiAddEdit extends javax.swing.JDialog {
             }
         });
 
+        txtNamaLokasi.setBackground(new java.awt.Color(138, 138, 138));
+        txtNamaLokasi.setForeground(new java.awt.Color(255, 255, 255));
+        txtNamaLokasi.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        txtNamaLokasi.setPlaceholder("Lokasi");
+
+        txtAlamat.setBackground(new java.awt.Color(138, 138, 138));
+        txtAlamat.setColumns(20);
+        txtAlamat.setForeground(new java.awt.Color(255, 255, 255));
+        txtAlamat.setRows(5);
+        txtAlamat.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        txtAlamat.setPlaceholder("Alamat");
+        jScrollPane1.setViewportView(txtAlamat);
+
         jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel4.setText("Catatan");
+        jLabel4.setText("Nama Kota");
 
-        txtTanggalReservasi.setBackground(new java.awt.Color(138, 138, 138));
-
-        txtDeskripsiPetak.setEditable(false);
-        txtDeskripsiPetak.setBackground(new java.awt.Color(138, 138, 138));
-        txtDeskripsiPetak.setForeground(new java.awt.Color(255, 255, 255));
-        txtDeskripsiPetak.setEnabled(false);
-        txtDeskripsiPetak.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        txtDeskripsiPetak.setPlaceholder("Deskripsi");
-        txtDeskripsiPetak.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtDeskripsiPetakActionPerformed(evt);
-            }
-        });
-
-        txtCatatan.setBackground(new java.awt.Color(138, 138, 138));
-        txtCatatan.setColumns(20);
-        txtCatatan.setForeground(new java.awt.Color(255, 255, 255));
-        txtCatatan.setRows(5);
-        txtCatatan.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        txtCatatan.setPlaceholder("Catatan");
-        jScrollPane1.setViewportView(txtCatatan);
-
-        cmbNomorPetak.setBackground(new java.awt.Color(138, 138, 138));
-        cmbNomorPetak.setForeground(new java.awt.Color(255, 255, 255));
-        cmbNomorPetak.setArrowColor(new java.awt.Color(204, 213, 209));
-        cmbNomorPetak.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        cmbNomorPetak.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cmbNomorPetakActionPerformed(evt);
-            }
-        });
+        txtNamaKota.setBackground(new java.awt.Color(138, 138, 138));
+        txtNamaKota.setForeground(new java.awt.Color(255, 255, 255));
+        txtNamaKota.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        txtNamaKota.setPlaceholder("Kota");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -154,21 +124,18 @@ public class DialogReservasiAddEdit extends javax.swing.JDialog {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(24, 24, 24)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txtNamaLokasi, javax.swing.GroupLayout.PREFERRED_SIZE, 224, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtTanggalReservasi, javax.swing.GroupLayout.PREFERRED_SIZE, 224, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnSave, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnSave, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 224, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(cmbNomorPetak, javax.swing.GroupLayout.PREFERRED_SIZE, 224, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtDeskripsiPetak, javax.swing.GroupLayout.DEFAULT_SIZE, 343, Short.MAX_VALUE)))
-                .addContainerGap())
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                        .addGap(18, 18, 18)))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtNamaKota, javax.swing.GroupLayout.PREFERRED_SIZE, 224, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(61, 61, 61))
             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel1Layout.createSequentialGroup()
                     .addGap(23, 23, 23)
@@ -179,20 +146,21 @@ public class DialogReservasiAddEdit extends javax.swing.JDialog {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(74, 74, 74)
-                .addComponent(jLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtTanggalReservasi, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(txtNamaLokasi, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtNamaKota, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel4)
+                        .addGap(41, 41, 41)))
                 .addGap(18, 18, 18)
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(txtDeskripsiPetak, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cmbNomorPetak, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(18, 18, 18)
-                .addComponent(jLabel4)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 38, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
                 .addComponent(btnSave, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(25, 25, 25))
             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -218,34 +186,21 @@ public class DialogReservasiAddEdit extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
-        if (petakId == -1) {
-            JOptionPane.showMessageDialog(null, "Silakan pilih petak terlebih dahulu.");
-            return;
-        }
-        
-        String sql = "INSERT INTO reservasi(tanggal_reservasi, catatan, petak_id, user_id) VALUES (?,?,?,?)";
+        String sql = "INSERT INTO lokasi_makam(nama_lokasi, alamat, kota) VALUES (?,?,?)";
         if (id > 0){
-            sql = "UPDATE reservasi "
-                + "SET "
-                    + "tanggal_reservasi = ?, "
-                    + "catatan = ?, "
-                    + "petak_id = ? "
-                + "WHERE id = ?";
+            sql = "UPDATE lokasi_makam "
+                    + "SET nama_lokasi = ?, "
+                        + "alamat = ?, "
+                        + "kota = ? "
+                    + "WHERE id = ?";
         }
             try{
-                java.util.Date selectedDate = txtTanggalReservasi.getDate();
-                LocalDate localDate = selectedDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-                String formatted = localDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-                
                 PreparedStatement stat = conn.prepareStatement(sql);
-                stat.setString(1, formatted);
-                stat.setString(2, txtCatatan.getText());
-                stat.setInt(3, petakId);
-                
+                stat.setString(1, txtNamaLokasi.getText());
+                stat.setString(2, txtAlamat.getText());
+                stat.setString(3, txtNamaKota.getText());
                 if (id > 0){
                     stat.setLong(4, id);    
-                } else {
-                    stat.setInt(4, Session.getUser_id());
                 }
                 stat.executeUpdate();
                 
@@ -260,61 +215,6 @@ public class DialogReservasiAddEdit extends javax.swing.JDialog {
                 JOptionPane.showMessageDialog(null, "Data Gagal Disimpan "+e);
             }
     }//GEN-LAST:event_btnSaveActionPerformed
-
-    private void txtDeskripsiPetakActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDeskripsiPetakActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtDeskripsiPetakActionPerformed
-    
-    private void isiComboPetak() {
-        try {
-            String sql = "SELECT nomor_petak FROM petak_makam";
-            Statement st = conn.createStatement();
-            ResultSet rs = st.executeQuery(sql);
-
-            cmbNomorPetak.removeAllItems();
-            cmbNomorPetak.addItem("-- Pilih Petak --");
-
-            while (rs.next()) {
-                cmbNomorPetak.addItem(rs.getString("nomor_petak"));
-            }
-
-            rs.close();
-            st.close();
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Gagal isi petak: " + e.getMessage());
-        }
-    }
-
-    private int petakId = -1;
-    private void cmbNomorPetakActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbNomorPetakActionPerformed
-        // TODO add your handling code here:
-        String nomorPetak = (String) cmbNomorPetak.getSelectedItem();
-        if (nomorPetak == null || nomorPetak.equals("-- Pilih Petak --")) {
-            txtDeskripsiPetak.setText("");
-            return;
-        }
-
-        try {
-            String sql = "SELECT id, deskripsi FROM petak_makam WHERE nomor_petak = ?";
-            PreparedStatement pst = conn.prepareStatement(sql);
-            pst.setString(1, nomorPetak);
-            ResultSet rs = pst.executeQuery();
-
-            if (rs.next()) {
-                int idPetak = rs.getInt("id"); // ID ini bisa disimpan ke variabel global
-                String deskripsi = rs.getString("deskripsi");
-                txtDeskripsiPetak.setText(deskripsi);
-
-                // Simpan ke variabel global jika diperlukan saat simpan
-                this.petakId = idPetak;
-            }
-
-            rs.close();
-            pst.close();
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Gagal ambil data petak: " + e.getMessage());
-        }
-    }//GEN-LAST:event_cmbNomorPetakActionPerformed
 
     /**
      * @param args the command line arguments
@@ -333,13 +233,13 @@ public class DialogReservasiAddEdit extends javax.swing.JDialog {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(DialogReservasiAddEdit.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DialogLokasiMakamAddEdit.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(DialogReservasiAddEdit.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DialogLokasiMakamAddEdit.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(DialogReservasiAddEdit.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DialogLokasiMakamAddEdit.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(DialogReservasiAddEdit.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DialogLokasiMakamAddEdit.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
         //</editor-fold>
@@ -601,7 +501,7 @@ public class DialogReservasiAddEdit extends javax.swing.JDialog {
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                DialogReservasiAddEdit dialog = new DialogReservasiAddEdit(new javax.swing.JFrame(), true);
+                DialogLokasiMakamAddEdit dialog = new DialogLokasiMakamAddEdit(new javax.swing.JFrame(), true);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {
@@ -615,15 +515,14 @@ public class DialogReservasiAddEdit extends javax.swing.JDialog {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnSave;
-    private appcode.form.CustomComboBox cmbNomorPetak;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private appcode.form.CustomTextArea txtCatatan;
-    private appcode.form.CustomTextField txtDeskripsiPetak;
+    private appcode.form.CustomTextArea txtAlamat;
     private javax.swing.JLabel txtJudul;
-    private com.toedter.calendar.JDateChooser txtTanggalReservasi;
+    private appcode.form.CustomTextField txtNamaKota;
+    private appcode.form.CustomTextField txtNamaLokasi;
     // End of variables declaration//GEN-END:variables
 }

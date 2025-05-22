@@ -17,6 +17,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import javax.swing.JOptionPane;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import koneksi.Koneksi;
@@ -34,8 +36,29 @@ public class MenuMakam extends javax.swing.JPanel {
     Connection conn = new Koneksi().connect();
     public MenuMakam() {
         initComponents();
-        loadData();
-        tblData.fixTable(jScrollPane1);
+        
+        loadDataLokasi();
+        tblDataLokasi.fixTable(jScrollPane2);
+        
+        jTabbedPane1.addChangeListener((ChangeEvent e) -> {
+            int selectedIndex = jTabbedPane1.getSelectedIndex();
+            switch (selectedIndex) {
+                case 0:
+                    loadDataLokasi();
+                    tblDataLokasi.fixTable(jScrollPane2);
+                    break;
+                case 1:
+                    loadDataBlok();
+                    tblDataBlok.fixTable(jScrollPane1);
+                    break;
+                case 2:
+                    loadDataPetak();
+                    tblDataPetak.fixTable(jScrollPane3);
+                    break;
+                default:
+                    break;
+            }
+        });
     }
 
     /**
@@ -47,15 +70,38 @@ public class MenuMakam extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jScrollPane1 = new javax.swing.JScrollPane();
-        tblData = new appcode.table.TableDark();
+        jTabbedPane1 = new javax.swing.JTabbedPane();
+        panelLokasi = new javax.swing.JPanel();
+        jLabel3 = new javax.swing.JLabel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        tblDataLokasi = new appcode.table.TableDark();
+        btnAddLokasi = new RoundedGradientButton("Tambah");
+        btnReport1 = new RoundedGradientButton("Report");
+        panelBlok = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tblDataBlok = new appcode.table.TableDark();
+        btnAddBlok = new RoundedGradientButton("Tambah");
         btnReport = new RoundedGradientButton("Report");
-        btnAdd = new RoundedGradientButton("Tambah");
+        panelPetak = new javax.swing.JPanel();
+        jLabel4 = new javax.swing.JLabel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        tblDataPetak = new appcode.table.TableDark();
+        btnAddPetak = new RoundedGradientButton("Tambah");
+        btnReport2 = new RoundedGradientButton("Report");
 
         setBackground(new java.awt.Color(45, 48, 51));
 
-        tblData.setModel(new javax.swing.table.DefaultTableModel(
+        jTabbedPane1.setForeground(new java.awt.Color(204, 102, 0));
+
+        panelLokasi.setBackground(new java.awt.Color(45, 48, 51));
+
+        jLabel3.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel3.setText("Lokasi Makam");
+
+        tblDataLokasi.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -108,12 +154,128 @@ public class MenuMakam extends javax.swing.JPanel {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane1.setViewportView(tblData);
+        jScrollPane2.setViewportView(tblDataLokasi);
+
+        btnAddLokasi.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        btnAddLokasi.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnAddLokasi.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddLokasiActionPerformed(evt);
+            }
+        });
+
+        btnReport1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        btnReport1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnReport1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnReport1ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout panelLokasiLayout = new javax.swing.GroupLayout(panelLokasi);
+        panelLokasi.setLayout(panelLokasiLayout);
+        panelLokasiLayout.setHorizontalGroup(
+            panelLokasiLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelLokasiLayout.createSequentialGroup()
+                .addGap(16, 16, 16)
+                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelLokasiLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(panelLokasiLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(panelLokasiLayout.createSequentialGroup()
+                        .addComponent(btnAddLokasi, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnReport1, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 878, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
+        );
+        panelLokasiLayout.setVerticalGroup(
+            panelLokasiLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelLokasiLayout.createSequentialGroup()
+                .addGap(16, 16, 16)
+                .addComponent(jLabel3)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(panelLokasiLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panelLokasiLayout.createSequentialGroup()
+                        .addComponent(btnReport1, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 485, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnAddLokasi, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        jTabbedPane1.addTab("Lokasi", panelLokasi);
+
+        panelBlok.setBackground(new java.awt.Color(45, 48, 51));
 
         jLabel2.setBackground(new java.awt.Color(255, 255, 255));
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel2.setText("Pemakaman");
+        jLabel2.setText("Blok Makam");
+
+        tblDataBlok.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane1.setViewportView(tblDataBlok);
+
+        btnAddBlok.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        btnAddBlok.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnAddBlok.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddBlokActionPerformed(evt);
+            }
+        });
 
         btnReport.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         btnReport.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -123,13 +285,153 @@ public class MenuMakam extends javax.swing.JPanel {
             }
         });
 
-        btnAdd.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        btnAdd.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btnAdd.addActionListener(new java.awt.event.ActionListener() {
+        javax.swing.GroupLayout panelBlokLayout = new javax.swing.GroupLayout(panelBlok);
+        panelBlok.setLayout(panelBlokLayout);
+        panelBlokLayout.setHorizontalGroup(
+            panelBlokLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelBlokLayout.createSequentialGroup()
+                .addGap(16, 16, 16)
+                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelBlokLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(panelBlokLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(panelBlokLayout.createSequentialGroup()
+                        .addComponent(btnAddBlok, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnReport, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 878, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
+        );
+        panelBlokLayout.setVerticalGroup(
+            panelBlokLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelBlokLayout.createSequentialGroup()
+                .addGap(16, 16, 16)
+                .addComponent(jLabel2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(panelBlokLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panelBlokLayout.createSequentialGroup()
+                        .addComponent(btnReport, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 485, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnAddBlok, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        jTabbedPane1.addTab("Blok", panelBlok);
+
+        panelPetak.setBackground(new java.awt.Color(45, 48, 51));
+
+        jLabel4.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel4.setText("Petak Makam");
+
+        tblDataPetak.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane3.setViewportView(tblDataPetak);
+
+        btnAddPetak.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        btnAddPetak.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnAddPetak.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAddActionPerformed(evt);
+                btnAddPetakActionPerformed(evt);
             }
         });
+
+        btnReport2.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        btnReport2.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnReport2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnReport2ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout panelPetakLayout = new javax.swing.GroupLayout(panelPetak);
+        panelPetak.setLayout(panelPetakLayout);
+        panelPetakLayout.setHorizontalGroup(
+            panelPetakLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelPetakLayout.createSequentialGroup()
+                .addGap(16, 16, 16)
+                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelPetakLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(panelPetakLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(panelPetakLayout.createSequentialGroup()
+                        .addComponent(btnAddPetak, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnReport2, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 878, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
+        );
+        panelPetakLayout.setVerticalGroup(
+            panelPetakLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelPetakLayout.createSequentialGroup()
+                .addGap(16, 16, 16)
+                .addComponent(jLabel4)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(panelPetakLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panelPetakLayout.createSequentialGroup()
+                        .addComponent(btnReport2, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 485, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnAddPetak, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        jTabbedPane1.addTab("Petak", panelPetak);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -137,43 +439,49 @@ public class MenuMakam extends javax.swing.JPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(110, 110, 110)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnReport, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 878, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jTabbedPane1)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(74, 74, 74)
-                .addComponent(jLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 20, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(btnReport, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 485, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(24, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(23, 23, 23)
+                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 745, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(25, Short.MAX_VALUE))
         );
+
+        jTabbedPane1.getAccessibleContext().setAccessibleName("Petak");
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
+    private void btnAddBlokActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddBlokActionPerformed
         // TODO add your handling code here:
-        setupDialog().setVisible(true);
-    }//GEN-LAST:event_btnAddActionPerformed
+        setupDialogBlok().setVisible(true);
+    }//GEN-LAST:event_btnAddBlokActionPerformed
 
     private void btnReportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReportActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnReportActionPerformed
 
-    private void loadData(){
-        String sql = "SELECT * FROM lokasi_makam ORDER BY nama_lokasi";
+    private void btnAddLokasiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddLokasiActionPerformed
+        // TODO add your handling code here:
+        setupDialogLokasi().setVisible(true);
+    }//GEN-LAST:event_btnAddLokasiActionPerformed
+
+    private void btnReport1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReport1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnReport1ActionPerformed
+
+    private void btnAddPetakActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddPetakActionPerformed
+        // TODO add your handling code here:
+        setupDialogPetak().setVisible(true);
+    }//GEN-LAST:event_btnAddPetakActionPerformed
+
+    private void btnReport2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReport2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnReport2ActionPerformed
+
+    private void loadDataLokasi(){
+        String sql = "SELECT * FROM lokasi_makam ORDER BY id DESC";
         Object[] Baris = {
             "No",
             "Action",
@@ -183,7 +491,7 @@ public class MenuMakam extends javax.swing.JPanel {
         };
         
         model = new DefaultTableModel(null, Baris);
-        tblData.setModel(model);
+        tblDataLokasi.setModel(model);
         
         try{
             Statement stat = conn.createStatement();
@@ -203,7 +511,7 @@ public class MenuMakam extends javax.swing.JPanel {
             TableActionEvent actionEvent = new TableActionEvent() {
                 @Override
                 public void onEdit(int row) {
-                    DialogUserAddEdit dialog = setupDialog();
+                    DialogLokasiMakamAddEdit dialog = setupDialogLokasi();
                     System.out.print(model.getValueAt(row, 1).toString());
                     dialog.setData(Integer.parseInt(model.getValueAt(row, 1).toString()));
                     dialog.setVisible(true);
@@ -214,30 +522,54 @@ public class MenuMakam extends javax.swing.JPanel {
                     int dialogButton = JOptionPane.YES_NO_OPTION;
                     int dialogResult = JOptionPane.showConfirmDialog (null, "Konfirmasi hapus lokasi makam?","Warning",dialogButton);
                     if(dialogResult == JOptionPane.YES_OPTION){
-                        String kode = model.getValueAt(row, 1).toString();
-                        String sql = "DELETE FROM lokasi_makam WHERE id = ?";
+                        String lokasiId = model.getValueAt(row, 1).toString();
                         try{
-                            PreparedStatement stat = conn.prepareStatement(sql);
-                            stat.setString(1, kode);
-                            stat.executeUpdate();
-                            
+                            String sqlSelectBlok = "SELECT id FROM blok_makam WHERE lokasi_id = ?";
+                            PreparedStatement statSelect = conn.prepareStatement(sqlSelectBlok);
+                            statSelect.setString(1, lokasiId);
+                            ResultSet rs = statSelect.executeQuery();
+
+                            while (rs.next()) {
+                                int blokId = rs.getInt("id");
+                                String sqlDeletePetak = "DELETE FROM petak_makam WHERE blok_id = ?";
+                                PreparedStatement statPetak = conn.prepareStatement(sqlDeletePetak);
+                                statPetak.setInt(1, blokId);
+                                statPetak.executeUpdate();
+                                statPetak.close();
+                            }
+
+                            rs.close();
+                            statSelect.close();
+
+                            String sqlDeleteBlok = "DELETE FROM blok_makam WHERE lokasi_id = ?";
+                            PreparedStatement statBlok = conn.prepareStatement(sqlDeleteBlok);
+                            statBlok.setString(1, lokasiId);
+                            statBlok.executeUpdate();
+                            statBlok.close();
+
+                            String sqlDeleteLokasi = "DELETE FROM lokasi_makam WHERE id = ?";
+                            PreparedStatement statLokasi = conn.prepareStatement(sqlDeleteLokasi);
+                            statLokasi.setString(1, lokasiId);
+                            statLokasi.executeUpdate();
+                            statLokasi.close();
+
                             JOptionPane.showMessageDialog(null, "Lokasi Makam Berhasil Dihapus");
-                            loadData();
+                            loadDataLokasi();
                         }catch (SQLException e){
                             JOptionPane.showMessageDialog(null, "Lokasi Makam Gagal Dihapus "+e);
                         }
                     }
                 }
             };
-            tblData.getColumnModel().getColumn(1).setCellRenderer(new TableActionCellRender());
-            tblData.getColumnModel().getColumn(1).setCellEditor(new TableActionCellEditor(actionEvent));
+            tblDataLokasi.getColumnModel().getColumn(1).setCellRenderer(new TableActionCellRender());
+            tblDataLokasi.getColumnModel().getColumn(1).setCellEditor(new TableActionCellEditor(actionEvent));
         }catch(SQLException e){
             JOptionPane.showMessageDialog(null,e);
         }
     }
     
-    private DialogUserAddEdit setupDialog() {
-        DialogUserAddEdit dialog = new DialogUserAddEdit(null, true);
+    private DialogLokasiMakamAddEdit setupDialogLokasi() {
+        DialogLokasiMakamAddEdit dialog = new DialogLokasiMakamAddEdit(null, true);
         dialog.addWindowListener(new WindowListener() {
             @Override
             public void windowOpened(WindowEvent e) {
@@ -251,7 +583,243 @@ public class MenuMakam extends javax.swing.JPanel {
 
             @Override
             public void windowClosed(WindowEvent e) {
-                loadData();
+                loadDataLokasi();
+            }
+
+            @Override
+            public void windowIconified(WindowEvent e) {
+                
+            }
+
+            @Override
+            public void windowDeiconified(WindowEvent e) {
+                
+            }
+
+            @Override
+            public void windowActivated(WindowEvent e) {
+                
+            }
+
+            @Override
+            public void windowDeactivated(WindowEvent e) {
+                
+            }
+        });
+        return dialog;
+    }
+    
+    private void loadDataBlok(){
+        String sql = "SELECT b.*, "
+                    + "l.nama_lokasi "
+                    + "FROM blok_makam b "
+                        + "INNER JOIN lokasi_makam l ON b.lokasi_id = l.id "
+                    + "ORDER BY b.id DESC";
+        Object[] Baris = {
+            "No",
+            "Action",
+            "Lokasi",
+            "Kode Blok",
+            "Harga",
+            "Keterangan"
+        };
+        
+        model = new DefaultTableModel(null, Baris);
+        tblDataBlok.setModel(model);
+        
+        try{
+            Statement stat = conn.createStatement();
+            ResultSet hasil = stat.executeQuery(sql);
+            int num = 1;
+            while(hasil.next()){
+                String[] data={
+                    Integer.toString(num), 
+                    hasil.getString("id"), 
+                    hasil.getString("nama_lokasi"), 
+                    hasil.getString("kode_blok"), 
+                    hasil.getString("harga"), 
+                    hasil.getString("keterangan")
+                };
+                model.addRow(data);
+                num++;
+            }
+            TableActionEvent actionEvent = new TableActionEvent() {
+                @Override
+                public void onEdit(int row) {
+                    DialogBlokMakamAddEdit dialog = setupDialogBlok();
+                    System.out.print(model.getValueAt(row, 1).toString());
+                    dialog.setData(Integer.parseInt(model.getValueAt(row, 1).toString()));
+                    dialog.setVisible(true);
+                }
+
+                @Override
+                public void onDelete(int row) {
+                    int dialogButton = JOptionPane.YES_NO_OPTION;
+                    int dialogResult = JOptionPane.showConfirmDialog (null, "Konfirmasi hapus blok makam?","Warning",dialogButton);
+                    if(dialogResult == JOptionPane.YES_OPTION){
+                        String blokId = model.getValueAt(row, 1).toString();
+                        try {
+                            String sqlDeletePetak = "DELETE FROM petak_makam WHERE blok_id = ?";
+                            PreparedStatement statPetak = conn.prepareStatement(sqlDeletePetak);
+                            statPetak.setString(1, blokId);
+                            statPetak.executeUpdate();
+                            statPetak.close();
+
+                            String sqlDeleteBlok = "DELETE FROM blok_makam WHERE id = ?";
+                            PreparedStatement statBlok = conn.prepareStatement(sqlDeleteBlok);
+                            statBlok.setString(1, blokId);
+                            statBlok.executeUpdate();
+                            statBlok.close();
+
+                            JOptionPane.showMessageDialog(null, "Blok Makam Berhasil Dihapus");
+                            loadDataBlok();
+
+                        } catch (SQLException e) {
+                            JOptionPane.showMessageDialog(null, "Blok Makam Gagal Dihapus: " + e.getMessage());
+                        }
+                    }
+                }
+            };
+            tblDataBlok.getColumnModel().getColumn(1).setCellRenderer(new TableActionCellRender());
+            tblDataBlok.getColumnModel().getColumn(1).setCellEditor(new TableActionCellEditor(actionEvent));
+        }catch(SQLException e){
+            JOptionPane.showMessageDialog(null,e);
+        }
+    }
+    
+    private DialogBlokMakamAddEdit setupDialogBlok() {
+        DialogBlokMakamAddEdit dialog = new DialogBlokMakamAddEdit(null, true);
+        dialog.addWindowListener(new WindowListener() {
+            @Override
+            public void windowOpened(WindowEvent e) {
+                
+            }
+
+            @Override
+            public void windowClosing(WindowEvent e) {
+                
+            }
+
+            @Override
+            public void windowClosed(WindowEvent e) {
+                loadDataBlok();
+            }
+
+            @Override
+            public void windowIconified(WindowEvent e) {
+                
+            }
+
+            @Override
+            public void windowDeiconified(WindowEvent e) {
+                
+            }
+
+            @Override
+            public void windowActivated(WindowEvent e) {
+                
+            }
+
+            @Override
+            public void windowDeactivated(WindowEvent e) {
+                
+            }
+        });
+        return dialog;
+    }
+    
+    private void loadDataPetak(){
+        String sql = "SELECT p.*, "
+                    + "b.kode_blok, "
+                    + "l.nama_lokasi "
+                    + "FROM petak_makam p "
+                        + "INNER JOIN blok_makam b ON p.blok_id = b.id "
+                        + "INNER JOIN lokasi_makam l ON b.lokasi_id = l.id "
+                    + "ORDER BY p.id DESC";
+        Object[] Baris = {
+            "No",
+            "Action",
+            "Lokasi",
+            "Kode Blok",
+            "Nomor Petak",
+            "Status",
+            "Keterangan"
+        };
+        
+        model = new DefaultTableModel(null, Baris);
+        tblDataPetak.setModel(model);
+        
+        try{
+            Statement stat = conn.createStatement();
+            ResultSet hasil = stat.executeQuery(sql);
+            int num = 1;
+            while(hasil.next()){
+                String[] data={
+                    Integer.toString(num), 
+                    hasil.getString("id"), 
+                    hasil.getString("nama_lokasi"), 
+                    hasil.getString("kode_blok"), 
+                    hasil.getString("nomor_petak"), 
+                    hasil.getString("status"),
+                    hasil.getString("deskripsi")
+                };
+                model.addRow(data);
+                num++;
+            }
+            TableActionEvent actionEvent = new TableActionEvent() {
+                @Override
+                public void onEdit(int row) {
+                    DialogPetakMakamAddEdit dialog = setupDialogPetak();
+                    System.out.print(model.getValueAt(row, 1).toString());
+                    dialog.setData(Integer.parseInt(model.getValueAt(row, 1).toString()));
+                    dialog.setVisible(true);
+                }
+
+                @Override
+                public void onDelete(int row) {
+                    int dialogButton = JOptionPane.YES_NO_OPTION;
+                    int dialogResult = JOptionPane.showConfirmDialog (null, "Konfirmasi hapus petak makam?","Warning",dialogButton);
+                    if(dialogResult == JOptionPane.YES_OPTION){
+                        String petakId = model.getValueAt(row, 1).toString();
+                        try {
+                            String sqlDeletePetak = "DELETE FROM petak_makam WHERE id = ?";
+                            PreparedStatement statPetak = conn.prepareStatement(sqlDeletePetak);
+                            statPetak.setString(1, petakId);
+                            statPetak.executeUpdate();
+                            statPetak.close();
+
+                            JOptionPane.showMessageDialog(null, "Petak Makam Berhasil Dihapus");
+                            loadDataBlok();
+
+                        } catch (SQLException e) {
+                            JOptionPane.showMessageDialog(null, "Petak Makam Gagal Dihapus: " + e.getMessage());
+                        }
+                    }
+                }
+            };
+            tblDataPetak.getColumnModel().getColumn(1).setCellRenderer(new TableActionCellRender());
+            tblDataPetak.getColumnModel().getColumn(1).setCellEditor(new TableActionCellEditor(actionEvent));
+        }catch(SQLException e){
+            JOptionPane.showMessageDialog(null,e);
+        }
+    }
+    
+    private DialogPetakMakamAddEdit setupDialogPetak() {
+        DialogPetakMakamAddEdit dialog = new DialogPetakMakamAddEdit(null, true);
+        dialog.addWindowListener(new WindowListener() {
+            @Override
+            public void windowOpened(WindowEvent e) {
+                
+            }
+
+            @Override
+            public void windowClosing(WindowEvent e) {
+                
+            }
+
+            @Override
+            public void windowClosed(WindowEvent e) {
+                loadDataPetak();
             }
 
             @Override
@@ -278,10 +846,24 @@ public class MenuMakam extends javax.swing.JPanel {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnAdd;
+    private javax.swing.JButton btnAddBlok;
+    private javax.swing.JButton btnAddLokasi;
+    private javax.swing.JButton btnAddPetak;
     private javax.swing.JButton btnReport;
+    private javax.swing.JButton btnReport1;
+    private javax.swing.JButton btnReport2;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JScrollPane jScrollPane1;
-    private appcode.table.TableDark tblData;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JPanel panelBlok;
+    private javax.swing.JPanel panelLokasi;
+    private javax.swing.JPanel panelPetak;
+    private appcode.table.TableDark tblDataBlok;
+    private appcode.table.TableDark tblDataLokasi;
+    private appcode.table.TableDark tblDataPetak;
     // End of variables declaration//GEN-END:variables
 }
