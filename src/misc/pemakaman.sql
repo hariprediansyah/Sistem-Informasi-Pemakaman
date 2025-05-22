@@ -22,267 +22,117 @@ SET time_zone = "+00:00";
 --
 
 -- --------------------------------------------------------
+DROP DATABASE pemakaman;
 
---
--- Table structure for table `ambulan`
---
+-- 1. Buat Database Baru
+CREATE DATABASE pemakaman;
+USE pemakaman;
 
-CREATE TABLE `ambulan` (
-  `id` int NOT NULL,
-  `nomor_polisi` varchar(100) NOT NULL,
-  `sopir` varchar(100) NOT NULL,
-  `kapasitas` int NOT NULL,
-  `status` varchar(100) NOT NULL,
-  `keterangan` varchar(255) NOT NULL
-) ;
+-- 2. Tabel Users
+CREATE TABLE users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nama_lengkap VARCHAR(100) NOT NULL,
+    username VARCHAR(100) NOT NULL,
+    email VARCHAR(100) NOT NULL,
+    no_hp VARCHAR(100) NOT NULL,
+    alamat VARCHAR(255) NOT NULL,
+    role VARCHAR(100) NOT NULL,
+    password VARCHAR(100) NOT NULL
+);
 
--- --------------------------------------------------------
+-- 3. Tabel Lokasi Makam
+CREATE TABLE lokasi_makam (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nama_lokasi VARCHAR(100) NOT NULL,
+    alamat VARCHAR(255) NOT NULL,
+    kota VARCHAR(100) NOT NULL
+);
 
---
--- Table structure for table `blok_makam`
---
+-- 4. Tabel Blok Makam
+CREATE TABLE blok_makam (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    lokasi_id INT NOT NULL,
+    kode_blok VARCHAR(100) NOT NULL,
+    harga BIGINT NOT NULL,
+    keterangan VARCHAR(255),
+    FOREIGN KEY (lokasi_id) REFERENCES lokasi_makam(id)
+);
 
-CREATE TABLE `blok_makam` (
-  `id` int NOT NULL,
-  `lokasi_id` int NOT NULL,
-  `kode_blok` varchar(100) NOT NULL,
-  `harga` bigint NOT NULL,
-  `keterangan` varchar(255) NOT NULL
-) ;
+-- 5. Tabel Petak Makam
+CREATE TABLE petak_makam (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    blok_id INT NOT NULL,
+    nomor_petak VARCHAR(100) NOT NULL,
+    status VARCHAR(100) NOT NULL,
+    deskripsi VARCHAR(255),
+    FOREIGN KEY (blok_id) REFERENCES blok_makam(id)
+);
 
--- --------------------------------------------------------
+-- 6. Tabel Jenazah
+CREATE TABLE jenazah (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    nama_jenazah VARCHAR(100) NOT NULL,
+    tanggal_wafat DATE NOT NULL,
+    tempat_wafat VARCHAR(100) NOT NULL,
+    jenis_kelamin VARCHAR(100) NOT NULL,
+    umur INT NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES users(id)
+);
 
---
--- Table structure for table `jenazah`
---
+-- 7. Tabel Transaksi
+CREATE TABLE transaksi (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    jenazah_id INT NOT NULL,
+    tanggal_pemesanan DATE NOT NULL,
+    petak_id INT NOT NULL,
+    jumlah_bayar INT NOT NULL,
+    no_kartu VARCHAR(100) NOT NULL,
+    vcc_kartu VARCHAR(100) NOT NULL,
+    nama_kartu VARCHAR(100) NOT NULL,
+    catatan VARCHAR(255),
+    user_input INT NOT NULL,
+    FOREIGN KEY (jenazah_id) REFERENCES jenazah(id),
+    FOREIGN KEY (petak_id) REFERENCES petak_makam(id),
+    FOREIGN KEY (user_input) REFERENCES users(id)
+);
 
-CREATE TABLE `jenazah` (
-  `id` int NOT NULL,
-  `user_id` int NOT NULL,
-  `nama_jenazah` varchar(100) NOT NULL,
-  `tanggal_wafat` date NOT NULL,
-  `tempat_wafat` varchar(100) NOT NULL,
-  `jenis_kelamin` varchar(100) NOT NULL,
-  `umur` int NOT NULL
-) ;
+-- 8. Tabel Reservasi
+CREATE TABLE reservasi (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    tanggal_reservasi DATE NOT NULL,
+    petak_id INT NOT NULL,
+    catatan VARCHAR(255),
+    FOREIGN KEY (user_id) REFERENCES users(id),
+    FOREIGN KEY (petak_id) REFERENCES petak_makam(id)
+);
 
--- --------------------------------------------------------
+-- 9. Tabel Ambulan
+CREATE TABLE ambulan (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nomor_polisi VARCHAR(100) NOT NULL,
+    sopir VARCHAR(100) NOT NULL,
+    kapasitas INT NOT NULL,
+    status VARCHAR(100) NOT NULL,
+    keterangan VARCHAR(255)
+);
 
---
--- Table structure for table `lokasi_makam`
---
-
-CREATE TABLE `lokasi_makam` (
-  `id` int NOT NULL,
-  `nama_lokasi` varchar(100) NOT NULL,
-  `alamat` varchar(255) NOT NULL,
-  `kota` varchar(100) NOT NULL
-) ;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `penyewaan_ambulan`
---
-
-CREATE TABLE `penyewaan_ambulan` (
-  `id` int NOT NULL,
-  `ambulan_id` int NOT NULL,
-  `lokasi_jemput` varchar(100) NOT NULL,
-  `lokasi_tujuan` varchar(100) NOT NULL,
-  `waktu_jemput` datetime NOT NULL,
-  `status` varchar(100) NOT NULL,
-  `deskripsi` varchar(255) NOT NULL
-) ;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `petak_makam`
---
-
-CREATE TABLE `petak_makam` (
-  `id` int NOT NULL,
-  `blok_id` int NOT NULL,
-  `nomor_petak` varchar(100) NOT NULL,
-  `status` varchar(100) NOT NULL,
-  `deskripsi` varchar(255) NOT NULL
-) ;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `reservasi`
---
-
-CREATE TABLE `reservasi` (
-  `id` int NOT NULL,
-  `user_id` int NOT NULL,
-  `tanggal_reservasi` date NOT NULL,
-  `petak_id` int NOT NULL,
-  `catatan` varchar(255) NOT NULL
-) ;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `transaksi`
---
-
-CREATE TABLE `transaksi` (
-  `id` int NOT NULL,
-  `jenazah_id` int NOT NULL,
-  `tanggal_pemesanan` date NOT NULL,
-  `petak_id` int NOT NULL,
-  `jumlah_bayar` int NOT NULL,
-  `no_kartu` varchar(100) NOT NULL,
-  `vcc_kartu` varchar(100) NOT NULL,
-  `nama_kartu` varchar(100) NOT NULL,
-  `catatan` varchar(255) NOT NULL,
-  `user_input` int NOT NULL
-) ;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `users`
---
-
-CREATE TABLE `users` (
-  `id` int NOT NULL,
-  `nama_lengkap` varchar(100) NOT NULL,
-  `username` varchar(100) NOT NULL,
-  `email` varchar(100) NOT NULL,
-  `no_hp` varchar(100) NOT NULL,
-  `alamat` varchar(255) NOT NULL,
-  `role` varchar(100) NOT NULL,
-  `password` varchar(100) NOT NULL
-) ;
-
---
--- Dumping data for table `users`
---
+-- 10. Tabel Penyewaan Ambulan
+CREATE TABLE penyewaan_ambulan (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    ambulan_id INT NOT NULL,
+    lokasi_jemput VARCHAR(100) NOT NULL,
+    lokasi_tujuan VARCHAR(100) NOT NULL,
+    waktu_jemput DATETIME NOT NULL,
+    status VARCHAR(100) NOT NULL,
+    deskripsi VARCHAR(255),
+    FOREIGN KEY (ambulan_id) REFERENCES ambulan(id)
+);
 
 INSERT INTO `users` (`id`, `nama_lengkap`, `username`, `email`, `no_hp`, `alamat`, `role`, `password`) VALUES
-(1, 'Admin Ganteng', 'admin', 'admin@gmail.com', '085446753221', 'Jalan Jendral Sudirman, No. 12', 'admin', 'admin'),
-(2, 'User baru2', 'userbaru2', 'userbaru@gmail.com2', '0868837737732', 'ALAMATTTTTT2', 'Admin', 'userbaru2');
-
---
--- Indexes for dumped tables
---
-
---
--- Indexes for table `ambulan`
---
-ALTER TABLE `ambulan`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `blok_makam`
---
-ALTER TABLE `blok_makam`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `jenazah`
---
-ALTER TABLE `jenazah`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `lokasi_makam`
---
-ALTER TABLE `lokasi_makam`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `penyewaan_ambulan`
---
-ALTER TABLE `penyewaan_ambulan`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `petak_makam`
---
-ALTER TABLE `petak_makam`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `reservasi`
---
-ALTER TABLE `reservasi`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `transaksi`
---
-ALTER TABLE `transaksi`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `users`
---
-ALTER TABLE `users`
-  ADD PRIMARY KEY (`id`);
-
---
--- AUTO_INCREMENT for dumped tables
---
-
---
--- AUTO_INCREMENT for table `ambulan`
---
-ALTER TABLE `ambulan`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `blok_makam`
---
-ALTER TABLE `blok_makam`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `jenazah`
---
-ALTER TABLE `jenazah`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `lokasi_makam`
---
-ALTER TABLE `lokasi_makam`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `penyewaan_ambulan`
---
-ALTER TABLE `penyewaan_ambulan`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `petak_makam`
---
-ALTER TABLE `petak_makam`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `reservasi`
---
-ALTER TABLE `reservasi`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `transaksi`
---
-ALTER TABLE `transaksi`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `users`
---
-ALTER TABLE `users`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
-COMMIT;
+(1, 'Admin', 'admin', 'admin@gmail.com', '085446753221', 'Jalan Jendral Sudirman, No. 12', 'Admin', 'admin'),
+(2, 'User', 'user', 'userbaru@gmail.com2', '0868837737732', 'ALAMATTTTTT2', 'Guest', 'user');
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

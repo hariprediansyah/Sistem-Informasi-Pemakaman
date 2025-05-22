@@ -3,6 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JDialog.java to edit this template
  */
 package Menu;
+import appcode.Session;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -26,7 +27,7 @@ import javax.swing.SwingUtilities;
  *
  * @author coyha
  */
-public class DialogPenyewaanAddEdit extends javax.swing.JDialog {
+public class DialogBlokMakamAddEdit extends javax.swing.JDialog {
     private Connection conn = new Koneksi().connect();
     /**
      * Creates new form DialogAddEdit
@@ -34,44 +35,35 @@ public class DialogPenyewaanAddEdit extends javax.swing.JDialog {
     
     int id = 0;
     
-    public DialogPenyewaanAddEdit(java.awt.Frame parent, boolean modal) {
+    public DialogBlokMakamAddEdit(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
     
-        if (id == 0) {
-            cmbStatus.setSelectedItem("Berlangsung");
-//            cmbStatus.setEnabled(false);
-        }
-        txtJudul.setText("Tambah Penyewaan");
-        isiNomorAmbulan();
+        txtJudul.setText("Tambah Blok");
+        isiLokasi();
     }
     
     public void setData(int id){
         try {
             this.id = id;
             
-            String sql = "SELECT p.*,"
-                        + "a.nomor_polisi,"
-                        + "a.sopir "
-                        + "FROM penyewaan_ambulan p "
-                            + "INNER JOIN ambulan a ON p.ambulan_id = a.id "
-                        + "WHERE p.id = " + id;
+            String sql = "SELECT b.*, "
+                        + "l.nama_lokasi "
+                        + "FROM blok_makam b "
+                            + "INNER JOIN lokasi_makam l ON b.lokasi_id = l.id "
+                        + "WHERE b.id = " + id;
             Statement st = conn.createStatement();
             ResultSet rs = st.executeQuery(sql);
             if (rs.next()){
-                cmbNomorAmbulan.setSelectedItem(rs.getString("nomor_polisi"));
-                txtSopir.setText(rs.getString("sopir"));
-                txtLokasiJemput.setText(rs.getString("lokasi_jemput"));
-                txtLokasiTujuan.setText(rs.getString("lokasi_tujuan"));
-                Timestamp waktuJemput = rs.getTimestamp("waktu_jemput");
-                txtWaktuJemput.setDate(waktuJemput);
-                cmbStatus.setSelectedItem(rs.getString("status"));
-                cmbStatus.setEnabled(true);
-                txtKeterangan.setText(rs.getString("deskripsi"));
-                txtJudul.setText("Ubah Penyewaan");
+                cmbLokasi.setSelectedItem(rs.getString("nama_lokasi"));
+                txtKodeBlok.setText(rs.getString("kode_blok"));
+                long harga = rs.getLong("harga");
+                txtHarga.setText(String.valueOf(harga));
+                txtKeterangan.setText(rs.getString("keterangan"));
+                txtJudul.setText("Ubah Blok");
             }
         } catch (SQLException ex) {
-            Logger.getLogger(DialogPenyewaanAddEdit.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(DialogBlokMakamAddEdit.class.getName()).log(Level.SEVERE, null, ex);
         }
    }
 
@@ -92,16 +84,11 @@ public class DialogPenyewaanAddEdit extends javax.swing.JDialog {
         btnSave = new RoundedGradientButton("Simpan");
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        jLabel8 = new javax.swing.JLabel();
-        txtSopir = new appcode.form.CustomTextField();
-        txtLokasiJemput = new appcode.form.CustomTextField();
+        txtKodeBlok = new appcode.form.CustomTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         txtKeterangan = new appcode.form.CustomTextArea();
-        cmbStatus = new appcode.form.CustomComboBox();
-        jLabel6 = new javax.swing.JLabel();
-        txtLokasiTujuan = new appcode.form.CustomTextField();
-        txtWaktuJemput = new com.toedter.calendar.JDateChooser();
-        cmbNomorAmbulan = new appcode.form.CustomComboBox();
+        cmbLokasi = new appcode.form.CustomComboBox();
+        txtHarga = new appcode.form.CustomTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -109,15 +96,15 @@ public class DialogPenyewaanAddEdit extends javax.swing.JDialog {
 
         txtJudul.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         txtJudul.setForeground(new java.awt.Color(255, 255, 255));
-        txtJudul.setText("Tambah Penyewaan");
+        txtJudul.setText("Tambah Blok");
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel2.setText("Nomor Ambulan");
+        jLabel2.setText("Lokasi");
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel3.setText("Lokasi Jemput");
+        jLabel3.setText("Kode");
 
         btnSave.setBackground(new java.awt.Color(0, 91, 99));
         btnSave.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -130,26 +117,16 @@ public class DialogPenyewaanAddEdit extends javax.swing.JDialog {
 
         jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel4.setText("Waktu Jemput");
+        jLabel4.setText("Harga");
 
         jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(255, 255, 255));
         jLabel5.setText("Keterangan");
 
-        jLabel8.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jLabel8.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel8.setText("Status");
-
-        txtSopir.setEditable(false);
-        txtSopir.setBackground(new java.awt.Color(138, 138, 138));
-        txtSopir.setForeground(new java.awt.Color(255, 255, 255));
-        txtSopir.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        txtSopir.setPlaceholder("Nama Sopir");
-
-        txtLokasiJemput.setBackground(new java.awt.Color(138, 138, 138));
-        txtLokasiJemput.setForeground(new java.awt.Color(255, 255, 255));
-        txtLokasiJemput.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        txtLokasiJemput.setPlaceholder("Jemput");
+        txtKodeBlok.setBackground(new java.awt.Color(138, 138, 138));
+        txtKodeBlok.setForeground(new java.awt.Color(255, 255, 255));
+        txtKodeBlok.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        txtKodeBlok.setPlaceholder("Kode");
 
         txtKeterangan.setBackground(new java.awt.Color(138, 138, 138));
         txtKeterangan.setColumns(20);
@@ -159,41 +136,20 @@ public class DialogPenyewaanAddEdit extends javax.swing.JDialog {
         txtKeterangan.setPlaceholder("Keterangan");
         jScrollPane1.setViewportView(txtKeterangan);
 
-        cmbStatus.setBackground(new java.awt.Color(138, 138, 138));
-        cmbStatus.setForeground(new java.awt.Color(255, 255, 255));
-        cmbStatus.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Berlangsung", "Selesai" }));
-        cmbStatus.setArrowColor(new java.awt.Color(204, 213, 209));
-        cmbStatus.setEnabled(false);
-        cmbStatus.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        cmbStatus.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                cmbStatusMouseClicked(evt);
-            }
-        });
-        cmbStatus.addActionListener(new java.awt.event.ActionListener() {
+        cmbLokasi.setBackground(new java.awt.Color(138, 138, 138));
+        cmbLokasi.setForeground(new java.awt.Color(255, 255, 255));
+        cmbLokasi.setArrowColor(new java.awt.Color(204, 213, 209));
+        cmbLokasi.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        cmbLokasi.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cmbStatusActionPerformed(evt);
+                cmbLokasiActionPerformed(evt);
             }
         });
 
-        jLabel6.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jLabel6.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel6.setText("Lokasi Tujuan");
-
-        txtLokasiTujuan.setBackground(new java.awt.Color(138, 138, 138));
-        txtLokasiTujuan.setForeground(new java.awt.Color(255, 255, 255));
-        txtLokasiTujuan.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        txtLokasiTujuan.setPlaceholder("Tujuan");
-
-        cmbNomorAmbulan.setBackground(new java.awt.Color(138, 138, 138));
-        cmbNomorAmbulan.setForeground(new java.awt.Color(255, 255, 255));
-        cmbNomorAmbulan.setArrowColor(new java.awt.Color(204, 213, 209));
-        cmbNomorAmbulan.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        cmbNomorAmbulan.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cmbNomorAmbulanActionPerformed(evt);
-            }
-        });
+        txtHarga.setBackground(new java.awt.Color(138, 138, 138));
+        txtHarga.setForeground(new java.awt.Color(255, 255, 255));
+        txtHarga.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        txtHarga.setPlaceholder("Harga");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -201,33 +157,19 @@ public class DialogPenyewaanAddEdit extends javax.swing.JDialog {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(24, 24, 24)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(cmbLokasi, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addComponent(jLabel2)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                        .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 224, Short.MAX_VALUE)
-                                        .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(txtLokasiJemput, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(btnSave, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addComponent(txtWaktuJemput, javax.swing.GroupLayout.PREFERRED_SIZE, 224, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(36, 36, 36)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txtLokasiTujuan, javax.swing.GroupLayout.PREFERRED_SIZE, 224, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(cmbStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 224, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(cmbNomorAmbulan, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txtSopir, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 16, Short.MAX_VALUE))))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(txtHarga, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 224, Short.MAX_VALUE)
+                            .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtKodeBlok, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnSave, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(270, Short.MAX_VALUE))
             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel1Layout.createSequentialGroup()
                     .addGap(23, 23, 23)
@@ -240,32 +182,22 @@ public class DialogPenyewaanAddEdit extends javax.swing.JDialog {
                 .addGap(74, 74, 74)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(cmbNomorAmbulan, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(txtSopir, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(cmbLokasi, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel6)
-                    .addComponent(jLabel3))
+                .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtLokasiJemput, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtLokasiTujuan, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(txtKodeBlok, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel4)
-                    .addComponent(jLabel8))
+                .addComponent(jLabel4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txtWaktuJemput, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cmbStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                .addComponent(txtHarga, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(11, 11, 11)
                 .addComponent(jLabel5)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 67, Short.MAX_VALUE)
+                .addGap(51, 51, 51)
                 .addComponent(btnSave, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(25, 25, 25))
+                .addGap(53, 53, 53))
             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel1Layout.createSequentialGroup()
                     .addGap(24, 24, 24)
@@ -291,157 +223,93 @@ public class DialogPenyewaanAddEdit extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
-        if (ambulanId == -1) {
-            JOptionPane.showMessageDialog(null, "Silakan pilih ambulan terlebih dahulu.");
-            return;            
+        if (lokasiId == -1) {
+            JOptionPane.showMessageDialog(null, "Silakan pilih lokasi terlebih dahulu.");
+            return;
         }
         
-         try {
-            java.util.Date selectedDate = txtWaktuJemput.getDate();
-            LocalDateTime localDateTime = selectedDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
-            String formatted = localDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-
-            String statusPenyewaan = cmbStatus.getSelectedItem().toString();
-            String sql;
-
-            if (id > 0) {
-                // Cek apakah status sebelumnya "berlangsung"
-                PreparedStatement checkStmt = conn.prepareStatement("SELECT status, ambulan_id FROM penyewaan_ambulan WHERE id = ?");
-                checkStmt.setInt(1, id);
-                ResultSet rs = checkStmt.executeQuery();
-
-                if (!rs.next()) {
-                    JOptionPane.showMessageDialog(null, "Data tidak ditemukan.");
-                    return;
-                }
-
-                String currentStatus = rs.getString("status");
-                int ambulanIdSebelumnya = rs.getInt("ambulan_id");
-
-                if (!currentStatus.equalsIgnoreCase("berlangsung")) {
-                    JOptionPane.showMessageDialog(null, "Hanya penyewaan dengan status 'Berlangsung' yang bisa diedit.");
-                    return;
-                }
-
-                sql = "UPDATE penyewaan_ambulan SET ambulan_id = ?, lokasi_jemput = ?, lokasi_tujuan = ?, waktu_jemput = ?, status = ?, deskripsi = ? WHERE id = ?";
-                PreparedStatement stat = conn.prepareStatement(sql);
-                stat.setInt(1, ambulanId);
-                stat.setString(2, txtLokasiJemput.getText());
-                stat.setString(3, txtLokasiTujuan.getText());
-                stat.setString(4, formatted);
-                stat.setString(5, statusPenyewaan);
-                stat.setString(6, txtKeterangan.getText());
-                stat.setLong(7, id);
-                stat.executeUpdate();
-
-                // Jika status berubah menjadi selesai, ubah status ambulan jadi tersedia
-                if (statusPenyewaan.equalsIgnoreCase("selesai")) {
-                    PreparedStatement updateAmbulan = conn.prepareStatement("UPDATE ambulan SET status = 'Tersedia' WHERE id = ?");
-                    updateAmbulan.setInt(1, ambulanIdSebelumnya); // dari data sebelumnya
-                    updateAmbulan.executeUpdate();
-                }
-
-                JOptionPane.showMessageDialog(null, "Data Berhasil Diubah");
-            } else {
-                sql = "INSERT INTO penyewaan_ambulan(ambulan_id, lokasi_jemput, lokasi_tujuan, waktu_jemput, status, deskripsi) VALUES (?,?,?,?,?,?)";
-                PreparedStatement stat = conn.prepareStatement(sql);
-                stat.setInt(1, ambulanId);
-                stat.setString(2, txtLokasiJemput.getText());
-                stat.setString(3, txtLokasiTujuan.getText());
-                stat.setString(4, formatted);
-                stat.setString(5, "Berlangsung"); // default status saat insert
-                stat.setString(6, txtKeterangan.getText());
-                stat.executeUpdate();
-
-                // Update status ambulan menjadi Terpakai
-                PreparedStatement updateAmbulan = conn.prepareStatement("UPDATE ambulan SET status = 'Terpakai' WHERE id = ?");
-                updateAmbulan.setInt(1, ambulanId);
-                updateAmbulan.executeUpdate();
-
-                JOptionPane.showMessageDialog(null, "Data Berhasil Disimpan");
-            }
-
-            dispose();
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Data Gagal Disimpan: " + e);
+        String sql = "INSERT INTO blok_makam(lokasi_id, kode_blok, harga, keterangan) VALUES (?,?,?,?)";
+        if (id > 0){
+            sql = "UPDATE blok_makam "
+                + "SET "
+                    + "lokasi_id = ?, "
+                    + "kode_blok = ?, "
+                    + "harga = ?,"
+                    + "keterangan = ? "
+                + "WHERE id = ?";
         }
+            try{                
+                PreparedStatement stat = conn.prepareStatement(sql);
+                stat.setInt(1, lokasiId);
+                stat.setString(2, txtKodeBlok.getText());
+                long harga = Long.parseLong(txtHarga.getText());
+                stat.setLong(3, harga);
+                stat.setString(4, txtKeterangan.getText()); 
+                
+                if (id > 0){
+                    stat.setLong(5, id);    
+                }
+                stat.executeUpdate();
+                
+                if (id > 0) {
+                    JOptionPane.showMessageDialog(null, "Data Berhasil Diubah");
+                } else {
+                    JOptionPane.showMessageDialog(null, "Data Berhasil Disimpan");
+                }
+                
+                dispose();
+            }catch (SQLException e){
+                JOptionPane.showMessageDialog(null, "Data Gagal Disimpan "+e);
+            }
     }//GEN-LAST:event_btnSaveActionPerformed
 
-    private void cmbStatusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbStatusActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_cmbStatusActionPerformed
-
-    private void isiNomorAmbulan() {
+    private void isiLokasi() {
         try {
-            String sql = "SELECT nomor_polisi FROM ambulan";
+            String sql = "SELECT nama_lokasi FROM lokasi_makam";
             Statement st = conn.createStatement();
             ResultSet rs = st.executeQuery(sql);
 
-            cmbNomorAmbulan.removeAllItems();
-            cmbNomorAmbulan.addItem("-- Pilih Ambulan --");
+            cmbLokasi.removeAllItems();
+            cmbLokasi.addItem("-- Pilih Lokasi --");
 
             while (rs.next()) {
-                cmbNomorAmbulan.addItem(rs.getString("nomor_polisi"));
+                cmbLokasi.addItem(rs.getString("nama_lokasi"));
             }
 
             rs.close();
             st.close();
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Gagal isi ambulan: " + e.getMessage());
+            JOptionPane.showMessageDialog(null, "Gagal isi lokasi: " + e.getMessage());
         }
     }
     
-    private int ambulanId = -1;
-    private void cmbNomorAmbulanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbNomorAmbulanActionPerformed
+    private int lokasiId = -1;
+    private void cmbLokasiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbLokasiActionPerformed
         // TODO add your handling code here:
-        String nomorAmbulan = (String) cmbNomorAmbulan.getSelectedItem();
-        if (nomorAmbulan == null || nomorAmbulan.equals("-- Pilih Ambulan --")) {
-            txtSopir.setText("");
+        String namaLokasi = (String) cmbLokasi.getSelectedItem();
+        if (namaLokasi == null || namaLokasi.equals("-- Pilih Lokasi --")) {
             return;
         }
 
         try {
-            String sql = "SELECT id, sopir FROM ambulan WHERE nomor_polisi = ?";
+            String sql = "SELECT id FROM lokasi_makam WHERE nama_lokasi = ?";
             PreparedStatement pst = conn.prepareStatement(sql);
-            pst.setString(1, nomorAmbulan);
+            pst.setString(1, namaLokasi);
             ResultSet rs = pst.executeQuery();
 
             if (rs.next()) {
-                int idAmbulan = rs.getInt("id"); // ID ini bisa disimpan ke variabel global
-                String sopir = rs.getString("sopir");
-                txtSopir.setText(sopir);
+                int idLokasi = rs.getInt("id"); // ID ini bisa disimpan ke variabel global
 
                 // Simpan ke variabel global jika diperlukan saat simpan
-                this.ambulanId = idAmbulan;
+                this.lokasiId = idLokasi;
             }
 
             rs.close();
             pst.close();
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Gagal ambil data ambulan: " + e.getMessage());
+            JOptionPane.showMessageDialog(null, "Gagal ambil data lokasi: " + e.getMessage());
         }
-    }//GEN-LAST:event_cmbNomorAmbulanActionPerformed
-
-    private void cmbStatusMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cmbStatusMouseClicked
-        // TODO add your handling code here:
-        if (id > 0) {
-            try {
-                PreparedStatement checkStmt = conn.prepareStatement("SELECT status FROM penyewaan_ambulan WHERE id = ?");
-                checkStmt.setInt(1, id);
-                ResultSet rs = checkStmt.executeQuery();
-
-                if (rs.next()) {
-                    String currentStatus = rs.getString("status");
-
-                    if (!currentStatus.equalsIgnoreCase("berlangsung")) {
-                        JOptionPane.showMessageDialog(null, "Hanya penyewaan dengan status 'Berlangsung' yang bisa diedit.");
-                    }
-                }
-            } catch (SQLException e) {
-                JOptionPane.showMessageDialog(null, "Terjadi kesalahan saat mengambil status: " + e.getMessage());
-            }
-        }
-    }//GEN-LAST:event_cmbStatusMouseClicked
+    }//GEN-LAST:event_cmbLokasiActionPerformed
 
     /**
      * @param args the command line arguments
@@ -460,14 +328,526 @@ public class DialogPenyewaanAddEdit extends javax.swing.JDialog {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(DialogPenyewaanAddEdit.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DialogBlokMakamAddEdit.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(DialogPenyewaanAddEdit.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DialogBlokMakamAddEdit.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(DialogPenyewaanAddEdit.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DialogBlokMakamAddEdit.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(DialogPenyewaanAddEdit.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DialogBlokMakamAddEdit.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>
@@ -984,7 +1364,7 @@ public class DialogPenyewaanAddEdit extends javax.swing.JDialog {
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                DialogPenyewaanAddEdit dialog = new DialogPenyewaanAddEdit(new javax.swing.JFrame(), true);
+                DialogBlokMakamAddEdit dialog = new DialogBlokMakamAddEdit(new javax.swing.JFrame(), true);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {
@@ -998,22 +1378,17 @@ public class DialogPenyewaanAddEdit extends javax.swing.JDialog {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnSave;
-    private appcode.form.CustomComboBox cmbNomorAmbulan;
-    private appcode.form.CustomComboBox cmbStatus;
+    private appcode.form.CustomComboBox cmbLokasi;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSpinner jSpinner1;
+    private appcode.form.CustomTextField txtHarga;
     private javax.swing.JLabel txtJudul;
     private appcode.form.CustomTextArea txtKeterangan;
-    private appcode.form.CustomTextField txtLokasiJemput;
-    private appcode.form.CustomTextField txtLokasiTujuan;
-    private appcode.form.CustomTextField txtSopir;
-    private com.toedter.calendar.JDateChooser txtWaktuJemput;
+    private appcode.form.CustomTextField txtKodeBlok;
     // End of variables declaration//GEN-END:variables
 }

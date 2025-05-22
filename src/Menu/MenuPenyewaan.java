@@ -464,12 +464,12 @@ public class MenuPenyewaan extends javax.swing.JPanel {
     }
     
     private void loadDataPenyewaan(){
-        String sql = "SELECT p.*,"
-                    + "a.nomor_polisi,"
+        String sql = "SELECT p.*, "
+                    + "a.nomor_polisi, "
                     + "a.sopir "
                     + "FROM penyewaan_ambulan p "
                         + "INNER JOIN ambulan a ON p.ambulan_id = a.id "
-                    + "ORDER BY id DESC";
+                    + "ORDER BY p.id DESC";
         Object[] Baris = {
             "No",
             "Action",
