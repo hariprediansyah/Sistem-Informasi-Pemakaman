@@ -281,15 +281,21 @@ public class MenuTransaksi extends javax.swing.JPanel {
                 int dialogResult = JOptionPane.showConfirmDialog(null, "Konfirmasi hapus reservasi?", "Warning", dialogButton);
                 if (dialogResult == JOptionPane.YES_OPTION) {
                     String kode = model.getValueAt(row, 1).toString();
-                    String deleteSql = "DELETE FROM reservasi WHERE id = ?";
+                    String sqlPetak = "UPDATE petak_makam SET status = 'Kosong' WHERE id IN (SELECT petak_id FROM transaksi WHERE id = " + kode + ")";
+                    String sqlJenazah = "UPDATE jenazah SET status_pemakaman = 0 WHERE id IN (SELECT jenazah_id FROM transaksi WHERE id = " + kode + ")";
+                    String deleteSql = "DELETE FROM transaksi WHERE id = ?";
                     try {
                         PreparedStatement stat = conn.prepareStatement(deleteSql);
+                        PreparedStatement statPetak = conn.prepareStatement(sqlPetak);
+                        PreparedStatement statJenazah = conn.prepareStatement(sqlJenazah);
                         stat.setString(1, kode);
-                        stat.executeUpdate();
-                        JOptionPane.showMessageDialog(null, "Reservasi Berhasil Dihapus");
+                        statPetak.executeUpdate();
+                        statJenazah.executeUpdate(); 
+                        stat.executeUpdate();                       
+                        JOptionPane.showMessageDialog(null, "Transaksi Berhasil Dihapus");
                         loadData();
                     } catch (SQLException e) {
-                        JOptionPane.showMessageDialog(null, "Reservasi Gagal Dihapus: " + e.getMessage());
+                        JOptionPane.showMessageDialog(null, "Transaksi Gagal Dihapus: " + e.getMessage());
                     }
                 }
             }
