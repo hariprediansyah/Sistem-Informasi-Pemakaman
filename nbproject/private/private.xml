@@ -3,11 +3,11 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/E:/Projects/Sistem-Informasi-Pemakaman/src/Menu/MenuReservasi.java</file>
-            <file>file:/E:/Projects/Sistem-Informasi-Pemakaman/src/Menu/DialogReservasiAddEdit.java</file>
-            <file>file:/E:/Projects/Sistem-Informasi-Pemakaman/src/Menu/MenuTransaksi.java</file>
-            <file>file:/E:/Projects/Sistem-Informasi-Pemakaman/src/Menu/MenuPenyewaan.java</file>
-            <file>file:/E:/Projects/Sistem-Informasi-Pemakaman/src/Main/MainPage.java</file>
+            <file>file:/D:/Tugas/Java/Sistem-Informasi-Pemakaman/src/koneksi/Koneksi.java</file>
+            <file>file:/D:/Tugas/Java/Sistem-Informasi-Pemakaman/src/Menu/DialogPetakMakamAddEdit.java</file>
+            <file>file:/D:/Tugas/Java/Sistem-Informasi-Pemakaman/src/Menu/DialogReservasiAddEdit.java</file>
+            <file>file:/D:/Tugas/Java/Sistem-Informasi-Pemakaman/src/Menu/DialogTempatiMakam.java</file>
+            <file>file:/D:/Tugas/Java/Sistem-Informasi-Pemakaman/src/Menu/MenuJenazah.java</file>
         </group>
     </open-files>
 </project-private>
