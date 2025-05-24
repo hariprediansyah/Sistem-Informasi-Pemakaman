@@ -40,26 +40,25 @@ public class MenuHome extends javax.swing.JPanel {
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
-        jLabel10 = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(45, 48, 51));
 
         lblDashboard.setBackground(new java.awt.Color(255, 255, 255));
         lblDashboard.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
         lblDashboard.setForeground(new java.awt.Color(255, 255, 255));
-        lblDashboard.setText("Pemakaman");
+        lblDashboard.setText("Al Azhar Memorial Garden");
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel1.setText("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla sollicitudin sapien sed dolor gravida ornare. Fusce blandit tristique elit ac");
+        jLabel1.setText("Al Azhar Memorial Garden merupakan taman pemakaman muslim no 1 di Indonesia yang terletak di Karawang, Jawa Barat");
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel3.setText("vestibulum. Phasellus urna nibh, tincidunt quis posuere sit amet, dictum a risus. Donec condimentum nisi at metus bibendum, quis");
+        jLabel3.setText("Taman pemakaman ini merupakan kolaborasi antara Yayasan Pesantren Islam Al Azhar dengan PT. Nuansa Usaha Mandiri");
 
         jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel4.setText("congue metus commodo. Vestibulum vestibulum scelerisque odio eget sodales. Donec rutrum massa id euismod condimentum. Integer");
+        jLabel4.setText("Sejak tahun 2011 kami telah membantu khusus umat muslim dalam menyediakan lahan makam hingga pelaksanaan prosesi pemakaman");
 
         jLabel5.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(255, 255, 255));
@@ -67,23 +66,19 @@ public class MenuHome extends javax.swing.JPanel {
 
         jLabel6.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel6.setText("sed faucibus purus in lacinia laoreet. Pellentesque sapien risus, pulvinar vitae laoreet non, varius sollicitudin odio. Morbi dignissim sapien");
+        jLabel6.setText("Semua pelayanan dilakukan secara profesional mengikuti standar manajemen ISO 9001");
 
         jLabel7.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel7.setText("Cras pharetra accumsan accumsan. Suspendisse ullamcorper massa ante. Vestibulum at posuere libero. Nulla semper enim eu augue");
+        jLabel7.setText("Al Azhar Memorial Garden ini dibangun diatas area 25 hektar dengan penataan konsep landscape yang indah sehingga tidak terkesan menyeramkan");
 
         jLabel8.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel8.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel8.setText("elementum, sed convallis orci maximus. Aenean vulputate, arcu id malesuada fringilla, massa turpis ultricies felis, a consequat ante ipsum");
+        jLabel8.setText("Area pemakaman Al Azhar Memorial Garden juga dilengkapi dengan walkway atau jalan setapak, sehingga antar makam tidak akan terinjak");
 
         jLabel9.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel9.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel9.setText("at dui. Aliquam sit amet risus tincidunt, congue neque vel, ultrices est. Quisque bibendum erat nec ipsum tristique cursus. Vivamus");
-
-        jLabel10.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jLabel10.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel10.setText("sollicitudin nunc id est mattis rhoncus. Quisque ornare commodo lacus, ac finibus tortor malesuada ut. Donec varius lorem non sem");
+        jLabel9.setText("terlangkahi atau terduduki oleh peziarah. Lokasinya juga sangat strategis yaitu hanya 10 menit dari Exit Tol Layang MBZ");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -92,7 +87,6 @@ public class MenuHome extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addGap(110, 110, 110)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblDashboard)
                     .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 871, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 871, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 871, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -101,7 +95,7 @@ public class MenuHome extends javax.swing.JPanel {
                     .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 899, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 899, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 899, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 899, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(lblDashboard, javax.swing.GroupLayout.PREFERRED_SIZE, 481, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(255, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -125,16 +119,13 @@ public class MenuHome extends javax.swing.JPanel {
                 .addComponent(jLabel8)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel9)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel10)
-                .addContainerGap(159, Short.MAX_VALUE))
+                .addContainerGap(185, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;

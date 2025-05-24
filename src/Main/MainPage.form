@@ -91,20 +91,23 @@
                 <DimensionLayout dim="0">
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" alignment="0" attributes="0">
-                          <Group type="103" groupAlignment="1" attributes="0">
-                              <Component id="jLabel1" alignment="1" min="-2" pref="268" max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                  <Component id="menuUser" pref="250" max="32767" attributes="0"/>
-                                  <Component id="menuMakam" max="32767" attributes="0"/>
-                                  <Component id="menuHome" max="32767" attributes="0"/>
-                                  <Component id="btnLogout" alignment="0" max="32767" attributes="0"/>
-                                  <Component id="menuJenazah" alignment="0" pref="250" max="32767" attributes="0"/>
-                                  <Component id="menuReservasi" alignment="0" pref="250" max="32767" attributes="0"/>
-                                  <Component id="menuTransaksi" alignment="1" pref="250" max="32767" attributes="0"/>
-                                  <Component id="menuPenyewaanAmbulan" alignment="0" min="-2" pref="242" max="-2" attributes="0"/>
-                              </Group>
+                          <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                              <Component id="menuUser" pref="250" max="32767" attributes="0"/>
+                              <Component id="menuMakam" max="32767" attributes="0"/>
+                              <Component id="menuHome" max="32767" attributes="0"/>
+                              <Component id="btnLogout" alignment="0" max="32767" attributes="0"/>
+                              <Component id="menuJenazah" alignment="0" pref="250" max="32767" attributes="0"/>
+                              <Component id="menuReservasi" alignment="0" pref="250" max="32767" attributes="0"/>
+                              <Component id="menuTransaksi" alignment="1" pref="250" max="32767" attributes="0"/>
+                              <Component id="menuPenyewaanAmbulan" alignment="0" min="-2" pref="242" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace pref="32" max="32767" attributes="0"/>
+                      </Group>
+                      <Group type="102" attributes="0">
+                          <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
+                          <Component id="jLabel1" max="32767" attributes="0"/>
+                          <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -136,10 +139,17 @@
               <SubComponents>
                 <Component class="javax.swing.JLabel" name="jLabel1">
                   <Properties>
+                    <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                      <Color blue="99" green="99" red="99" type="rgb"/>
+                    </Property>
+                    <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                      <Color blue="ff" green="ff" red="ff" type="rgb"/>
+                    </Property>
                     <Property name="horizontalAlignment" type="int" value="0"/>
                     <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                      <Image iconType="3" name="/images/logo_new.png"/>
+                      <Image iconType="3" name="/images/logo_alazhar.png"/>
                     </Property>
+                    <Property name="opaque" type="boolean" value="true"/>
                   </Properties>
                 </Component>
                 <Container class="javax.swing.JPanel" name="menuHome">

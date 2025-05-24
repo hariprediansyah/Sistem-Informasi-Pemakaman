@@ -24,7 +24,6 @@
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace min="-2" pref="110" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="lblDashboard" min="-2" max="-2" attributes="0"/>
                   <Component id="jLabel1" min="-2" pref="871" max="-2" attributes="0"/>
                   <Component id="jLabel3" min="-2" pref="871" max="-2" attributes="0"/>
                   <Component id="jLabel4" min="-2" pref="871" max="-2" attributes="0"/>
@@ -33,7 +32,7 @@
                   <Component id="jLabel7" alignment="0" min="-2" pref="899" max="-2" attributes="0"/>
                   <Component id="jLabel8" alignment="0" min="-2" pref="899" max="-2" attributes="0"/>
                   <Component id="jLabel9" alignment="0" min="-2" pref="899" max="-2" attributes="0"/>
-                  <Component id="jLabel10" alignment="0" min="-2" pref="899" max="-2" attributes="0"/>
+                  <Component id="lblDashboard" alignment="0" min="-2" pref="481" max="-2" attributes="0"/>
               </Group>
               <EmptySpace pref="255" max="32767" attributes="0"/>
           </Group>
@@ -60,9 +59,7 @@
               <Component id="jLabel8" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="jLabel9" min="-2" max="-2" attributes="0"/>
-              <EmptySpace max="-2" attributes="0"/>
-              <Component id="jLabel10" min="-2" max="-2" attributes="0"/>
-              <EmptySpace pref="159" max="32767" attributes="0"/>
+              <EmptySpace pref="185" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -79,7 +76,7 @@
         <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
           <Color blue="ff" green="ff" red="ff" type="rgb"/>
         </Property>
-        <Property name="text" type="java.lang.String" value="Pemakaman"/>
+        <Property name="text" type="java.lang.String" value="Al Azhar Memorial Garden"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel1">
@@ -90,7 +87,7 @@
         <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
           <Color blue="ff" green="ff" red="ff" type="rgb"/>
         </Property>
-        <Property name="text" type="java.lang.String" value="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla sollicitudin sapien sed dolor gravida ornare. Fusce blandit tristique elit ac"/>
+        <Property name="text" type="java.lang.String" value="Al Azhar Memorial Garden merupakan taman pemakaman muslim no 1 di Indonesia yang terletak di Karawang, Jawa Barat"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel3">
@@ -101,7 +98,7 @@
         <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
           <Color blue="ff" green="ff" red="ff" type="rgb"/>
         </Property>
-        <Property name="text" type="java.lang.String" value="vestibulum. Phasellus urna nibh, tincidunt quis posuere sit amet, dictum a risus. Donec condimentum nisi at metus bibendum, quis"/>
+        <Property name="text" type="java.lang.String" value="Taman pemakaman ini merupakan kolaborasi antara Yayasan Pesantren Islam Al Azhar dengan PT. Nuansa Usaha Mandiri"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel4">
@@ -112,7 +109,7 @@
         <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
           <Color blue="ff" green="ff" red="ff" type="rgb"/>
         </Property>
-        <Property name="text" type="java.lang.String" value="congue metus commodo. Vestibulum vestibulum scelerisque odio eget sodales. Donec rutrum massa id euismod condimentum. Integer"/>
+        <Property name="text" type="java.lang.String" value="Sejak tahun 2011 kami telah membantu khusus umat muslim dalam menyediakan lahan makam hingga pelaksanaan prosesi pemakaman"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel5">
@@ -134,7 +131,7 @@
         <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
           <Color blue="ff" green="ff" red="ff" type="rgb"/>
         </Property>
-        <Property name="text" type="java.lang.String" value="sed faucibus purus in lacinia laoreet. Pellentesque sapien risus, pulvinar vitae laoreet non, varius sollicitudin odio. Morbi dignissim sapien"/>
+        <Property name="text" type="java.lang.String" value="Semua pelayanan dilakukan secara profesional mengikuti standar manajemen ISO 9001"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel7">
@@ -145,7 +142,7 @@
         <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
           <Color blue="ff" green="ff" red="ff" type="rgb"/>
         </Property>
-        <Property name="text" type="java.lang.String" value="Cras pharetra accumsan accumsan. Suspendisse ullamcorper massa ante. Vestibulum at posuere libero. Nulla semper enim eu augue"/>
+        <Property name="text" type="java.lang.String" value="Al Azhar Memorial Garden ini dibangun diatas area 25 hektar dengan penataan konsep landscape yang indah sehingga tidak terkesan menyeramkan"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel8">
@@ -156,7 +153,7 @@
         <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
           <Color blue="ff" green="ff" red="ff" type="rgb"/>
         </Property>
-        <Property name="text" type="java.lang.String" value="elementum, sed convallis orci maximus. Aenean vulputate, arcu id malesuada fringilla, massa turpis ultricies felis, a consequat ante ipsum"/>
+        <Property name="text" type="java.lang.String" value="Area pemakaman Al Azhar Memorial Garden juga dilengkapi dengan walkway atau jalan setapak, sehingga antar makam tidak akan terinjak"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel9">
@@ -167,18 +164,7 @@
         <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
           <Color blue="ff" green="ff" red="ff" type="rgb"/>
         </Property>
-        <Property name="text" type="java.lang.String" value="at dui. Aliquam sit amet risus tincidunt, congue neque vel, ultrices est. Quisque bibendum erat nec ipsum tristique cursus. Vivamus"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JLabel" name="jLabel10">
-      <Properties>
-        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-          <Font name="Segoe UI" size="14" style="0"/>
-        </Property>
-        <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-          <Color blue="ff" green="ff" red="ff" type="rgb"/>
-        </Property>
-        <Property name="text" type="java.lang.String" value="sollicitudin nunc id est mattis rhoncus. Quisque ornare commodo lacus, ac finibus tortor malesuada ut. Donec varius lorem non sem"/>
+        <Property name="text" type="java.lang.String" value="terlangkahi atau terduduki oleh peziarah. Lokasinya juga sangat strategis yaitu hanya 10 menit dari Exit Tol Layang MBZ"/>
       </Properties>
     </Component>
   </SubComponents>
