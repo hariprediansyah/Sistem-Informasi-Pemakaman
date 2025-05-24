@@ -200,7 +200,7 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnReport1ActionPerformed"/>
               </Events>
               <AuxValues>
-                <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new RoundedGradientButton(&quot;Report&quot;)"/>
+                <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new RoundedGradientButton(&quot;Laporan&quot;)"/>
               </AuxValues>
             </Component>
             <Component class="appcode.form.CustomTextField" name="txtSearchLokasi">

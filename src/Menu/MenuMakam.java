@@ -5,23 +5,35 @@
  */
 package Menu;
 
+import Main.MainPage;
+import appcode.Session;
 import appcode.form.RoundedGradientButton;
 import appcode.table.TableActionCellEditor;
 import appcode.table.TableActionCellRender;
 import appcode.table.TableActionEvent;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.io.File;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.HashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import koneksi.Koneksi;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.util.JRLoader;
+import net.sf.jasperreports.view.JasperViewer;
 
 /**
  *
@@ -76,7 +88,7 @@ public class MenuMakam extends javax.swing.JPanel {
         jScrollPane2 = new javax.swing.JScrollPane();
         tblDataLokasi = new appcode.table.TableDark();
         btnAddLokasi = new RoundedGradientButton("Tambah");
-        btnReport1 = new RoundedGradientButton("Report");
+        btnReport1 = new RoundedGradientButton("Laporan");
         txtSearchLokasi = new appcode.form.CustomTextField();
         panelBlok = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
@@ -506,6 +518,18 @@ public class MenuMakam extends javax.swing.JPanel {
 
     private void btnReportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReportActionPerformed
         // TODO add your handling code here:
+        try {
+            // TODO add your handling code here:
+            HashMap parameter = new HashMap();
+            parameter.put("USER",Session.getNama());
+            File report_file = new File("src/laporan/LaporanBlokMakam.jasper");
+            JasperReport jasperReport = (JasperReport) JRLoader.loadObject(report_file);
+            JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameter, conn);
+            JasperViewer.viewReport(jasperPrint, false);
+            JasperViewer.setDefaultLookAndFeelDecorated(true);
+        } catch (JRException ex) {
+            Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_btnReportActionPerformed
 
     private void btnAddLokasiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddLokasiActionPerformed
@@ -515,6 +539,18 @@ public class MenuMakam extends javax.swing.JPanel {
 
     private void btnReport1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReport1ActionPerformed
         // TODO add your handling code here:
+        try {
+            // TODO add your handling code here:
+            HashMap parameter = new HashMap();
+            parameter.put("USER",Session.getNama());
+            File report_file = new File("src/laporan/LaporanLokasiMakam.jasper");
+            JasperReport jasperReport = (JasperReport) JRLoader.loadObject(report_file);
+            JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameter, conn);
+            JasperViewer.viewReport(jasperPrint, false);
+            JasperViewer.setDefaultLookAndFeelDecorated(true);
+        } catch (JRException ex) {
+            Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_btnReport1ActionPerformed
 
     private void btnAddPetakActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddPetakActionPerformed
@@ -524,6 +560,18 @@ public class MenuMakam extends javax.swing.JPanel {
 
     private void btnReport2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReport2ActionPerformed
         // TODO add your handling code here:
+        try {
+            // TODO add your handling code here:
+            HashMap parameter = new HashMap();
+            parameter.put("USER",Session.getNama());
+            File report_file = new File("src/laporan/LaporanPetakMakam.jasper");
+            JasperReport jasperReport = (JasperReport) JRLoader.loadObject(report_file);
+            JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameter, conn);
+            JasperViewer.viewReport(jasperPrint, false);
+            JasperViewer.setDefaultLookAndFeelDecorated(true);
+        } catch (JRException ex) {
+            Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_btnReport2ActionPerformed
 
     private void txtSearchLokasiKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtSearchLokasiKeyReleased

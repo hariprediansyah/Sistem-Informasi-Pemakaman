@@ -75,14 +75,14 @@ public class MenuPenyewaan extends javax.swing.JPanel {
         jScrollPane2 = new javax.swing.JScrollPane();
         tblDataAmbulan = new appcode.table.TableDark();
         btnAddAmbulan = new RoundedGradientButton("Tambah");
-        btnReport1 = new RoundedGradientButton("Report");
+        btnReport1 = new RoundedGradientButton("Laporan");
         txtSearch = new appcode.form.CustomTextField();
         jPanel1 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblDataPenyewaan = new appcode.table.TableDark();
         btnAddPenyewaan = new RoundedGradientButton("Tambah");
-        btnReport = new RoundedGradientButton("Report");
+        btnReport = new RoundedGradientButton("Laporan");
         txtSearchPenyewaan = new appcode.form.CustomTextField();
 
         setBackground(new java.awt.Color(45, 48, 51));

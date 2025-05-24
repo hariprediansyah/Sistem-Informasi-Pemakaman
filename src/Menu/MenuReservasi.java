@@ -51,7 +51,7 @@ public class MenuReservasi extends javax.swing.JPanel {
         jScrollPane1 = new javax.swing.JScrollPane();
         tblData = new appcode.table.TableDark();
         jLabel2 = new javax.swing.JLabel();
-        btnReport = new RoundedGradientButton("Report");
+        btnReport = new RoundedGradientButton("Laporan");
         btnAdd = new RoundedGradientButton("Tambah");
         txtSearch = new appcode.form.CustomTextField();
 
