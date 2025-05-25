@@ -935,7 +935,7 @@ public class MenuMakam extends javax.swing.JPanel {
                             statPetak.close();
 
                             JOptionPane.showMessageDialog(null, "Petak Makam Berhasil Dihapus");
-                            loadDataBlok();
+                            loadDataPetak();
 
                         } catch (SQLException e) {
                             JOptionPane.showMessageDialog(null, "Petak Makam Gagal Dihapus: " + e.getMessage());
