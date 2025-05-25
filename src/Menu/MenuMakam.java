@@ -95,14 +95,14 @@ public class MenuMakam extends javax.swing.JPanel {
         jScrollPane1 = new javax.swing.JScrollPane();
         tblDataBlok = new appcode.table.TableDark();
         btnAddBlok = new RoundedGradientButton("Tambah");
-        btnReport = new RoundedGradientButton("Report");
+        btnReport = new RoundedGradientButton("Laporan");
         txtSearchBlok = new appcode.form.CustomTextField();
         panelPetak = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
         jScrollPane3 = new javax.swing.JScrollPane();
         tblDataPetak = new appcode.table.TableDark();
         btnAddPetak = new RoundedGradientButton("Tambah");
-        btnReport2 = new RoundedGradientButton("Report");
+        btnReport2 = new RoundedGradientButton("Laporan");
         txtSearchPetak = new appcode.form.CustomTextField();
 
         setBackground(new java.awt.Color(45, 48, 51));

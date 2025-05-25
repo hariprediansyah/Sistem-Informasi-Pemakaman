@@ -375,7 +375,7 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnReportActionPerformed"/>
               </Events>
               <AuxValues>
-                <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new RoundedGradientButton(&quot;Report&quot;)"/>
+                <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new RoundedGradientButton(&quot;Laporan&quot;)"/>
               </AuxValues>
             </Component>
             <Component class="appcode.form.CustomTextField" name="txtSearchBlok">
@@ -550,7 +550,7 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnReport2ActionPerformed"/>
               </Events>
               <AuxValues>
-                <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new RoundedGradientButton(&quot;Report&quot;)"/>
+                <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new RoundedGradientButton(&quot;Laporan&quot;)"/>
               </AuxValues>
             </Component>
             <Component class="appcode.form.CustomTextField" name="txtSearchPetak">

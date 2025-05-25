@@ -1,0 +1,289 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="laporan jenazah" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="a35a0630-0e03-4d5f-8867-47fd086f8695">
+	<property name="ireport.zoom" value="1.0000000000000004"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="table">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TH" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_CH" mode="Opaque" backcolor="#FFBFBF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1_TH" mode="Opaque" backcolor="#FAEBD7">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1_CH" mode="Opaque" backcolor="#FFE4BF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<subDataset name="jenazah" uuid="41378d7e-d77e-416f-8337-6b81b12cc0cd">
+		<queryString>
+			<![CDATA[SELECT id, nomor_polisi, sopir, kapasitas, status, keterangan FROM ambulan ORDER BY nomor_polisi ASC]]>
+		</queryString>
+		<field name="id" class="java.lang.Integer">
+			<fieldDescription><![CDATA[]]></fieldDescription>
+		</field>
+		<field name="nomor_polisi" class="java.lang.String">
+			<fieldDescription><![CDATA[]]></fieldDescription>
+		</field>
+		<field name="sopir" class="java.lang.String">
+			<fieldDescription><![CDATA[]]></fieldDescription>
+		</field>
+		<field name="kapasitas" class="java.lang.Integer">
+			<fieldDescription><![CDATA[]]></fieldDescription>
+		</field>
+		<field name="status" class="java.lang.String">
+			<fieldDescription><![CDATA[]]></fieldDescription>
+		</field>
+		<field name="keterangan" class="java.lang.String">
+			<fieldDescription><![CDATA[]]></fieldDescription>
+		</field>
+	</subDataset>
+	<parameter name="USER" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT * FROM users;]]>
+	</queryString>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="129" splitType="Stretch">
+			<image onErrorType="Icon">
+				<reportElement key="" x="16" y="0" width="110" height="107" uuid="2c76676b-63bc-493f-8397-a8a78bbc82c3"/>
+				<imageExpression><![CDATA["src/images/logo_alazhar.png"]]></imageExpression>
+			</image>
+			<line>
+				<reportElement positionType="Float" x="0" y="112" width="555" height="1" uuid="3dca53f9-4a8b-488d-a484-2fbddfa8fea9"/>
+			</line>
+			<staticText>
+				<reportElement x="0" y="8" width="555" height="30" uuid="f0f68e88-9493-47b6-bea2-afcf1afc56bd"/>
+				<textElement textAlignment="Center" markup="none">
+					<font fontName="Times New Roman" size="20" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[Al Azhar Memorial Garden]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="42" width="555" height="14" uuid="ca1b2c60-1bab-4032-8065-18763fff9495"/>
+				<textElement textAlignment="Center" markup="none">
+					<font fontName="Times New Roman" size="10" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[Jl. Raya Peruri No.KM.53 - 54, Pinayungan]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="62" width="555" height="14" uuid="ca1b2c60-1bab-4032-8065-18763fff9495"/>
+				<textElement textAlignment="Center" markup="none">
+					<font fontName="Times New Roman" size="10" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[Telukjambe Timur, Karawang, Jawa Barat 41361]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="38" splitType="Stretch">
+			<staticText>
+				<reportElement positionType="Float" x="0" y="0" width="555" height="35" uuid="3a8735f4-c1cf-4e2c-900f-c320717556d5"/>
+				<textElement textAlignment="Center" markup="none">
+					<font fontName="Times New Roman" size="18" isBold="true" isItalic="false" pdfFontName="Helvetica"/>
+				</textElement>
+				<text><![CDATA[Laporan Ambulan]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="237" splitType="Stretch">
+			<textField pattern="EEEEE dd MMMMM yyyy">
+				<reportElement positionType="Float" x="402" y="117" width="128" height="20" uuid="7a83569e-1d27-455b-98c0-5578e37dcdda"/>
+				<textElement>
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.text.SimpleDateFormat(" EEEE, dd MMMM yyyy", new java.util.Locale("id", "ID")).format(new java.util.Date())]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement positionType="Float" x="365" y="212" width="165" height="1" uuid="c3985f27-b569-4ac7-ab40-81febbe1e589"/>
+			</line>
+			<staticText>
+				<reportElement positionType="Float" x="365" y="117" width="37" height="20" uuid="f261e112-ec79-4b02-abe8-f6944dff98d9"/>
+				<textElement textAlignment="Center">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<text><![CDATA[Jakarta, ]]></text>
+			</staticText>
+			<textField pattern="EEEEE dd MMMMM yyyy">
+				<reportElement positionType="Float" x="365" y="213" width="165" height="19" uuid="7a83569e-1d27-455b-98c0-5578e37dcdda"/>
+				<textElement textAlignment="Center">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{USER}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement positionType="Float" x="365" y="137" width="165" height="20" uuid="f261e112-ec79-4b02-abe8-f6944dff98d9"/>
+				<textElement textAlignment="Center">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<text><![CDATA[Dibuat oleh]]></text>
+			</staticText>
+			<componentElement>
+				<reportElement key="table" positionType="Float" x="0" y="0" width="555" height="86" uuid="27c6614c-8905-4e08-8f46-810d5d70c406"/>
+				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" whenNoDataType="AllSectionsNoDetail">
+					<datasetRun subDataset="jenazah" uuid="ae333ad6-5f56-49f8-8ab1-f951f57cb6d4">
+						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					</datasetRun>
+					<jr:column width="45" uuid="288a232a-f24c-4d08-8f2c-103a957ee57b">
+						<jr:tableHeader style="table_TH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement mode="Opaque" x="0" y="0" width="45" height="30" forecolor="#FFFFFF" backcolor="#2D3033" uuid="3ee99e8f-f6fa-4c8b-814d-a56fc930068a"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="Times New Roman" size="10" isBold="true"/>
+								</textElement>
+								<text><![CDATA[No]]></text>
+							</staticText>
+						</jr:tableHeader>
+						<jr:detailCell style="table_TD" height="30" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="0" width="45" height="30" uuid="a95bc956-7d5f-4ef2-a57c-12bb126b3317"/>
+								<textElement textAlignment="Center">
+									<font fontName="Times New Roman"/>
+									<paragraph leftIndent="4"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$V{COLUMN_COUNT}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="125" uuid="1c35b805-31e7-4b21-9bac-973018cf082b">
+						<jr:tableHeader style="table_TH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement mode="Opaque" x="0" y="0" width="125" height="30" forecolor="#FFFFFF" backcolor="#2D3033" uuid="49836c65-1fc5-4f3e-803f-821c3300eaf2"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="Times New Roman" size="10" isBold="true"/>
+								</textElement>
+								<text><![CDATA[Plat No]]></text>
+							</staticText>
+						</jr:tableHeader>
+						<jr:detailCell style="table_TD" height="30" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="0" width="125" height="30" uuid="ea1081e6-2122-498a-8c95-d91e8605f85a"/>
+								<textElement>
+									<font fontName="Times New Roman"/>
+									<paragraph leftIndent="4"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{nomor_polisi}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="92" uuid="320ac0af-99bc-4ac9-beef-c2913c912a20">
+						<jr:tableHeader style="table_TH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement mode="Opaque" x="0" y="0" width="92" height="30" forecolor="#FFFFFF" backcolor="#2D3033" uuid="73d098fa-0834-43c9-b7ff-52b01d773d48"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="Times New Roman" size="10" isBold="true"/>
+								</textElement>
+								<text><![CDATA[Sopir]]></text>
+							</staticText>
+						</jr:tableHeader>
+						<jr:detailCell style="table_TD" height="30" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="0" width="92" height="30" uuid="da7e2008-cbff-4757-a7f0-ea660e38104d"/>
+								<textElement>
+									<font fontName="Times New Roman"/>
+									<paragraph leftIndent="4"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{sopir}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="86" uuid="d3f58ba8-706a-460c-89b1-225bb2e51cc1">
+						<jr:tableHeader style="table_TH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement mode="Opaque" x="0" y="0" width="86" height="30" forecolor="#FFFFFF" backcolor="#2D3033" uuid="908c5cb6-949a-4326-a1eb-d34fa1e30232"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="Times New Roman" size="10" isBold="true"/>
+								</textElement>
+								<text><![CDATA[Kapasitas]]></text>
+							</staticText>
+						</jr:tableHeader>
+						<jr:detailCell style="table_TD" height="30" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="0" width="86" height="30" uuid="3154fe36-ecff-46dd-a967-c5fbd314ea81"/>
+								<textElement>
+									<font fontName="Times New Roman"/>
+									<paragraph leftIndent="4"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{kapasitas}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="109" uuid="1d0bd15b-fa6d-4731-b989-94027ecb9ef1">
+						<jr:tableHeader height="30" rowSpan="1">
+							<staticText>
+								<reportElement mode="Opaque" x="0" y="0" width="109" height="30" forecolor="#FFFFFF" backcolor="#2D3033" uuid="908c5cb6-949a-4326-a1eb-d34fa1e30232"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="Times New Roman" isBold="true"/>
+								</textElement>
+								<text><![CDATA[Status]]></text>
+							</staticText>
+						</jr:tableHeader>
+						<jr:detailCell style="table_TD" height="30" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="0" width="109" height="30" uuid="10aa9b26-18a6-46e1-a98b-01e5537f76aa"/>
+								<textFieldExpression><![CDATA[$F{status}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="97" uuid="d4d9afd9-5017-4791-8e83-6268653ae597">
+						<jr:tableHeader height="30" rowSpan="1">
+							<staticText>
+								<reportElement mode="Opaque" x="0" y="0" width="97" height="30" forecolor="#FFFFFF" backcolor="#2D3033" uuid="908c5cb6-949a-4326-a1eb-d34fa1e30232"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="Times New Roman" isBold="true"/>
+								</textElement>
+								<text><![CDATA[Keterangan]]></text>
+							</staticText>
+						</jr:tableHeader>
+						<jr:detailCell style="table_TD" height="30" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="0" width="97" height="30" uuid="10aa9b26-18a6-46e1-a98b-01e5537f76aa"/>
+								<textFieldExpression><![CDATA[$F{keterangan}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+				</jr:table>
+			</componentElement>
+		</band>
+	</columnHeader>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>
